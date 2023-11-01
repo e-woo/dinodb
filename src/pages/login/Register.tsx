@@ -26,6 +26,10 @@ const Register = () => {
                     <i className='bx bxs-id-card'></i>
                 </div>
                 <div className='text-field'>
+                    <input type='date' required/>
+                    <i className='bx bxs-calendar'></i>
+                </div>
+                <div className='text-field'>
                     <input type='password' placeholder='Password' required />
                     <i className='bx bxs-lock-alt' ></i>
                 </div>
