@@ -26,7 +26,9 @@ const Register = () => {
                     <i className='bx bxs-id-card'></i>
                 </div>
                 <div className='text-field'>
-                    <input type='date' required/>
+                    <input type="text" placeholder="Date of Birth"
+                    onFocus={e => e.target.type='date'}
+                    onBlur={DateOnBlur} required/>
                     <i className='bx bxs-calendar'></i>
                 </div>
                 <div className='text-field'>
@@ -38,9 +40,17 @@ const Register = () => {
                     <i className='bx bxs-lock-alt' ></i>
                 </div>
                 <button className="btn">Register</button>
+                <div className="register">
+                    <p>Have an account? <a href='./login'>Login</a></p>
+                </div>
             </form>
         </div>
     );
+}
+
+const DateOnBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    if (e.target.value === '') 
+        e.target.type = 'text';
 }
 
 export default Register;
