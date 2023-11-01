@@ -6,7 +6,7 @@ const Login = () => {
             <h1>Login</h1>
             <form>
                 <div className='text-field'>
-                    <input type='text' placeholder='Username' required />
+                    <input type='email' placeholder='Email' required />
                     <i className='bx bxs-user'></i>
                 </div>
                 <div className='text-field'>

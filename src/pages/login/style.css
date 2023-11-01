@@ -54,6 +54,17 @@ body {
     padding: 20px 45px 20px 20px;
 }
 
+.name-field {
+    height: 50px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+span {
+    width: 47%;
+}
+
 .text-field input::placeholder {
     color: #ffffff;
 }
