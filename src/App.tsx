@@ -9,8 +9,8 @@ import Home from './pages/Home';
 import Login from './pages/login/Login';
 import Register from './pages/login/Register';
 import Clubpage from './pages/Clubpage';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './components/navbar/Navbar';
+import Footer from './components/footer/Footer';
 
 const Layout = () => {
 	return (
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
 				element: <Home/>
 			},
 			{
-				path: "/Clubpage/:id",	// club id
+				path: "/club/:id",	// club id
 				element: <Clubpage/>
 			}
 		]
@@ -49,10 +49,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="app">
-			<div className="container">
-				<RouterProvider router={router}/>
-			</div>
+		<div className="container">
+			<RouterProvider router={router}/>
 		</div>
+	</div>
   );
 }
 
