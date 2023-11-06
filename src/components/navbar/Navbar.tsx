@@ -29,7 +29,7 @@ const Navbar = () => {
           <Link to={""} className="link">
             Volunteer
           </Link>
-          <span>
+          <span className="signin">
             <Link to={"./login"} className="link" id="sign-in">
               Sign in
             </Link>

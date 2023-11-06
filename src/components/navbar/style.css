@@ -18,7 +18,7 @@
 }
 .logotext {
   font-size: 64px;
-  color: #ffa33c;
+  color: rgb(255, 70, 70);
   text-decoration: none;
   font-weight: 700;
 }
@@ -39,7 +39,7 @@
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
-  color: #ffa33c;
+  color: rgb(255, 70, 70);
 }
 
 .links .link::before {
@@ -49,7 +49,21 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #ffa33c;
+  background: rgb(255, 70, 70);
+  transition: 0.3s;
+}
+
+.links .signin a {
+  color: #ffffff;
+}
+.links .signin .link::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ffffff;
   transition: 0.3s;
 }
 
