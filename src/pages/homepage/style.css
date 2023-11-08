@@ -1,12 +1,22 @@
-.postsTitle {
+.postsContainer {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  display: flex;
+  align-items:flex-start;
   margin: 150px;
   font-size: 25px;
   color: rgb(255, 70, 70);
   text-decoration: none;
   font-weight: 700;
+}
+
+.postsHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
 }
 
 .posts {
@@ -34,6 +44,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
@@ -68,6 +79,7 @@ button {
   padding: 10px 20px;
   cursor: pointer;
 
+  border-radius: 10px;
   background-color: #f5f7f8;
   border: 1px solid rgb(255, 70, 70);
   color: rgb(255, 70, 70);
@@ -76,5 +88,9 @@ button {
     border: 1px solid #f5f7f8;
     background-color: rgb(255, 70, 70);
     color: #f5f7f8;
+  }
+
+  #findButton {
+    margin-left: 6px;
   }
 }
