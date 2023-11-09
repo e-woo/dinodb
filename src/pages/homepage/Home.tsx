@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import logo from './uofc-logo.png';
 
 const Home = () => {
   const posts = [
@@ -12,8 +13,8 @@ const Home = () => {
     },
     {
       id: 123,
-      title: "Esports Club",
-      desc: "The BGC aims to provide regular, weekly eventso games, or even tabletop games or trading card games.",
+      title: "E-Sports Club",
+      desc: "The BGC aims to provide regular, weekly event so games, or even tabletop games or trading card games.",
       img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
     {
@@ -25,12 +26,27 @@ const Home = () => {
     {
       id: 2,
       title: "Plant Club",
-      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinc.",
+      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
       img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
   ];
   return (
     <div className="home">
+      <div className="landing-page">
+        <div className="text-and-img">
+          <div className = "side-by-side">
+            <div className="title">
+            <h1>Welcome to Dino DB</h1>
+            <h3>Embark on Your UCalgary Adventure</h3>
+            <h3>Connect with Your Future Community</h3>
+            <h3>Explore All Extracurriculars, <span className="gold-text">All in One Spot</span></h3>
+            </div>
+            <div className="big-logo">
+              <img src={logo} alt="UofC Logo" />
+            </div>
+          </div>
+        </div>
+      </div>
       <ClubsSlider
         header="Discover Clubs"
         desc={`
@@ -39,7 +55,7 @@ const Home = () => {
       />
       <ClubsSlider
         header="Volunteer on Campus"
-        desc="Volunteer opportunities to earn cocircular hours"
+        desc="Volunteer opportunities to earn co-curricular hours"
         posts={posts}
       />
       <ClubsSlider
