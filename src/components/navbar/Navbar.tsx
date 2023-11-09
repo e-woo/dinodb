@@ -11,7 +11,7 @@ const Navbar = () => {
             {" "}
             <img src={Logo} alt="DinoDB logo" />
           </div>
-          <div className="logotext"> DinoDB</div>
+          <div className="logotext">DinoDB</div>
         </div>
         <nav className="links">
           <Link to={""} className="link">

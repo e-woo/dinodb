@@ -1,9 +1,9 @@
 .navbar .container {
-  position: static;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-
+  background-color: #f5f7f8;
   padding: 20px 100px;
   display: flex;
   justify-content: space-between;
