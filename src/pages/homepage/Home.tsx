@@ -32,18 +32,26 @@ const Home = () => {
   return (
     <div className="home">
       <ClubsSlider
-        header="Featured Clubs"
+        header="Discover Clubs"
         desc={`
         Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
         posts={posts}
       />
       <ClubsSlider
-        header="Featured Volunteering Opportunities"
-        desc="bruh"
+        header="Volunteer on Campus"
+        desc="Volunteer opportunities to earn cocircular hours"
         posts={posts}
       />
-      <ClubsSlider header="Featured Programs" desc="bruh" posts={posts} />
-      <ClubsSlider header="Upcoming Events" desc="bruh" posts={posts} />
+      <ClubsSlider
+        header="Featured Programs"
+        desc="Participate in programs and learn new stuff"
+        posts={posts}
+      />
+      <ClubsSlider
+        header="Upcoming Events"
+        desc="Join us in upcoming events soon"
+        posts={posts}
+      />
     </div>
   );
 };
