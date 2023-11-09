@@ -1,9 +1,7 @@
 .postsContainer {
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   display: flex;
-  align-items:flex-start;
+  align-items: stretch;
   margin: 150px;
   font-size: 25px;
   color: rgb(255, 70, 70);
@@ -11,14 +9,52 @@
   font-weight: 700;
 }
 
-.postsHeader {
+.postTop {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 12px;
+  width: 100%;
   padding-bottom: 12px;
+  height: 100%;
 }
 
+.postsHeader {
+  display: flex;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.postsDesc {
+  display: flex;
+  font-size: 16px;
+  width: 700px;
+}
+button {
+  width: max-content;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(255, 70, 70);
+}
+#findButton {
+  color: #f5f7f8;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: none;
+  height: 50px;
+}
+
+#findButton::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #f5f7f8;
+  transition: 0.3s;
+}
 .posts {
   display: flex;
   justify-content: center;
@@ -32,6 +68,7 @@
   padding: 20px;
   border-radius: 5px;
   border: solid rgb(255, 70, 70);
+  border-width: thick;
   text-align: center;
   overflow: hidden;
   display: flex;
@@ -46,11 +83,9 @@
   justify-content: space-between;
   align-items: center;
 }
-
 h1 {
   font-size: 24px;
 }
-
 p {
   font-size: 16px;
   white-space: normal;
@@ -74,23 +109,14 @@ img {
   object-fit: cover;
 }
 
-button {
-  width: max-content;
-  padding: 10px 20px;
-  cursor: pointer;
-
-  border-radius: 10px;
+#learnButton {
   background-color: #f5f7f8;
-  border: 1px solid rgb(255, 70, 70);
+  border: 2px solid rgb(255, 70, 70);
   color: rgb(255, 70, 70);
 
   &:hover {
-    border: 1px solid #f5f7f8;
+    border: 2px solid #f5f7f8;
     background-color: rgb(255, 70, 70);
     color: #f5f7f8;
-  }
-
-  #findButton {
-    margin-left: 6px;
   }
 }

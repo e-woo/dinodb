@@ -31,40 +31,57 @@ const Home = () => {
   ];
   return (
     <div className="home">
-      <ClubsSlider header='Featured Clubs' posts={posts}/>
-      <ClubsSlider header='Featured Volunteering Opportunities' posts={posts}/>
-      <ClubsSlider header='Featured Programs' posts={posts}/>
-      <ClubsSlider header='Featured Events' posts={posts}/>
+      <ClubsSlider
+        header="Featured Clubs"
+        desc={`
+        Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
+        posts={posts}
+      />
+      <ClubsSlider
+        header="Featured Volunteering Opportunities"
+        desc="bruh"
+        posts={posts}
+      />
+      <ClubsSlider header="Featured Programs" desc="bruh" posts={posts} />
+      <ClubsSlider header="Upcoming Events" desc="bruh" posts={posts} />
     </div>
   );
 };
 
-const ClubsSlider = ({ header, posts } : { header: string, posts: Array<{id: number, title: string, desc: string, img: string}> }) => {
+const ClubsSlider = ({
+  header,
+  desc,
+  posts,
+}: {
+  header: string;
+  desc: string;
+  posts: Array<{ id: number; title: string; desc: string; img: string }>;
+}) => {
   return (
     <div className="postsContainer">
-      <div className='postsHeader'>
-        {" "}
-        {header}
-        <button id='findButton'>Find More</button>
-        </div>
-        <div className="posts">
-          {posts.map((post) => (
-            <div className="post" key={post.id}>
-              <div className="img">
-                <img src={post.img} alt="" />
-              </div>
-              <div className="content">
-                <Link className="link" to={`/post/${post.id}`}>
-                  <h1>{post.title}</h1>
-                </Link>
-                <p>{post.desc}</p>
-                <button id='learnButton'>Learn More</button>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="postTop">
+        <div className="postsHeader"> {header}</div>
+        <div className="postsDesc">{desc}</div>
+        <button id="findButton">Find More</button>
       </div>
+      <div className="posts">
+        {posts.map((post) => (
+          <div className="post" key={post.id}>
+            <div className="img">
+              <img src={post.img} alt="" />
+            </div>
+            <div className="content">
+              <Link className="link" to={`/post/${post.id}`}>
+                <h1>{post.title}</h1>
+              </Link>
+              <p>{post.desc}</p>
+              <button id="learnButton">Learn More</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-}
+};
 
 export default Home;
