@@ -9,7 +9,10 @@ import {
 import Home from "./pages/homepage/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
-import Clubpage from "./pages/Clubpage";
+import Clubpage from "./pages/clubpage/Clubpage";
+import Eventpage from "./pages/eventpage/Eventpage";
+import Programpage from "./pages/programpage/Programpage";
+import Volunteerpage from "./pages/volunteerpage/Volunteerpage";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 
@@ -35,6 +38,18 @@ const router = createBrowserRouter([
       {
         path: "/club/:id", // club id
         element: <Clubpage />,
+      },
+      {
+        path: "/event/:id",
+        element: <Eventpage />,
+      },
+      {
+        path: "/program/:id",
+        element: <Programpage />,
+      },
+      {
+        path: "/volunteer/:id",
+        element: <Volunteerpage />,
       },
     ],
   },
