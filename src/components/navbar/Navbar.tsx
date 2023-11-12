@@ -6,18 +6,17 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="container">
-        <div className="logo">
+        <a href='/' style={{textDecoration: 'none'}} className="logo">
           <div className="logoimg">
-            {" "}
             <img src={Logo} alt="DinoDB logo" />
           </div>
           <div className="logotext">DinoDB</div>
-        </div>
+        </a>
         <nav className="links">
-          <Link to={""} className="link">
+          <Link to={'./'} className="link">
             Home
           </Link>
-          <Link to={""} className="link">
+          <Link to={'./search'} className="link">
             Explore
           </Link>
           <Link to={""} className="link">

@@ -15,6 +15,7 @@ import Programpage from "./pages/programpage/Programpage";
 import Volunteerpage from "./pages/volunteerpage/Volunteerpage";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import SearchPage from "./pages/searchpage/SearchPage";
 
 const Layout = () => {
   return (
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
         path: "/volunteer/:id",
         element: <Volunteerpage />,
       },
+      {
+        path: '/search',
+        element: <SearchPage />
+      }
     ],
   },
   {

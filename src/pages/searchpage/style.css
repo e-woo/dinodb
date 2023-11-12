@@ -1,0 +1,117 @@
+* {
+  --g-border: 2px solid rgba(83, 83, 83, 0.2);
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchHeader {
+    font-size: 80px;
+    font-weight: 800;
+    align-self: center;
+}
+
+.searchBar {
+    align-self: center;
+    width: 700px;
+    border: var(--g-border);
+    border-radius: 40px;
+    padding: 15px 45px 15px 30px;
+    margin: 40px;
+    font-size: 20px;
+}
+
+#searchIcon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+}
+
+.searchBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.searchContent {
+    width: 70%;
+}
+
+.searchBody .filters {
+    height: fit-content;
+    background-color: white;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-right: 40px;
+    border: 3px solid rgba(63, 63, 63, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+input[type='checkbox'] {
+    margin: 6px 12px 6px 6px;
+}
+
+input.filterCheckbox {
+    width: 20px;
+    height: 20px;
+}
+
+.filters li {
+    padding: 10px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+}
+
+.filters li:not(:last-child) {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.filters li:nth-child(1) {
+    display: flex;
+    width: 100%;
+    font-size: 30px;
+    border-bottom: var(--g-border);
+    background-color: rgb(255, 70, 70);
+    justify-content: center;
+    .filterHeader {
+        align-self: center;
+        color: white;
+        font-size: 40px;
+    }
+}
+
+.postsRowContainer {
+    margin: 30px;
+    justify-self: end;
+}
+
+.postsRowContainer .posts {
+    overflow: hidden;
+}
+
+.postsRowContainer .post {
+    background-color: white;
+    border: var(--g-border);
+    border-radius: 12px;
+}
+
+.postsRowContainer .content {
+    .link {
+        text-decoration: none;
+        color: rgb(255, 70, 70);
+        margin-top: 8px;
+    }
+}
+
+.postsRowContainer button {
+    background-color: white;
+}
+
+.postsRowContainer button:hover {
+    background-color: rgb(255, 70, 70);
+}
