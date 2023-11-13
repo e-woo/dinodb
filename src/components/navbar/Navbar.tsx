@@ -6,27 +6,30 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="container">
-        <a href='/' style={{textDecoration: 'none'}} className="logo">
+        <a href="/" style={{ textDecoration: "none" }} className="logo">
           <div className="logoimg">
             <img src={Logo} alt="DinoDB logo" />
           </div>
           <div className="logotext">DinoDB</div>
         </a>
         <nav className="links">
-          <Link to={'./'} className="link">
+          <Link to={"./"} className="link">
             Home
           </Link>
-          <Link to={'./search'} className="link">
+          <Link to={"./search"} className="link">
             Explore
           </Link>
-          <Link to={""} className="link">
+          <Link to={"./programs"} className="link">
             Programs
           </Link>
-          <Link to={""} className="link">
+          <Link to={"./clubs"} className="link">
             Clubs
           </Link>
-          <Link to={""} className="link">
+          <Link to={"./volunteer"} className="link">
             Volunteer
+          </Link>
+          <Link to={"./announcements"} className="link">
+            Announcements
           </Link>
           <span className="signin">
             <Link to={"./login"} className="link" id="sign-in">

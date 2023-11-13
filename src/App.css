@@ -22,3 +22,9 @@ body {
 .app .container {
   width: 100%;
 }
+
+.link {
+  text-decoration: none;
+  color: rgb(255, 70, 70);
+  margin-top: 8px;
+}

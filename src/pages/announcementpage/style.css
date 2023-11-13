@@ -1,0 +1,80 @@
+.announcements .postsHeader {
+  font-size: 80px;
+  font-weight: 800;
+  align-self: center;
+  color: black;
+}
+.announcements .posts {
+  flex-direction: column;
+  display: flex;
+  align-items: stretch;
+  margin: 150px;
+  margin-top: 10px;
+  font-size: 25px;
+  color: rgb(255, 70, 70);
+  text-decoration: none;
+  font-weight: 700;
+  gap: 50px;
+}
+
+.announcements .posts .post {
+  display: flex;
+
+  border-radius: 5px;
+  border: solid rgb(255, 70, 70);
+  border-width: thick;
+  overflow: hidden;
+}
+.announcements .posts .post .img {
+  flex: 2;
+  max-height: 400px;
+  width: 400px;
+  margin: 20px;
+  margin-right: 0px;
+}
+
+.announcements .posts .post .img img {
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.announcements .posts .post .content {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+
+  justify-content: space-between;
+}
+
+.announcements .posts .post .content .date_author {
+}
+
+.announcements .posts .post .content .description {
+}
+
+.announcements h1 {
+  font-size: 44px;
+}
+
+.announcements p {
+  font-size: 16px;
+}
+
+.announcements button {
+  width: max-content;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+
+  background-color: #f5f7f8;
+  border: 2px solid rgb(255, 70, 70);
+  color: rgb(255, 70, 70);
+
+  &:hover {
+    border: 2px solid #f5f7f8;
+    background-color: rgb(255, 70, 70);
+    color: #f5f7f8;
+  }
+}
