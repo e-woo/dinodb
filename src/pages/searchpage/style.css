@@ -7,12 +7,6 @@
   flex-direction: column;
 }
 
-.searchHeader {
-  font-size: 80px;
-  font-weight: 800;
-  align-self: center;
-}
-
 .searchBar {
   align-self: center;
   width: 700px;

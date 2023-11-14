@@ -16,7 +16,7 @@ import Volunteerpage from "./pages/volunteerpage/Volunteerpage";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import SearchPage from "./pages/searchpage/SearchPage";
-import Announcements from "./pages/announcementpage/Announcements";
+import Announcements from "./pages/announcementpage/Announcement";
 
 const Layout = () => {
   return (

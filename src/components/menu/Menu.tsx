@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./style.css";
+import { Link } from "react-router-dom";
 
-const Announcements = () => {
+export const Menu = () => {
   const posts = [
     {
       id: 121,
@@ -38,29 +38,28 @@ const Announcements = () => {
     },
   ];
   return (
-    <div className="announcements">
-      <div className="posts">
-        <div className="postsHeader"> Announcements</div>
+    <div className="postsContainer">
+      {/* Header of menu */}
+      <h1 className="postH1">Other posts by club</h1>
+      <div className="menuPosts">
+        {/* Mapping through the posts array and rendering individual post components */}
         {posts.map((post) => (
           <div className="post" key={post.id}>
-            <div className="img">
-              <img src={post.img} alt="" />
+            <div className="postImg">
+              <img src={post.img}></img>
             </div>
-            <div className="content">
+            <div className="postContent">
               <div className="about">
-                <Link className="link" to={`/post/${post.id}`}>
-                  <h1>{post.title}</h1>
+                <Link className="link" to={`/announcement/${post.id}`}>
+                  <h2 className="postH1">{post.title}</h2>
                 </Link>
-                <div className="date_author">
-                  <p>{post.date}</p>
-                  <p>{post.author}</p>
+                <div className="announcementInfo">
+                  <p className="userAuthor">{post.author}</p>
+                  <span>{post.date}</span>
                 </div>
               </div>
-
-              <div className="description">
-                <p>{post.desc}</p>
-              </div>
-              <button>Read More</button>
+              <p className="postP">{post.desc}</p>
+              <button className="postsButton">Read More</button>
             </div>
           </div>
         ))}
@@ -69,4 +68,4 @@ const Announcements = () => {
   );
 };
 
-export default Announcements;
+export default Menu;

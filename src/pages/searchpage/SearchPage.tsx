@@ -5,7 +5,7 @@ import "./style.css";
 const SearchPage = () => {
   return (
     <div className="search">
-      <h1 className="searchHeader">Find An Extracurricular!</h1>
+      <h1 className="bigHeader">Find An Extracurricular!</h1>
       <input type="text" placeholder="Search..." className="searchBar" />
       <div className="searchBody">
         <div className="filters">
@@ -71,25 +71,23 @@ const PostsRow = ({
 }) => {
   return (
     <div className="postsRowContainer">
-      <div className="home">
-        <div className="posts">
-          {posts.map((post) => (
-            <div className="post" key={post.id}>
-              <div className="img">
-                <img src={post.img} alt="" />
-              </div>
-              <div className="content">
-                <Link className="link" to={`/club/${post.id}`}>
-                  <h1>{post.title}</h1>
-                </Link>
-                <p>{post.desc}</p>
-                <form action={"./club/" + post.id}>
-                  <button>Learn More</button>
-                </form>
-              </div>
+      <div className="posts">
+        {posts.map((post) => (
+          <div className="post" key={post.id}>
+            <div className="postImg">
+              <img src={post.img} alt="" />
             </div>
-          ))}
-        </div>
+            <div className="postContent">
+              <Link className="link" to={`/club/${post.id}`}>
+                <h1 className="postH1">{post.title}</h1>
+              </Link>
+              <p className="postP">{post.desc}</p>
+              <form action={"./club/" + post.id}>
+                <button className="postsButton">Learn More</button>
+              </form>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

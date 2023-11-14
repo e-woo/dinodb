@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
-import logo from './uofc-logo.png';
+import logo from "./uofc-logo.png";
 
 const Home = () => {
   const posts = [
@@ -34,12 +34,15 @@ const Home = () => {
     <div className="home">
       <div className="landing-page">
         <div className="text-and-img">
-          <div className = "side-by-side">
+          <div className="side-by-side">
             <div className="title">
-            <h1>Welcome to Dino DB</h1>
-            <h3>Embark on Your UCalgary Adventure</h3>
-            <h3>Connect with Your Future Community</h3>
-            <h3>Explore All Extracurriculars, <span className="gold-text">All in One Spot</span></h3>
+              <h1>Welcome to Dino DB</h1>
+              <h3>Embark on Your UCalgary Adventure</h3>
+              <h3>Connect with Your Future Community</h3>
+              <h3>
+                Explore All Extracurriculars,{" "}
+                <span className="gold-text">All in One Spot</span>
+              </h3>
             </div>
             <div className="big-logo">
               <img src={logo} alt="UofC Logo" />
@@ -86,20 +89,22 @@ const ClubsSlider = ({
       <div className="postTop">
         <div className="postsHeader"> {header}</div>
         <div className="postsDesc">{desc}</div>
-        <button id="findButton">Find More</button>
+        <button className="postsButton" id="findButton">
+          Find More
+        </button>
       </div>
       <div className="posts">
         {posts.map((post) => (
           <div className="post" key={post.id}>
-            <div className="img">
+            <div className="postImg">
               <img src={post.img} alt="" />
             </div>
-            <div className="content">
+            <div className="postContent">
               <Link className="link" to={`/club/${post.id}`}>
-                <h1>{post.title}</h1>
+                <h1 className="postH1">{post.title}</h1>
               </Link>
-              <p>{post.desc}</p>
-              <button id="learnButton">Learn More</button>
+              <p className="postP">{post.desc}</p>
+              <button className="postsButton">Learn More</button>
             </div>
           </div>
         ))}

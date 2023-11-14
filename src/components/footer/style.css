@@ -1,43 +1,46 @@
+/* Styles for the footer container */
 .footer .containerF {
   position: sticky;
   bottom: 0;
   left: 0;
   width: 100%;
 
+  /* So the footer info is properly centered */
   padding: 20px, 100px;
   margin: auto;
   margin: 50px;
   max-width: 1170px;
 }
+
+/* Allow items to wrap to next line */
 .row {
   display: flex;
   flex-wrap: wrap;
 }
 
-ul {
-  list-style: none;
-}
-
+/* Make the footer top and bottom padded */
 .footer {
   background-color: #24262b;
   padding: 75px 0;
   width: 100%;
 }
 
+/* Make each col be formatted properly */
 .footerCol {
   width: 25%;
   padding: 0 15px;
 }
 
+/* style for heading of each column  */
 .footerCol h4 {
   font-size: 18px;
   color: #ffffff;
-  text-transform: capitalize;
   margin-bottom: 35px;
   font-weight: 500;
   position: relative;
 }
 
+/* Styles for the decorative line below heading elements */
 .footerCol h4::before {
   content: "";
   position: absolute;
@@ -49,14 +52,14 @@ ul {
   width: 50px;
 }
 
+/* add gap for list items within footer columns */
 .footerCol ul li:not(:last-child) {
   margin-bottom: 10px;
 }
 
+/* styles for each item in column */
 .footerCol ul li a {
   font-size: 16px;
-  text-transform: capitalize;
-  color: #ffffff;
   text-decoration: none;
   font-weight: 300;
   color: #bbbbbb;
@@ -64,6 +67,7 @@ ul {
   transition: all 0.3s ease;
 }
 
+/* styles for hover effect for each item in column */
 .footerCol ul li a:hover {
   color: #ffffff;
   padding-left: 8px;
