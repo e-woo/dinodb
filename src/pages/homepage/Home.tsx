@@ -33,21 +33,46 @@ const Home = () => {
   return (
     <div className="home">
       <div className="landing-page">
-        <div className="text-and-img">
-          <div className="side-by-side">
-            <div className="title">
-              <h1>Welcome to Dino DB</h1>
-              <h3>Embark on Your UCalgary Adventure</h3>
-              <h3>Connect with Your Future Community</h3>
-              <h3>
-                Explore All Extracurriculars,{" "}
-                <span className="gold-text">All in One Spot</span>
-              </h3>
-            </div>
-            <div className="big-logo">
-              <img src={logo} alt="UofC Logo" />
-            </div>
-          </div>
+        <div className="text">
+          <h1>
+            Welcome to <br></br> Dino DB
+          </h1>
+          <h3>
+            Embark on Your UCalgary Adventure <br></br>
+            Connect with Your Future Community <br></br>
+            Explore All Extracurriculars,{" "}
+            <span className="gold-text">All in One Spot</span>
+          </h3>
+          <button className="exploreButton">Explore Now</button>
+        </div>
+        <div className="big-logo">
+          <img src={logo} alt="UofC Logo" />
+        </div>
+      </div>
+      <div className="benefits">
+        <div className="benefitContainer">
+          <h1 className="benefitH1">Community</h1>
+          <p className="benefitP">
+            Participation in activites often leads to the formation of lasting
+            friendships, creating a support system that extends beyond the
+            college years.
+          </p>
+        </div>
+        <div className="benefitContainer">
+          <h1 className="benefitH1">Network</h1>
+          <p className="benefitP">
+            {" "}
+            Being active provides opportunities to network with professors,
+            professionals, and fellow students, potentially leading to
+            internships or job opportunities.
+          </p>
+        </div>
+        <div className="benefitContainer">
+          <h1 className="benefitH1">Resume</h1>{" "}
+          <p className="benefitP">
+            Active involvement on campus showcases leadership abilities on a
+            resume, making students more attractive to potential employers.
+          </p>
         </div>
       </div>
       <ClubsSlider
@@ -58,17 +83,17 @@ const Home = () => {
       />
       <ClubsSlider
         header="Volunteer on Campus"
-        desc="Volunteer opportunities to earn co-curricular hours"
+        desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
         posts={posts}
       />
       <ClubsSlider
         header="Featured Programs"
-        desc="Participate in programs and learn new stuff"
+        desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
         posts={posts}
       />
       <ClubsSlider
         header="Upcoming Events"
-        desc="Join us in upcoming events soon"
+        desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"
         posts={posts}
       />
     </div>
@@ -90,7 +115,7 @@ const ClubsSlider = ({
         <div className="postsHeader"> {header}</div>
         <div className="postsDesc">{desc}</div>
         <button className="postsButton" id="findButton">
-          Find More
+          View All
         </button>
       </div>
       <div className="posts">
