@@ -81,6 +81,22 @@ const Home = () => {
         Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
         posts={posts}
       />
+      <div className="createClub">
+        <h1 className="benefitH1">
+          Apply as an Executive or Start Your Own{" "}
+          <span className="gold-text">Club</span> Today!
+        </h1>
+        <p className="centerP">
+          Ready to lead? Join as an executive in an existing club or ignite your
+          own journey by founding a brand new one.
+          <br></br>Your vision, your rules—be the trailblazer and leave a
+          lasting impact on the university community.
+          <br></br>
+        </p>
+        <button className="postsButton findButton">
+          Your leadership story begins here!
+        </button>
+      </div>
       <ClubsSlider
         header="Volunteer on Campus"
         desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
@@ -91,6 +107,31 @@ const Home = () => {
         desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
         posts={posts}
       />
+      <div className="createClub">
+        <h1 className="benefitH1">
+          Elevate Your Club Experience -{" "}
+          <span className="gold-text">Join Us Today!</span>
+        </h1>
+        <div className="benefitsList">
+          <div className="benefitSection">
+            <h2 className="benefitTitle">Club Executives</h2>
+            <ul className="benefitItems">
+              <li>Announce with impact, manage with ease.</li>
+              <li>Seamless event coordination at your fingertips.</li>
+              <li>Engage and inspire your team, leading by example.</li>
+            </ul>
+          </div>
+          <div className="benefitSection">
+            <h2 className="benefitTitle">Club Members</h2>
+            <ul className="benefitItems">
+              <li>Simplify your club management and tracking.</li>
+              <li>Stay updated with tailored club notifications.</li>
+              <li>Organize your club events and calendars effortlessly.</li>
+            </ul>
+          </div>
+        </div>
+        <button className="postsButton findButton">Sign In Now</button>
+      </div>
       <ClubsSlider
         header="Upcoming Events"
         desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"
@@ -114,9 +155,7 @@ const ClubsSlider = ({
       <div className="postTop">
         <div className="postsHeader"> {header}</div>
         <div className="postsDesc">{desc}</div>
-        <button className="postsButton" id="findButton">
-          View All
-        </button>
+        <button className="postsButton findButton">View All</button>
       </div>
       <div className="posts">
         {posts.map((post) => (

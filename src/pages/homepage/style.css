@@ -98,9 +98,62 @@
 }
 
 .benefitH1 {
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .benefitP {
   text-align: center;
+}
+
+.centerP {
+  padding-right: 300px;
+  padding-left: 300px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 23%;
+}
+
+.createClub {
+  background-color: rgb(255, 70, 70);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #f5f7f8;
+  padding: 50px;
+  min-height: 400px;
+}
+
+.benefitSection {
+  margin-bottom: 20px;
+
+  text-align: center;
+}
+
+.benefitTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f5f7f8;
+  margin-bottom: 10px;
+}
+
+.benefitItems {
+  list-style: none;
+  padding: 0;
+}
+
+.benefitItems li {
+  color: #f5f7f8;
+  padding: 1px;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
