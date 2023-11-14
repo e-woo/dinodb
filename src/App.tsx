@@ -16,7 +16,8 @@ import Volunteerpage from "./pages/volunteerpage/Volunteerpage";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import SearchPage from "./pages/searchpage/SearchPage";
-import Announcements from "./pages/announcementpage/Announcement";
+import Announcements from "./pages/announcementslist/Announcements";
+import Announcement from "./pages/announcementpage/Announcement";
 
 const Layout = () => {
   return (
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/announcements",
         element: <Announcements />,
+      },
+      {
+        path: "/announcement/:id",
+        element: <Announcement />,
       },
     ],
   },
