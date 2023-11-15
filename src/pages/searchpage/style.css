@@ -7,6 +7,10 @@
   flex-direction: column;
 }
 
+.search .bigHeader {
+    padding-top: 64px;
+}
+
 .searchBar {
   align-self: center;
   width: 700px;

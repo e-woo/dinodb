@@ -18,6 +18,7 @@ import Footer from "./components/footer/Footer";
 import SearchPage from "./pages/searchpage/SearchPage";
 import Announcements from "./pages/announcementslist/Announcements";
 import Announcement from "./pages/announcementpage/Announcement";
+import CreatePage from "./pages/createpage/CreatePage";
 
 const Layout = () => {
   return (
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         path: "/announcement/:id",
         element: <Announcement />,
       },
+      {
+        path: "/create",
+        element: <CreatePage />
+      }
     ],
   },
   {
