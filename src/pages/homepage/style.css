@@ -67,7 +67,7 @@
   background-color: #f5f7f8;
   color: rgb(255, 70, 70);
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
   &:hover {
     border: 3px solid rgb(255, 70, 70);
     background-color: #ffe57b;

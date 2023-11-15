@@ -27,6 +27,8 @@ body {
   text-decoration: none;
   color: rgb(255, 70, 70);
   margin-top: 8px;
+  width: fit-content;
+  height: fit-content;
 }
 
 /* get rid of the bullet points */
@@ -82,7 +84,7 @@ ul {
   font-weight: 800;
   text-decoration: none;
   height: 50px;
-  margin-top: 20px;
+  padding-top: 20px;
 }
 
 .postsButton {
