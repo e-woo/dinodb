@@ -43,7 +43,9 @@ const Home = () => {
             Explore All Extracurriculars,{" "}
             <span className="gold-text">All in One Spot</span>
           </h3>
-          <button className="exploreButton">Explore Now</button>
+          <Link className="link" to={`/search`}>
+            <button className="exploreButton">Explore Now</button>
+          </Link>
         </div>
         <div className="big-logo">
           <img src={logo} alt="UofC Logo" />
@@ -79,6 +81,7 @@ const Home = () => {
         header="Discover Clubs"
         desc={`
         Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
+        excurtype="clubs"
         posts={posts}
       />
       <div className="createClub">
@@ -93,18 +96,22 @@ const Home = () => {
           lasting impact on the university community.
           <br></br>
         </p>
-        <button className="postsButton findButton">
-          Your leadership story begins here!
-        </button>
+        <Link className="link" to={`/clubs`}>
+          <button className="postsButton findButton">
+            Your leadership story begins here!
+          </button>
+        </Link>
       </div>
       <ClubsSlider
         header="Volunteer on Campus"
         desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
+        excurtype="volunteer"
         posts={posts}
       />
       <ClubsSlider
         header="Featured Programs"
         desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
+        excurtype="programs"
         posts={posts}
       />
       <div className="createClub">
@@ -130,11 +137,14 @@ const Home = () => {
             </ul>
           </div>
         </div>
-        <button className="postsButton findButton">Sign In Now</button>
+        <Link className="link" to={`/login`}>
+          <button className="postsButton findButton">Sign In Now</button>
+        </Link>
       </div>
       <ClubsSlider
         header="Upcoming Events"
         desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"
+        excurtype="event"
         posts={posts}
       />
     </div>
@@ -144,10 +154,12 @@ const Home = () => {
 const ClubsSlider = ({
   header,
   desc,
+  excurtype,
   posts,
 }: {
   header: string;
   desc: string;
+  excurtype: string;
   posts: Array<{ id: number; title: string; desc: string; img: string }>;
 }) => {
   return (
@@ -155,7 +167,9 @@ const ClubsSlider = ({
       <div className="postTop">
         <div className="postsHeader"> {header}</div>
         <div className="postsDesc">{desc}</div>
-        <button className="postsButton findButton">View All</button>
+        <Link className="link" to={`/${excurtype}`}>
+          <button className="postsButton findButton">View All</button>
+        </Link>
       </div>
       <div className="posts">
         {posts.map((post) => (
@@ -164,11 +178,13 @@ const ClubsSlider = ({
               <img src={post.img} alt="" />
             </div>
             <div className="postContent">
-              <Link className="link" to={`/club/${post.id}`}>
+              <Link className="link" to={`/${excurtype}/${post.id}`}>
                 <h1 className="postH1">{post.title}</h1>
               </Link>
               <p className="postP">{post.desc}</p>
-              <button className="postsButton">Learn More</button>
+              <Link className="link" to={`/${excurtype}/${post.id}`}>
+                <button className="postsButton">Learn More</button>
+              </Link>
             </div>
           </div>
         ))}

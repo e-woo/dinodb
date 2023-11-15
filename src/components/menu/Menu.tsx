@@ -53,13 +53,18 @@ export const Menu = () => {
                 <Link className="link" to={`/announcement/${post.id}`}>
                   <h2 className="postH1">{post.title}</h2>
                 </Link>
-                <div className="announcementInfo">
-                  <p className="userAuthor">{post.author}</p>
-                  <span>{post.date}</span>
+                <div className="postP">
+                  <div className="announcementInfo">
+                    <p className="userAuthor">{post.author}</p>
+                    <span>{post.date}</span>
+                  </div>
+                  <p>{post.desc}</p>
                 </div>
               </div>
-              <p className="postP">{post.desc}</p>
-              <button className="postsButton">Read More</button>
+
+              <Link className="link" to={`/announcement/${post.id}`}>
+                <button className="postsButton">Read More</button>
+              </Link>
             </div>
           </div>
         ))}

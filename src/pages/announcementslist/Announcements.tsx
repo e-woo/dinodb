@@ -52,7 +52,7 @@ const Announcements = () => {
                   <h1 className="postH1">{post.title}</h1>
                 </Link>
                 <div className="announcementInfo">
-                  <p>{post.author}</p>
+                  <p className="userAuthor">{post.author}</p>
                   <span>{post.date}</span>
                 </div>
               </div>
@@ -60,7 +60,9 @@ const Announcements = () => {
               <div className="postP">
                 <p>{post.desc}</p>
               </div>
-              <button className="postsButton">Read More</button>
+              <Link className="link" to={`/announcement/${post.id}`}>
+                <button className="postsButton">Read More</button>
+              </Link>
             </div>
           </div>
         ))}
