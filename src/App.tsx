@@ -19,6 +19,8 @@ import SearchPage from "./pages/searchpage/SearchPage";
 import Announcements from "./pages/announcementslist/Announcements";
 import Announcement from "./pages/announcementpage/Announcement";
 import CreatePage from "./pages/createpage/CreatePage";
+import AdminPage from "./pages/adminpage/admin";
+import ProfilePage from "./pages/profilepage/profile";
 
 const Layout = () => {
   return (
@@ -69,8 +71,16 @@ const router = createBrowserRouter([
       },
       {
         path: "/create",
-        element: <CreatePage />
-      }
+        element: <CreatePage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/admin/",
+        element: <AdminPage />,
+      },
     ],
   },
   {

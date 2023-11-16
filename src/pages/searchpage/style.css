@@ -8,7 +8,7 @@
 }
 
 .search .bigHeader {
-    padding-top: 64px;
+  padding-top: 64px;
 }
 
 .searchBar {
@@ -63,6 +63,7 @@ input.filterCheckbox {
   padding: 10px;
   background-color: #f1f1f1;
   font-size: 18px;
+  width: 250px;
 }
 
 .filters li:not(:last-child) {

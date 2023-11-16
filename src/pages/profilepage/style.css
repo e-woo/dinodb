@@ -1,0 +1,30 @@
+.profileSections {
+  display: flex;
+  flex-direction: row;
+  margin: 150px;
+  margin-top: 25px;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 5px;
+  border: solid rgb(255, 70, 70);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  height: fit-content;
+}
+
+.profileImg {
+  width: 100px;
+  height: 100px;
+}
+
+.profileText {
+  flex-direction: column;
+  gap: 15px;
+  display: flex;
+}

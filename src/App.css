@@ -42,6 +42,7 @@ ul {
   font-weight: 800;
   text-align: center;
   color: #333;
+  padding-top: 64px;
 }
 
 .postsContainer {
@@ -132,7 +133,7 @@ ul {
   transition: transform 0.3s ease-in-out;
 }
 
-.gridPosts .gridPost:hover {
+.gridPost:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -223,6 +224,7 @@ ul {
 .user {
   display: flex;
   align-items: center;
+  flex-direction: row;
   gap: 10px;
   font-size: 14px;
 }
@@ -231,6 +233,7 @@ ul {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  border: solid #333;
 }
 
 .userAuthor {
@@ -245,11 +248,47 @@ ul {
 .edit {
   display: flex;
   gap: 5px;
+  padding-left: 20px;
 }
 
-.editIcon {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  border-radius: 50%;
+.editButton {
+  width: 80px;
+  background-color: #4681f4;
+  border: 2px solid #f5f7f8;
+  color: #f5f7f8;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    border: 2px solid #4681f4;
+    background-color: #f5f7f8;
+    color: #4681f4;
+  }
+}
+
+.deleteButton {
+  width: 80px;
+  background-color: #ed0800;
+  border: 2px solid #f5f7f8;
+  color: #f5f7f8;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    border: 2px solid #ed0800;
+    background-color: #f5f7f8;
+    color: #ed0800;
+  }
+}
+
+.createButton {
+  width: 80px;
+  background-color: #5dbea3;
+  border: 2px solid #f5f7f8;
+  color: #f5f7f8;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    border: 2px solid #5dbea3;
+    background-color: #f5f7f8;
+    color: #5dbea3;
+  }
 }

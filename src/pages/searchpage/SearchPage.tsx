@@ -33,7 +33,7 @@ const SearchPage = () => {
   );
 };
 
-const filters = ["Club", "Program", "Volunteering Opportunities", "Events"];
+const filters = ["Club", "Volunteer", "Program", "Event"];
 
 const posts = [
   {

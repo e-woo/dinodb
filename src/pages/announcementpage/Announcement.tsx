@@ -20,18 +20,13 @@ const Announcement = () => {
             <span className="userAuthor">bob by coding club</span>
             <p>updated november</p>
           </div>
-        </div>
-        <div className="edit">
-          <Link to={`/write?edit=2`}>
-            <img
-              className="editIcon"
-              src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
-            ></img>
-          </Link>
-          <img
-            className="editIcon"
-            src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
-          ></img>
+
+          <div className="edit">
+            <Link to={`/write?edit=2`}>
+              <button className="postsButton editButton">Edit</button>
+            </Link>
+            <button className="postsButton deleteButton">Delete</button>
+          </div>
         </div>
 
         <h1 className="announcementHeader">CISSA November Newsletter</h1>
