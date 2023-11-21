@@ -21,6 +21,7 @@ import Announcement from "./pages/announcementpage/Announcement";
 import CreatePage from "./pages/createpage/CreatePage";
 import AdminPage from "./pages/adminpage/admin";
 import ProfilePage from "./pages/profilepage/profile";
+import CreateAnnouncement from "./pages/createpage/CreateAnnouncement";
 
 const Layout = () => {
   return (
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <CreatePage />,
+      },
+      {
+        path: "/announce",
+        element: <CreateAnnouncement />
       },
       {
         path: "/profile",
