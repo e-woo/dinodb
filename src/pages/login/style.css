@@ -127,3 +127,22 @@ body .form {
 .register p a:hover {
   text-decoration: underline;
 }
+
+.error_msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  text-align: center;
+}
+
+.error-text {
+  color: red;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  text-align: center;
+  padding-top: 1.25em;
+}

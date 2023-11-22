@@ -78,11 +78,11 @@ const PostsRow = ({
               <img src={post.img} alt="" />
             </div>
             <div className="postContent">
-              <Link className="link" to={`/club/${post.id}`}>
+              <Link className="link" to={`/clubs/${post.id}`}>
                 <h1 className="postH1">{post.title}</h1>
               </Link>
               <p className="postP">{post.desc}</p>
-              <form action={"./club/" + post.id}>
+              <form action={"./clubs/" + post.id}>
                 <button className="postsButton">Learn More</button>
               </form>
             </div>

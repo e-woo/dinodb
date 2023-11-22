@@ -173,3 +173,139 @@ CREATE TABLE SUPERVISED_BY
 	PRIMARY KEY (Activity_ID, Supervisor_ID),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Supervisor_ID) REFERENCES SUPERVISOR(Supervisor_ID) ON DELETE CASCADE ON UPDATE CASCADE);
+
+INSERT INTO STUDENT (UCID, Date_of_Birth, Bio, FName, LName, Email, Password, AccountType)
+VALUES 
+('123456789', '2000-01-01', 'Enthusiastic about technology', 'John', 'Doe', 'john.doe@ucalgary.ca', 'password123', 'STUDENT'),
+('987654321', '1999-05-15', 'Loves outdoor activities', 'Jane', 'Smith', 'jane.smith@ucalgary.ca', 'password123', 'STUDENT'),
+('456123789', '2002-03-22', 'Aspiring artist', 'Emily', 'Johnson', 'emily.johnson@ucalgary.ca', 'password123', 'STUDENT'),
+('321654987', '2001-07-08', 'Passionate about music', 'Michael', 'Brown', 'michael.brown@ucalgary.ca', 'password123', 'STUDENT'),
+('789456123', '1998-11-30', 'Interested in history', 'Sarah', 'Williams', 'sarah.williams@ucalgary.ca', 'password123', 'STUDENT');
+
+INSERT INTO CLUB_MEMBER (UCID, #ofMemberships)
+VALUES 
+('123456789', 2),
+('987654321', 3),
+('456123789', 1),
+('321654987', 4),
+('789456123', 2);
+
+INSERT INTO FACULTY (Name)
+VALUES 
+('Science'),
+('Arts'),
+('Engineering'),
+('Business'),
+('Education');
+
+INSERT INTO EXTRACURRICULAR_ACTIVITY (Activity_ID, Name, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path)
+VALUES 
+('ACT001', 'Chess Club', 'Weekly chess meetings and tournaments', 20, '18:00', 0, 1, 2, 'Arts', '/images/chess.jpg'),
+('ACT002', 'Robotics Club', 'Robotics competitions and workshops', 30, '17:00', 1, 1, 3, 'Engineering', '/images/robotics.jpg'),
+('ACT003', 'Hiking Club', 'Explore local trails and nature', 0, '08:00', 0, 0, 4, 'Science', '/images/hiking.jpg'),
+('ACT004', 'Debate Team', 'Competitive debate on various topics', 10, '19:00', 1, 1, 2, 'Arts', '/images/debate.jpg'),
+('ACT005', 'Startup Club', 'Networking and startup development', 15, '16:00', 0, 1, 2, 'Business', '/images/startup.jpg');
+
+INSERT INTO CLUB (Activity_ID, Discord, Instagram)
+VALUES 
+('ACT001', 'https://discord.gg/chessclub', '@chessclub'),
+('ACT002', 'https://discord.gg/roboticsclub', '@roboticsclub'),
+('ACT003', 'https://discord.gg/hikingclub', '@hikingclub'),
+('ACT004', 'https://discord.gg/debateteam', '@debateteam'),
+('ACT005', 'https://discord.gg/startupclub', '@startupclub');
+
+INSERT INTO CLUB_EXEC (UCID, PositionName, Club_ID)
+VALUES 
+('123456789', 'President', 'ACT001'),
+('987654321', 'Vice President', 'ACT002'),
+('456123789', 'Treasurer', 'ACT003'),
+('321654987', 'Secretary', 'ACT004'),
+('789456123', 'Event Coordinator', 'ACT005');
+
+INSERT INTO MEMBER_OF (Club_ID, Member_UCID)
+VALUES 
+('ACT001', '123456789'),
+('ACT002', '987654321'),
+('ACT003', '456123789'),
+('ACT004', '321654987'),
+('ACT005', '789456123');
+
+INSERT INTO VOLUNTEERING_OPPORTUNITY (Activity_ID, Location)
+VALUES 
+('VOL001', 'Community Center'),
+('VOL002', 'Local Park'),
+('VOL003', 'Animal Shelter'),
+('VOL004', 'Library'),
+('VOL005', 'Food Bank');
+
+INSERT INTO VOLUNTEERS (Volunteer_ID, Student_UCID)
+VALUES 
+('VOL001', '123456789'),
+('VOL002', '987654321'),
+('VOL003', '456123789'),
+('VOL004', '321654987'),
+('VOL005', '789456123');
+
+INSERT INTO PROGRAM (Activity_ID, Website)
+VALUES 
+('PRG001', 'https://www.program1.com'),
+('PRG002', 'https://www.program2.com'),
+('PRG003', 'https://www.program3.com'),
+('PRG004', 'https://www.program4.com'),
+('PRG005', 'https://www.program5.com');
+
+INSERT INTO PART_OF (Program_ID, Student_UCID)
+VALUES 
+('PRG001', '123456789'),
+('PRG002', '987654321'),
+('PRG003', '456123789'),
+('PRG004', '321654987'),
+('PRG005', '789456123');
+
+INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk)
+VALUES 
+('ACT001', 'Free Chess Set'),
+('ACT002', 'Robotics Kit Discount'),
+('ACT003', 'Hiking Gear Coupons'),
+('ACT004', 'Public Speaking Workshops'),
+('ACT005', 'Startup Funding Opportunities');
+
+INSERT INTO BELONGS (FacultyName, Student_UCID)
+VALUES 
+('Science', '123456789'),
+('Arts', '987654321'),
+('Engineering', '456123789'),
+('Business', '321654987'),
+('Education', '789456123');
+
+INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, Date_and_Time)
+VALUES 
+('EVT001', 'Tech Talk', 'Discussion on latest tech trends', 'Seminar', 'Auditorium', '2023-12-01 18:00:00'),
+('EVT002', 'Art Exhibition', 'Display of student artwork', 'Exhibition', 'Art Gallery', '2023-12-05 17:00:00'),
+('EVT003', 'Engineering Fair', 'Showcase of student projects', 'Fair', 'Engineering Hall', '2023-12-10 10:00:00'),
+('EVT004', 'Business Conference', 'Networking event for business students', 'Conference', 'Conference Center', '2023-12-15 09:00:00'),
+('EVT005', 'Education Workshop', 'Workshop on innovative teaching methods', 'Workshop', 'Lecture Hall', '2023-12-20 11:00:00');
+
+INSERT INTO ANNOUNCEMENT (Activity_ID, Title, Announcement, Author, Date)
+VALUES 
+('ACT001', 'Chess Tournament', 'Upcoming chess tournament this Saturday.', 'John Doe', '2023-11-30'),
+('ACT002', 'Robotics Workshop', 'Join us for a robotics building workshop.', 'Jane Smith', '2023-12-01'),
+('ACT003', 'Trail Cleanup', 'Volunteers needed for trail cleanup event.', 'Emily Johnson', '2023-12-02'),
+('ACT004', 'Debate Topic', 'Next debate topic: Environmental Policies.', 'Michael Brown', '2023-12-03'),
+('ACT005', 'Startup Pitch', 'Startup pitch event next week. Register now!', 'Sarah Williams', '2023-12-04');
+
+INSERT INTO ATTENDS (Student_UCID, Activity_ID, Event_Name, Sign_Up)
+VALUES 
+('123456789', 'EVT001', 'Tech Talk', 1),
+('987654321', 'EVT002', 'Art Exhibition', 1),
+('456123789', 'EVT003', 'Engineering Fair', 1),
+('321654987', 'EVT004', 'Business Conference', 1),
+('789456123', 'EVT005', 'Education Workshop', 1);
+
+INSERT INTO ANNOUNCED_BY (Event_ID, Announcement_ID, Event_Name, Announcement_Title)
+VALUES 
+('EVT001', 'ACT001', 'Tech Talk', 'Chess Tournament'),
+('EVT002', 'ACT002', 'Art Exhibition', 'Robotics Workshop'),
+('EVT003', 'ACT003', 'Engineering Fair', 'Trail Cleanup'),
+('EVT004', 'ACT004', 'Business Conference', 'Debate Topic'),
+('EVT005', 'ACT005', 'Education Workshop', 'Startup Pitch');

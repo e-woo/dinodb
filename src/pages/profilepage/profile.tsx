@@ -1,9 +1,51 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import ReactTabs from "../../components/tabs/Tabs";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const profile = () => {
+  const [profile, setProfile] = useState({
+    UCID: '',
+    Dob: '',
+    Bio: '',
+    FName: '',
+    LName: '',
+    Email: '',
+    AccountType: ''
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userStr = localStorage.getItem("user");
+        if (!userStr) {
+          console.log("User data not found in localStorage");
+          return;
+        }
+  
+        const user = JSON.parse(userStr);
+        const ucid = user.UCID; 
+
+         const res = await axios.post("/profile/show", {UCID: ucid})
+         setProfile({
+          UCID: res.data.UCID,
+          Dob: res.data.Dob,
+          Bio: res.data.Bio,
+          FName: res.data.FName,
+          LName: res.data.LName,
+          Email: res.data.Email,
+          AccountType: res.data.AccountType
+         })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <div className="profile">
       <div className="bigHeader">My Account</div>
@@ -14,14 +56,11 @@ const profile = () => {
             src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
           ></img>
           <div className="profileText">
-            <div className="postH1">Bob Durkin</div>
-            <div className="postP">I loveeeee borad games </div>
-            <div className="postP">DOB: January 1999</div>
-            <div className="postP">UCID: 121832912</div>
-            <div className="postP">Email: bobdurkin@ucalgary.ca</div>
-            <div className="postP">Club memberships: 2</div>
-            <div className="postP">Club exec to: 2</div>
-            <div className="postP">make this look better later</div>
+            <div className="postH1">{profile.FName + ' ' + profile.LName}</div>
+            <div className="postP">UCID: {profile.UCID}</div>
+            <div className="postP">Email: {profile.Email}</div>
+            <div className="postP">{profile.Bio}</div>
+            <div className="postP">Account Type: {profile.AccountType}</div>
             <Link to={`/write?edit=2`}>
               <button className="postsButton editButton">Edit</button>
             </Link>
