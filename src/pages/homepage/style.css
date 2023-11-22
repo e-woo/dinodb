@@ -1,0 +1,159 @@
+.home .landing-page {
+  height: 60vh;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  background-image: linear-gradient(
+    to bottom,
+    #d6001c,
+    rgb(255, 70, 70),
+    #d6001c
+  );
+}
+
+.home .text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 2;
+  margin-left: 350px;
+  margin-bottom: 10px;
+}
+
+.home .text h1 {
+  font-size: 80px;
+  font-weight: 900;
+  color: #f5f7f8;
+  max-width: fit-content;
+}
+
+.home .text h3 {
+  font-size: 20px;
+  color: #f5f7f8;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  width: fit-content;
+}
+
+.home .gold-text {
+  color: #ffcd00;
+}
+
+.home .big-logo {
+  margin-right: 350px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.home .big-logo img {
+  height: 50%;
+  width: auto;
+}
+
+.home .exploreButton {
+  width: max-content;
+  padding: 12px 25px;
+  cursor: pointer;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: bold;
+
+  border: 3px solid rgb(255, 70, 70);
+  background-color: #f5f7f8;
+  color: rgb(255, 70, 70);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-bottom: 10px;
+  &:hover {
+    border: 3px solid rgb(255, 70, 70);
+    background-color: #ffe57b;
+    color: rgb(255, 70, 70);
+  }
+}
+
+.home .benefits {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefitContainer {
+  background-color: rgb(255, 70, 70);
+  max-width: 500px;
+  color: #f5f7f8;
+  margin-top: 40px;
+  padding: 30px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.benefitH1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.benefitP {
+  text-align: center;
+}
+
+.centerP {
+  padding-right: 300px;
+  padding-left: 300px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 23%;
+}
+
+.createClub {
+  background-color: rgb(255, 70, 70);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #f5f7f8;
+  padding: 50px;
+  min-height: 400px;
+}
+
+.benefitSection {
+  margin-bottom: 20px;
+
+  text-align: center;
+}
+
+.benefitTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f5f7f8;
+  margin-bottom: 10px;
+}
+
+.benefitItems {
+  list-style: none;
+  padding: 0;
+}
+
+.benefitItems li {
+  color: #f5f7f8;
+  padding: 1px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}

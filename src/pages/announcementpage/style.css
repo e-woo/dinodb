@@ -1,0 +1,30 @@
+.announcementContainer {
+  display: flex;
+  gap: 50px;
+}
+
+.announcementContent {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 150px;
+  margin-top: 50px;
+}
+.announcementP {
+  text-align: justify;
+  line-height: 30px;
+  width: 90%;
+}
+
+.announcementImg {
+  max-height: 400px;
+  width: 60%;
+  object-fit: cover;
+}
+
+.announcementHeader {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #333;
+}

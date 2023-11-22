@@ -1,0 +1,92 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .container {
+  width: 100%;
+  background-color: #eef0f1;
+  padding: 10px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 0.5px rgb(255, 70, 70);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 10px;
+  cursor: pointer;
+}
+.logotext {
+  font-size: 50px;
+  color: rgb(255, 70, 70);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.logoimg img {
+  height: 60px;
+  width: auto;
+  white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.links a {
+  position: relative;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgb(255, 70, 70);
+}
+
+.links .link::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: rgb(255, 70, 70);
+  transition: 0.3s;
+}
+
+.links .signin a {
+  color: #f5f7f8;
+}
+.links .signin .link::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #f5f7f8;
+  transition: 0.3s;
+}
+
+.links .link:hover::before {
+  width: 100%;
+}
+
+.links span {
+  cursor: pointer;
+  width: 80px;
+  height: 40px;
+  padding-bottom: 8px;
+  border-radius: 10px;
+  background-color: rgb(255, 70, 70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sign-in {
+  font-weight: 800;
+}
