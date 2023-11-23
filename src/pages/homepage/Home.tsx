@@ -81,7 +81,7 @@ const Home = () => {
         header="Discover Clubs"
         desc={`
         Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
-        excurtype="clubs"
+        excurtype="club"
         posts={posts}
       />
       <div className="createClub">
@@ -96,7 +96,7 @@ const Home = () => {
           lasting impact on the university community.
           <br></br>
         </p>
-        <Link className="link" to={`/clubs`}>
+        <Link className="link" to={`/club`}>
           <button className="postsButton findButton">
             Your leadership story begins here!
           </button>
@@ -167,9 +167,6 @@ const ClubsSlider = ({
       <div className="postTop">
         <div className="postsHeader"> {header}</div>
         <div className="postsDesc">{desc}</div>
-        <Link className="link" to={`/${excurtype}`}>
-          <button className="postsButton findButton">View All</button>
-        </Link>
       </div>
       <div className="posts">
         {posts.map((post) => (

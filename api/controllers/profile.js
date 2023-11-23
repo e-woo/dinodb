@@ -1,6 +1,6 @@
 import { db } from "../db.js"
 
-export const show = (req, res) => {
+export const showInfo = (req, res) => {
     // Get user profile data
     const q = "SELECT * FROM student WHERE UCID = ?"
 
@@ -10,12 +10,20 @@ export const show = (req, res) => {
 
         return res.status(200).json(data[0])
     })
+}
 
+export const showClubs = (req, res) => {
     // Get the clubs the user is in
+    const q = `SELECT MO.Club_ID, EA.Name, EA.Description
+                FROM STUDENT AS S, MEMBER_OF AS MO, EXTRACURRICULAR_ACTIVITY AS EA 
+                WHERE MO.Member_UCID = S.UCID
+                AND EA.Activity_ID = MO.Club_ID
+                AND S.UCID = ?`
 
-    // Get the volunteering the user is in
+    db.query(q, [req.body.UCID], (err, data) => {
+        if (err)
+            return res.json(err)
 
-    // Get the programs the user is in
-
-    // Get the events the user has gone to
+            return res.status(200).json(data)
+    })
 }

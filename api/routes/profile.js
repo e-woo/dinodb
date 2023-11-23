@@ -1,8 +1,9 @@
 import express from "express"
-import { show } from "../controllers/profile.js"
+import { showInfo, showClubs } from "../controllers/profile.js"
 
 const router = express.Router()
 
-router.post("/show", show)
+router.post("/show", showInfo)
+router.post("/clubs", showClubs)
 
 export default router

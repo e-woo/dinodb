@@ -1,8 +1,8 @@
 import express from "express"
-import { showClub } from "../controllers/club.js"
+import { search } from "../controllers/explore.js"
 
 const router = express.Router()
 
-router.post("/show", showClub)
+router.post("/search", search)
 
 export default router

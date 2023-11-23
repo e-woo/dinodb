@@ -1,88 +1,124 @@
-import React from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import axios from "axios";
 
 const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState(new Set());
+  const [postsData, setPostsData] = useState([]);
+
+  useEffect(() => {
+    performSearch();
+  }, [])
+
+  const handleSearchChange = (e: any) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilterChange = (e: any) => {
+    const filter = e.target.name;
+    if (selectedFilters.has(filter)) {
+      selectedFilters.delete(filter);
+    } else {
+      selectedFilters.add(filter);
+    }
+    setSelectedFilters(new Set(selectedFilters));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const filtersArray = Array.from(selectedFilters);
+    try {
+      const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
+      setPostsData(res.data);
+    } catch (error) {
+      console.error('Error sending data to backend:', error);
+    }
+  };
+
+  const performSearch = async () => {
+    const filtersArray = Array.from(selectedFilters);
+    try {
+      const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
+      setPostsData(res.data);
+    } catch (error) {
+      console.error('Error sending data to backend:', error);
+    }
+  };
+
   return (
     <div className="search">
-      <h1 className="bigHeader">Find An Extracurricular!</h1>
-      <input type="text" placeholder="Search..." className="searchBar" />
-      <div className="searchBody">
-        <div className="filters">
-          <ul>
-            <li>
-              <div className="filtersHeader">
-                <h3 className="filterHeader">Filters</h3>
-              </div>
-            </li>
-            {filters.map((filter, index) => (
-              <li key={index} className="filter">
-                <input type="checkbox" className="filterCheckbox" id={filter} />
-                <label htmlFor={filter}>{filter}</label>
+      <form className="search" onSubmit={handleSubmit}>
+        <h1 className="bigHeader">Find An Extracurricular!</h1>
+        <input 
+          type="text" 
+          placeholder="Search..." 
+          className="searchBar"
+          value={searchTerm}
+          onChange={handleSearchChange}  
+        />
+        <div className="searchBody">
+          <div className="filters">
+            <ul>
+              <li>
+                <div className="filtersHeader">
+                  <h3 className="filterHeader">Filters</h3>
+                </div>
               </li>
-            ))}
-          </ul>
+              {filters.map((filter, index) => (
+                <li key={index} className="filter">
+                  <input 
+                    type="checkbox" 
+                    className="filterCheckbox" 
+                    id={filter} 
+                    name={filter}
+                    onChange={handleFilterChange}
+                    />
+                  <label htmlFor={filter}>{filter}</label>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="searchContent">
+            <div className="searchContent">
+              <PostsRow posts={postsData.flat()} />
+            </div>
+          </div>
         </div>
-        <div className="searchContent">
-          {allPosts.map((row) => (
-            <PostsRow posts={row} />
-          ))}
-        </div>
-      </div>
+      </form>
     </div>
   );
 };
 
 const filters = ["Club", "Volunteer", "Program", "Event"];
 
-const posts = [
-  {
-    id: 53,
-    title: "Board Game Club",
-    desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.",
-    img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  },
-  {
-    id: 123,
-    title: "E-Sports Club",
-    desc: "The BGC aims to provide regular, weekly event so games, or even tabletop games or trading card games.",
-    img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  },
-  {
-    id: 52,
-    title: "Clash of Clans Club",
-    desc: "lorem",
-    img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  },
-  {
-    id: 2,
-    title: "Plant Club",
-    desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-    img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  },
-];
-
-const allPosts = [posts, posts];
+interface Post {
+  Activity_ID: string;
+  Name: string;
+  Description: string;
+  Img_file_path: string;
+}
 
 const PostsRow = ({
   posts,
 }: {
-  posts: Array<{ id: number; title: string; desc: string; img: string }>;
+  posts: Array<Post>;
 }) => {
   return (
     <div className="postsRowContainer">
       <div className="posts">
         {posts.map((post) => (
-          <div className="post" key={post.id}>
+          <div className="post" key={post.Activity_ID}>
             <div className="postImg">
-              <img src={post.img} alt="" />
+              <img src={post.Img_file_path|| 'default-image-url.jpg'} alt={post.Name} />
             </div>
             <div className="postContent">
-              <Link className="link" to={`/clubs/${post.id}`}>
-                <h1 className="postH1">{post.title}</h1>
+              <Link className="link" to={`/club/${post.Activity_ID}`}>
+                <h1 className="postH1">{post.Name}</h1>
               </Link>
-              <p className="postP">{post.desc}</p>
-              <form action={"./clubs/" + post.id}>
+              <p className="postP">{post.Description}</p>
+              <form action={"./club/" + post.Activity_ID}>
                 <button className="postsButton">Learn More</button>
               </form>
             </div>
@@ -92,4 +128,5 @@ const PostsRow = ({
     </div>
   );
 };
+
 export default SearchPage;
