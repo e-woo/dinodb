@@ -22,6 +22,10 @@ import CreatePage from "./pages/createpage/CreatePage";
 import AdminPage from "./pages/adminpage/admin";
 import ProfilePage from "./pages/profilepage/profile";
 import CreateAnnouncement from "./pages/createpage/CreateAnnouncement";
+import EditClubpage from "./pages/clubpage/EditClubpage";
+import EditEventPage from "./pages/eventpage/EditEventpage";
+import EditProgramPage from "./pages/programpage/EditProgrampage";
+import EditVolunteerPage from "./pages/volunteerpage/EditVolunteerpage";
 
 const Layout = () => {
   return (
@@ -47,16 +51,32 @@ const router = createBrowserRouter([
         element: <Clubpage />,
       },
       {
+        path: "clubs/:id/edit",
+        element: <EditClubpage />
+      },
+      {
         path: "/event/:id",
         element: <Eventpage />,
+      },
+      {
+        path: "/event/:id/edit",
+        element: <EditEventPage />
       },
       {
         path: "/programs/:id",
         element: <Programpage />,
       },
       {
+        path: "/programs/:id/edit",
+        element: <EditProgramPage />
+      },
+      {
         path: "/volunteer/:id",
         element: <Volunteerpage />,
+      },
+      {
+        path: "/volunteer/:id/edit",
+        element: <EditVolunteerPage />
       },
       {
         path: "/search",

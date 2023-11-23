@@ -19,6 +19,8 @@ const Clubpage = () => {
       instagram: "https://www.instagram.com/ucboardgames/",
       img: "https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg",
     };
+  const editable = true;
+  // send a request here to see if the current user should have permissions to edit the activity
 
   return (
     <div className="club-page">
@@ -28,6 +30,10 @@ const Clubpage = () => {
         </div>
         <div className="title-container">
           <h1>{post.title}</h1>
+          {editable ? 
+          <a href={window.location.href + '/edit'}>
+            <button className="edit-button">Edit</button>
+          </a> : <></>}
         </div>
       </div>
       <div className="desc">{post.desc}</div>

@@ -13,6 +13,9 @@ const Eventpage = () => {
       img: "https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg",
     };
 
+    const editable = true;
+    // send a request here to see if the current user should have permissions to edit the activity
+    
     return (
         <div className="event-page">
             <div className="title-and-img">
@@ -21,6 +24,10 @@ const Eventpage = () => {
                 </div>
                 <div className="title-container">
                     <h1>{event.name}</h1>
+                    {editable ? 
+                    <a href={window.location.href + '/edit'}>
+                        <button className="edit-button">Edit</button>
+                    </a> : <></>}
                 </div>
             </div>
             <div className="desc">{event.desc}</div>

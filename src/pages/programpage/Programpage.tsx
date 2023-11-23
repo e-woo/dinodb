@@ -18,6 +18,9 @@ const Programpage = () => {
       img: "https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg",
     };
 
+    const editable = true;
+    // send a request here to see if the current user should have permissions to edit the activity
+    
   return (
     <div className="program-page">
       <div className="title-and-img">
@@ -26,6 +29,10 @@ const Programpage = () => {
         </div>
         <div className="title-container">
           <h1>{program.name}</h1>
+            {editable ? 
+            <a href={window.location.href + '/edit'}>
+                <button className="edit-button">Edit</button>
+            </a> : <></>}
         </div>
       </div>
       <div className="desc">{program.desc}</div>
