@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
@@ -7,6 +7,10 @@ const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(new Set());
   const [postsData, setPostsData] = useState([]);
+
+  useEffect(() => {
+    performSearch();
+  }, [])
 
   const handleSearchChange = (e: any) => {
     setSearchTerm(e.target.value);
@@ -24,6 +28,16 @@ const SearchPage = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const filtersArray = Array.from(selectedFilters);
+    try {
+      const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
+      setPostsData(res.data);
+    } catch (error) {
+      console.error('Error sending data to backend:', error);
+    }
+  };
+
+  const performSearch = async () => {
     const filtersArray = Array.from(selectedFilters);
     try {
       const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
