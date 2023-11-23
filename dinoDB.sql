@@ -15,7 +15,7 @@ CREATE TABLE STUDENT
 
 CREATE TABLE CLUB_MEMBER
 	(UCID				    CHAR(9)			NOT NULL,
-	#ofMemberships		    INT				DEFAULT 0,
+	numOfMemberships		INT				DEFAULT 0,
     PRIMARY KEY (UCID),
 	FOREIGN KEY (UCID) REFERENCES STUDENT (UCID) ON DELETE CASCADE ON UPDATE CASCADE);
 
@@ -25,8 +25,8 @@ CREATE TABLE FACULTY
 
 CREATE TABLE EXTRACURRICULAR_ACTIVITY
     (Activity_ID			CHAR(9)			NOT NULL,
-	Name				    VARCHAR(15)		NOT NULL,
-	Description			    VARCHAR(250),
+	Name				    VARCHAR(80)		NOT NULL,
+	Description			    VARCHAR(1000),
 	Fee				        INT,
 	Schedule			    TIME,
 	InterviewRequired		INT				DEFAULT 0,
@@ -46,7 +46,7 @@ CREATE TABLE CLUB
 
 CREATE TABLE CLUB_EXEC
 	(UCID				    CHAR(9)			NOT NULL,
-	PositionName			VARCHAR(15)		DEFAULT 'Exec',
+	PositionName			VARCHAR(50)		DEFAULT 'Exec',
 	Club_ID			        CHAR(9)			NOT NULL,
 	PRIMARY KEY (UCID, Club_ID),
 	FOREIGN KEY (UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -87,7 +87,7 @@ CREATE TABLE PART_OF
 
 CREATE TABLE EXTRACURRICULAR_ACTIVITY_PERKS
     (Activity_ID			CHAR(9)			NOT NULL,
-	Perk					VARCHAR(30)		NOT NULL,
+	Perk					VARCHAR(255)	NOT NULL,
 	PRIMARY KEY (Activity_ID, Perk),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
 
@@ -182,13 +182,13 @@ VALUES
 ('321654987', '2001-07-08', 'Passionate about music', 'Michael', 'Brown', 'michael.brown@ucalgary.ca', 'password123', 'STUDENT'),
 ('789456123', '1998-11-30', 'Interested in history', 'Sarah', 'Williams', 'sarah.williams@ucalgary.ca', 'password123', 'STUDENT');
 
-INSERT INTO CLUB_MEMBER (UCID, #ofMemberships)
+INSERT INTO CLUB_MEMBER (UCID, numOfMemberships)
 VALUES 
 ('123456789', 2),
 ('987654321', 3),
 ('456123789', 1),
 ('321654987', 4),
-('789456123', 2);
+('789456123', 6);
 
 INSERT INTO FACULTY (Name)
 VALUES 
@@ -200,75 +200,83 @@ VALUES
 
 INSERT INTO EXTRACURRICULAR_ACTIVITY (Activity_ID, Name, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path)
 VALUES 
-('ACT001', 'Chess Club', 'Weekly chess meetings and tournaments', 20, '18:00', 0, 1, 2, 'Arts', '/images/chess.jpg'),
-('ACT002', 'Robotics Club', 'Robotics competitions and workshops', 30, '17:00', 1, 1, 3, 'Engineering', '/images/robotics.jpg'),
-('ACT003', 'Hiking Club', 'Explore local trails and nature', 0, '08:00', 0, 0, 4, 'Science', '/images/hiking.jpg'),
-('ACT004', 'Debate Team', 'Competitive debate on various topics', 10, '19:00', 1, 1, 2, 'Arts', '/images/debate.jpg'),
-('ACT005', 'Startup Club', 'Networking and startup development', 15, '16:00', 0, 1, 2, 'Business', '/images/startup.jpg');
+('000001', 'Chess Club', 'Weekly chess meetings and tournaments', 20, '18:00', 0, 1, 2, 'Arts', '/images/chess.jpg'),
+('000002', 'Robotics Club', 'Robotics competitions and workshops', 30, '17:00', 1, 1, 3, 'Engineering', '/images/robotics.jpg'),
+('000003', 'Hiking Club', 'Explore local trails and nature', 0, '08:00', 0, 0, 4, 'Science', '/images/hiking.jpg'),
+('000004', 'Debate Team', 'Competitive debate on various topics', 10, '19:00', 1, 1, 2, 'Arts', '/images/debate.jpg'),
+('000005', 'Startup Club', 'Networking and startup development', 15, '16:00', 0, 1, 2, 'Business', '/images/startup.jpg'),
+('000006', 'Board Games Club', 'The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.', 5, '17:00', 0, 0, 0, 'Arts', 'https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg');
 
 INSERT INTO CLUB (Activity_ID, Discord, Instagram)
 VALUES 
-('ACT001', 'https://discord.gg/chessclub', '@chessclub'),
-('ACT002', 'https://discord.gg/roboticsclub', '@roboticsclub'),
-('ACT003', 'https://discord.gg/hikingclub', '@hikingclub'),
-('ACT004', 'https://discord.gg/debateteam', '@debateteam'),
-('ACT005', 'https://discord.gg/startupclub', '@startupclub');
+('000001', 'https://discord.gg/chessclub', '@chessclub'),
+('000002', 'https://discord.gg/roboticsclub', '@roboticsclub'),
+('000003', 'https://discord.gg/hikingclub', '@hikingclub'),
+('000004', 'https://discord.gg/debateteam', '@debateteam'),
+('000005', 'https://discord.gg/startupclub', '@startupclub'),
+('000006', 'https://discord.gg/QNtecrqNzv', 'https://www.instagram.com/ucboardgames/');
 
 INSERT INTO CLUB_EXEC (UCID, PositionName, Club_ID)
 VALUES 
-('123456789', 'President', 'ACT001'),
-('987654321', 'Vice President', 'ACT002'),
-('456123789', 'Treasurer', 'ACT003'),
-('321654987', 'Secretary', 'ACT004'),
-('789456123', 'Event Coordinator', 'ACT005');
+('123456789', 'President', '000001'),
+('987654321', 'Vice President', '000002'),
+('456123789', 'Treasurer', '000003'),
+('321654987', 'Secretary', '000004'),
+('789456123', 'Event Coordinator', '000005');
 
 INSERT INTO MEMBER_OF (Club_ID, Member_UCID)
 VALUES 
-('ACT001', '123456789'),
-('ACT002', '987654321'),
-('ACT003', '456123789'),
-('ACT004', '321654987'),
-('ACT005', '789456123');
+('000001', '123456789'),
+('000002', '987654321'),
+('000003', '456123789'),
+('000004', '321654987'),
+('000006', '789456123'),
+('000005', '789456123'),
+('000004', '789456123'),
+('000003', '789456123'),
+('000002', '789456123'),
+('000001', '789456123');
 
-INSERT INTO VOLUNTEERING_OPPORTUNITY (Activity_ID, Location)
-VALUES 
-('VOL001', 'Community Center'),
-('VOL002', 'Local Park'),
-('VOL003', 'Animal Shelter'),
-('VOL004', 'Library'),
-('VOL005', 'Food Bank');
+-- INSERT INTO VOLUNTEERING_OPPORTUNITY (Activity_ID, Location)
+-- VALUES 
+-- ('VOL001', 'Community Center'),
+-- ('VOL002', 'Local Park'),
+-- ('VOL003', 'Animal Shelter'),
+-- ('VOL004', 'Library'),
+-- ('VOL005', 'Food Bank');
 
-INSERT INTO VOLUNTEERS (Volunteer_ID, Student_UCID)
-VALUES 
-('VOL001', '123456789'),
-('VOL002', '987654321'),
-('VOL003', '456123789'),
-('VOL004', '321654987'),
-('VOL005', '789456123');
+-- INSERT INTO VOLUNTEERS (Volunteer_ID, Student_UCID)
+-- VALUES 
+-- ('VOL001', '123456789'),
+-- ('VOL002', '987654321'),
+-- ('VOL003', '456123789'),
+-- ('VOL004', '321654987'),
+-- ('VOL005', '789456123');
 
-INSERT INTO PROGRAM (Activity_ID, Website)
-VALUES 
-('PRG001', 'https://www.program1.com'),
-('PRG002', 'https://www.program2.com'),
-('PRG003', 'https://www.program3.com'),
-('PRG004', 'https://www.program4.com'),
-('PRG005', 'https://www.program5.com');
+-- INSERT INTO PROGRAM (Activity_ID, Website)
+-- VALUES 
+-- ('PRG001', 'https://www.program1.com'),
+-- ('PRG002', 'https://www.program2.com'),
+-- ('PRG003', 'https://www.program3.com'),
+-- ('PRG004', 'https://www.program4.com'),
+-- ('PRG005', 'https://www.program5.com');
 
-INSERT INTO PART_OF (Program_ID, Student_UCID)
-VALUES 
-('PRG001', '123456789'),
-('PRG002', '987654321'),
-('PRG003', '456123789'),
-('PRG004', '321654987'),
-('PRG005', '789456123');
+-- INSERT INTO PART_OF (Program_ID, Student_UCID)
+-- VALUES 
+-- ('PRG001', '123456789'),
+-- ('PRG002', '987654321'),
+-- ('PRG003', '456123789'),
+-- ('PRG004', '321654987'),
+-- ('PRG005', '789456123');
 
 INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk)
 VALUES 
-('ACT001', 'Free Chess Set'),
-('ACT002', 'Robotics Kit Discount'),
-('ACT003', 'Hiking Gear Coupons'),
-('ACT004', 'Public Speaking Workshops'),
-('ACT005', 'Startup Funding Opportunities');
+('000001', 'Free Chess Set'),
+('000002', 'Robotics Kit Discount'),
+('000003', 'Hiking Gear Coupons'),
+('000004', 'Public Speaking Workshops'),
+('000005', 'Startup Funding Opportunities'),
+('000006', 'Free food at every meet, and countless of board games available for rental');
 
 INSERT INTO BELONGS (FacultyName, Student_UCID)
 VALUES 
@@ -278,34 +286,50 @@ VALUES
 ('Business', '321654987'),
 ('Education', '789456123');
 
-INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, Date_and_Time)
-VALUES 
-('EVT001', 'Tech Talk', 'Discussion on latest tech trends', 'Seminar', 'Auditorium', '2023-12-01 18:00:00'),
-('EVT002', 'Art Exhibition', 'Display of student artwork', 'Exhibition', 'Art Gallery', '2023-12-05 17:00:00'),
-('EVT003', 'Engineering Fair', 'Showcase of student projects', 'Fair', 'Engineering Hall', '2023-12-10 10:00:00'),
-('EVT004', 'Business Conference', 'Networking event for business students', 'Conference', 'Conference Center', '2023-12-15 09:00:00'),
-('EVT005', 'Education Workshop', 'Workshop on innovative teaching methods', 'Workshop', 'Lecture Hall', '2023-12-20 11:00:00');
+-- INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, Date_and_Time)
+-- VALUES 
+-- ('EVT001', 'Tech Talk', 'Discussion on latest tech trends', 'Seminar', 'Auditorium', '2023-12-01 18:00:00'),
+-- ('EVT002', 'Art Exhibition', 'Display of student artwork', 'Exhibition', 'Art Gallery', '2023-12-05 17:00:00'),
+-- ('EVT003', 'Engineering Fair', 'Showcase of student projects', 'Fair', 'Engineering Hall', '2023-12-10 10:00:00'),
+-- ('EVT004', 'Business Conference', 'Networking event for business students', 'Conference', 'Conference Center', '2023-12-15 09:00:00'),
+-- ('EVT005', 'Education Workshop', 'Workshop on innovative teaching methods', 'Workshop', 'Lecture Hall', '2023-12-20 11:00:00');
 
-INSERT INTO ANNOUNCEMENT (Activity_ID, Title, Announcement, Author, Date)
-VALUES 
-('ACT001', 'Chess Tournament', 'Upcoming chess tournament this Saturday.', 'John Doe', '2023-11-30'),
-('ACT002', 'Robotics Workshop', 'Join us for a robotics building workshop.', 'Jane Smith', '2023-12-01'),
-('ACT003', 'Trail Cleanup', 'Volunteers needed for trail cleanup event.', 'Emily Johnson', '2023-12-02'),
-('ACT004', 'Debate Topic', 'Next debate topic: Environmental Policies.', 'Michael Brown', '2023-12-03'),
-('ACT005', 'Startup Pitch', 'Startup pitch event next week. Register now!', 'Sarah Williams', '2023-12-04');
+-- INSERT INTO ANNOUNCEMENT (Activity_ID, Title, Announcement, Author, Date)
+-- VALUES 
+-- ('000001', 'Chess Tournament', 'Upcoming chess tournament this Saturday.', 'John Doe', '2023-11-30'),
+-- ('000002', 'Robotics Workshop', 'Join us for a robotics building workshop.', 'Jane Smith', '2023-12-01'),
+-- ('000003', 'Trail Cleanup', 'Volunteers needed for trail cleanup event.', 'Emily Johnson', '2023-12-02'),
+-- ('000004', 'Debate Topic', 'Next debate topic: Environmental Policies.', 'Michael Brown', '2023-12-03'),
+-- ('000005', 'Startup Pitch', 'Startup pitch event next week. Register now!', 'Sarah Williams', '2023-12-04');
 
-INSERT INTO ATTENDS (Student_UCID, Activity_ID, Event_Name, Sign_Up)
-VALUES 
-('123456789', 'EVT001', 'Tech Talk', 1),
-('987654321', 'EVT002', 'Art Exhibition', 1),
-('456123789', 'EVT003', 'Engineering Fair', 1),
-('321654987', 'EVT004', 'Business Conference', 1),
-('789456123', 'EVT005', 'Education Workshop', 1);
+-- INSERT INTO ATTENDS (Student_UCID, Activity_ID, Event_Name, Sign_Up)
+-- VALUES 
+-- ('123456789', 'EVT001', 'Tech Talk', 1),
+-- ('987654321', 'EVT002', 'Art Exhibition', 1),
+-- ('456123789', 'EVT003', 'Engineering Fair', 1),
+-- ('321654987', 'EVT004', 'Business Conference', 1),
+-- ('789456123', 'EVT005', 'Education Workshop', 1);
 
-INSERT INTO ANNOUNCED_BY (Event_ID, Announcement_ID, Event_Name, Announcement_Title)
-VALUES 
-('EVT001', 'ACT001', 'Tech Talk', 'Chess Tournament'),
-('EVT002', 'ACT002', 'Art Exhibition', 'Robotics Workshop'),
-('EVT003', 'ACT003', 'Engineering Fair', 'Trail Cleanup'),
-('EVT004', 'ACT004', 'Business Conference', 'Debate Topic'),
-('EVT005', 'ACT005', 'Education Workshop', 'Startup Pitch');
+-- INSERT INTO ANNOUNCED_BY (Event_ID, Announcement_ID, Event_Name, Announcement_Title)
+-- VALUES 
+-- ('EVT001', '000001', 'Tech Talk', 'Chess Tournament'),
+-- ('EVT002', '000002', 'Art Exhibition', 'Robotics Workshop'),
+-- ('EVT003', '000003', 'Engineering Fair', 'Trail Cleanup'),
+-- ('EVT004', '000004', 'Business Conference', 'Debate Topic'),
+-- ('EVT005', '000005', 'Education Workshop', 'Startup Pitch');
+
+INSERT INTO TAG
+VALUES
+	('000000001', 'Academic'),
+	('000000002', 'Arts'),
+	('000000003', 'Recreation'),
+	('000000004', 'Technology'),
+	('000000005', 'Social'),
+	('000000006', 'Community');
+
+INSERT INTO CATEGORIZED_BY
+VALUES
+	('000006', '000000002'),
+	('000006', '000000006'),
+	('000006', '000000005'),
+	('000006', '000000003');

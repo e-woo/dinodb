@@ -87,10 +87,17 @@ input.filterCheckbox {
 .postsRowContainer {
   margin: 30px;
   justify-self: end;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .postsRowContainer .posts {
   overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .postsRowContainer .post {
@@ -105,4 +112,15 @@ input.filterCheckbox {
 
 .postsRowContainer button:hover {
   background-color: rgb(255, 70, 70);
+}
+
+.post {
+  min-width: 260px;
+  width: auto;
+}
+
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
