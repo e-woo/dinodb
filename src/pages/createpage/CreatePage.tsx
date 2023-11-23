@@ -87,13 +87,14 @@ const CreatePage = () => {
                     <option value='volunteering'>Volunteering</option>
                 </select>
                 <input type='text' placeholder='Name' id='name' required/>
-                <textarea placeholder='Description...' id='description' rows={6} required/>
-                <input type='text' placeholder='Schedule' id='schedule' required/>
+                <textarea placeholder='Description...' id='description' rows={6} />
+                <input type='text' placeholder='Schedule' id='schedule' />
                 {
                     activityType === 'club' ?
                     <>
-                        <input type='text' placeholder='Discord' id='discord' required/>
-                        <input type='text' placeholder='Instagram' id='instagram' required/>
+                        <input type='text' placeholder='Discord' id='discord' />
+                        <input type='text' placeholder='Instagram' id='instagram' />
+                        <input type='text' placeholder='Image link' id='img_file_path' required/>
                     </> :
                     activityType === 'program' ?
                     <>

@@ -43,10 +43,11 @@ const EditClubPage = () => {
             <form onSubmit={handleSubmit} method='post'>
                 <div className='createBody'>
                     <input type='text' placeholder='Name' id='name' required/>
-                    <textarea placeholder='Description...' id='description' rows={6} required/>
-                    <input type='text' placeholder='Schedule' id='schedule' required/>
-                    <input type='text' placeholder='Discord' id='discord' required/>
-                    <input type='text' placeholder='Instagram' id='instagram' required/>
+                    <textarea placeholder='Description...' id='description' rows={6} />
+                    <input type='text' placeholder='Schedule' id='schedule' />
+                    <input type='text' placeholder='Discord' id='discord' />
+                    <input type='text' placeholder='Instagram' id='instagram' />
+                    <input type='text' placeholder='Image link' id='img_file_path' required/>
                     <button type='submit'>Confirm</button>
                 </div>
             </form>

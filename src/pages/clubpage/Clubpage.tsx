@@ -63,7 +63,7 @@ const Clubpage = () => {
         <div className="title-container">
           <h1>{club.Name}</h1>
           {editable ? 
-          <a href={window.location.href + '/edit'}>
+          <a href={`/club/${id}/edit`}>
             <button className="edit-button">Edit</button>
           </a> : <></>}
         </div>

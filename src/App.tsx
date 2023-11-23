@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <Clubpage />,
       },
       {
-        path: "clubs/:id/edit",
+        path: "club/:id/edit",
         element: <EditClubpage />
       },
       {
