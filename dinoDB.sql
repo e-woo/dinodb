@@ -33,7 +33,7 @@ CREATE TABLE EXTRACURRICULAR_ACTIVITY
 	ApplicationRequired		VARCHAR(15)		DEFAULT 'No',
 	WeekCommitmentHour	    INT,
 	Faculty_Name			VARCHAR(15),
-	Img_file_path			VARCHAR(255)	NOT NULL,
+	Img_file_path			VARCHAR(3000)	NOT NULL,
 	PRIMARY KEY(Activity_ID),
 	FOREIGN KEY(Faculty_Name) REFERENCES FACULTY(Name) ON DELETE SET NULL ON UPDATE CASCADE);
 
@@ -197,6 +197,7 @@ VALUES
 ('Arts'),
 ('Engineering'),
 ('Business'),
+('Administration'),
 ('Education');
 
 INSERT INTO EXTRACURRICULAR_ACTIVITY (Activity_ID, Name, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path)
@@ -206,7 +207,13 @@ VALUES
 ('000003', 'The Information Security Club', 'The Information Security Club focuses on helping students explore and develop information security and cybersecurity related skills.  One of the ultimate goals of the club will be to have students compete in Capture The Flag (CTF - “hacking”) competitions.', 5, '17:00', 'No', 'No', 2, 'Engineering', 'https://se-images.campuslabs.ca/clink/images/ea19a71e-7813-4f29-8887-76ec1618323a5a54d7a2-cc41-4dbd-afc9-01db9339e842.png?preset=med-sq'),
 ('000004', 'Debate Society, UofC', 'The University of Calgary Debate Society (UCDS) provides students with the opportunity to develop public speaking and critical thinking skills through various formats of debate. At the UCDS, we strive to help students develop these skills as they can be applied to their areas of study as well as help them succeed in competitive tournaments. There are opportunities to compete both domestically and internationally at tournaments hosted by numerous universities including the UCDS.', 10, '17:00', 'No', 'No', 2, 'Science', 'https://se-images.campuslabs.ca/clink/images/b40aec00-9aab-4a10-8c98-04e1c6f23c7a4c70104a-cfd2-4f55-89c0-ad00ff369a7e.PNG?preset=med-sq'),
 ('000005', 'K-Pop Learn It Together', 'K-pop Learn it Together (K-LiT) is a dance club in the University of Calgary that aims to foster a sense of community and acts as a means for students to cultivate friendships with others who share similar interests. There will be no experience requirements, as a variety of k-pop dances from multiple diverse groups will be taught by fellow students and our VPs.', 5, '18:00', 'No', 'No', 2, 'Arts', 'https://se-images.campuslabs.ca/clink/images/35247248-b55b-488b-ad5a-29bc6c1dd9fe90b7a708-163a-4aac-abed-57c329f8db5a.png?preset=med-sq'),
-('000006', 'Board Games Club', 'The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.', 5, '17:00', 'No', 'No', 0, 'Arts', 'https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg');
+('000006', 'Board Games Club', 'The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.', 5, '17:00', 'No', 'No', 0, 'Arts', 'https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg'),
+('000007', 'Administrative Volunteer Program', 'It can be difficult to make the transition from being a student to working full-time. While you may have excelled in academics, many employers require proven experience in an office setting. You can gain professional office experience by being part of our Administrative Volunteer Program. You’ll get practical, on-the-job training in a variety of areas, including file management, customer service and event planning by assisting in the Volunteer Services Office.', 0, '14:00', 'Yes', 'Yes', 2, 'Administration', 'https://www.ucalgary.ca/sites/default/files/styles/ucws_image_desktop/public/2019-09/UCalgary_Vertical_logo_colour_1.jpg?h=55272f2a&itok=PrLMnGHO'),
+('000008', 'Campus Food Bank', 'The SU Campus Food Bank provides emergency food relief to members of our campus community. Since its inception in 1993, the Food Bank has become a major resource for those in need and we are always looking for volunteers to help us meet the demand. By volunteering with the Food Bank you’ll gain practical, operational experience by organizing donations, stocking shelves, packing hampers, interviewing clients and organizing food drive events, all without ever leaving campus!', 0, '14:00', 'Yes', 'Yes', 2, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000009', 'Information Centre/Lost and Found', 'Are you a people person? Do you enjoy assisting others and providing information to campus visitors? When you volunteer at the Information Centre/Lost and Found, you’ll answer all kinds of questions from students, staff and visitors to the MacEwan Student Centre. You’ll also manage our lost and found service and keep the Information Centre updated with information on events and services. If you’re looking for a volunteer experience that fits between your class schedule, this program is perfect for you!', 0, '16:00', 'Yes', 'Yes', 2, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000010', 'Q Centre Volunteering', 'Are you interested in helping create and maintain a safe and engaging space for the LGBTQA+ community on campus? Q Centre volunteers are the heart of our programming and can focus their work on peer support and conflict resolution, organizing outreach events and host discussion groups, or managing social media.', 0, '12:00', 'Yes', 'Yes', 2, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000011', 'Students for Literacy', 'Looking to make a difference on campus while developing your teaching skills? Help an adult (either a new Canadian or an adult with disabilities) learn English with Students for Literacy. We train and match you with a learner with whom you will work throughout the academic year. Volunteering with this challenging program may just be one of the most rewarding experiences of your university career. Students for Literacy volunteers meet with their learners at mutually convenient times. Volunteers must commit one to three hours per week (including prep-time) throughout the academic year (September to April). Students from all faculties, not just from English and Education, are welcome to apply!', 0, '12:00', 'Yes', 'Yes', 4, 'Business', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000012', 'Volunteer Tax Program', 'The Volunteer Tax Program takes place during tax season (February-April). Volunteers of this program assist members of the campus community complete their tax returns. Volunteers are trained by the Canada Revenue Agency. They also get to work one-on-one with actual clients and gain valuable skills to put on their resumes. Each volunteer will receive a certificate from the Canada Revenue Agency at the end of tax season to recognize their efforts.', 0, '13:30', 'No', 'Yes', 4, 'Business', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742');
 
 INSERT INTO CLUB (Activity_ID, Discord, Instagram)
 VALUES 
@@ -238,14 +245,29 @@ VALUES
 ('000002', '789456123'),
 ('000001', '789456123');
 
+INSERT INTO VOLUNTEERING_OPPORTUNITY (Activity_ID, Location)
+VALUES
+('000007', 'MSC 225'),
+('000008', 'MSC 225'),
+('000009', 'MacEwan Centre'),
+('000010', 'MSC 210'),
+('000011', 'ESL Station'),
+('000012', 'MSC 130');
+
 INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk)
 VALUES 
 ('000001', 'Free Chess Set'),
-('000002', 'Robotics Kit Discount'),
-('000003', 'Hiking Gear Coupons'),
+('000002', 'Learn career defining skills! (we have no perks)'),
+('000003', 'N/A'),
 ('000004', 'Public Speaking Workshops'),
-('000005', 'Startup Funding Opportunities'),
-('000006', 'Free food at every meet, and countless of board games available for rental');
+('000005', 'Free pizza every meet!'),
+('000006', 'Free food at every meet, and countless of board games available for rental'),
+('000007', '$10 UniCard funds to spend at UCalgary stores!'),
+('000008', '$10 UniCard funds to spend at UCalgary stores!'),
+('000009', '$10 UniCard funds to spend at UCalgary stores!'),
+('000010', '$10 UniCard funds to spend at UCalgary stores!'),
+('000011', '$10 UniCard funds to spend at UCalgary stores!'),
+('000012', '$10 UniCard funds to spend at UCalgary stores!');
 
 INSERT INTO BELONGS (FacultyName, Student_UCID)
 VALUES 
@@ -306,4 +328,10 @@ VALUES
 	('000005', '000000015'),
 	('000006', '000000002'),
 	('000006', '000000006'),
-	('000006', '000000003');
+	('000006', '000000003'),
+	('000007', '000000001'),
+	('000008', '000000009'),
+	('000009', '000000009'),
+	('000010', '000000009'),
+	('000011', '000000018'),
+	('000012', '000000019');

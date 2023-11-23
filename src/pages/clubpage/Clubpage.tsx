@@ -23,7 +23,7 @@ const Clubpage = () => {
     Img_file_path: '',
     Discord: '',
     Instagram: '',
-    // Perk: '',
+    Perk: '',
   })
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Clubpage = () => {
           Img_file_path: res.data.Img_file_path,
           Discord: res.data.Discord,
           Instagram: res.data.Instagram,
-          // Perk: res.data.Perk
+          Perk: res.data.Perk
         });
       } catch (error) {
         console.log(error);
@@ -95,8 +95,11 @@ const Clubpage = () => {
             </div>
           </div>
 
-          <div className="perk-row">
-            
+          <div className="info-row">
+            <div className="info">
+              <h2>Perks:</h2>
+              <p>{club.Perk}</p>
+            </div>
           </div>
 
           <div className="social-row">
