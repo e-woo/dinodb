@@ -5,35 +5,10 @@ import logo from "./uofc-logo.png";
 import axios from "axios";
 
 const Home = () => {
-  const posts = [
-    {
-      Activity_ID: 53,
-      Name: "Board Game Club",
-      Description: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.",
-      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      Activity_ID: 123,
-      Name: "E-Sports Club",
-      Description: "The BGC aims to provide regular, weekly event so games, or even tabletop games or trading card games.",
-      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      Activity_ID: 52,
-      Name: "Clash of Clans Club",
-      Description: "lorem",
-      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      Activity_ID: 2,
-      Name: "Plant Club",
-      Description: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-  ];
-
   const [clubs, setClubs] = useState([]);
   const [volunteering, setVolunteering] = useState([]);
+  const [programs, setPrograms] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     axios.get('/club/get4Clubs')
@@ -47,6 +22,22 @@ const Home = () => {
     axios.get('/volunteer/get4Volunteer')
       .then((res) => {
         setVolunteering(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+
+      axios.get('/program/get4Programs')
+      .then((res) => {
+        setPrograms(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+
+      axios.get('/event/get4Events')
+      .then((res) => {
+        setEvents(res.data);
       })
       .catch((error) => {
         console.error('Error fetching data: ', error);
@@ -135,7 +126,7 @@ const Home = () => {
         header="Featured Programs"
         desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
         type="program"
-        posts={posts}
+        posts={programs}
       />
       <div className="createClub">
         <h1 className="benefitH1">
@@ -168,7 +159,7 @@ const Home = () => {
         header="Upcoming Events"
         desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"
         type="event"
-        posts={posts}
+        posts={events}
       />
     </div>
   );
