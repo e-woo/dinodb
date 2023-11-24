@@ -50,13 +50,10 @@ export const search = (req, res) => {
                         OR T.Tag_Name LIKE ?;`;
                 break;
             case 'Event':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
-                FROM EXTRACURRICULAR_ACTIVITY AS EA 
-                NATURAL JOIN EVENT
-                LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
-                LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
-                WHERE EA.Name LIKE ?
-                OR T.Tag_Name LIKE ?;`;
+                query = `SELECT DISTINCT E.Name, E.Description, E.Type, EA.Activity_ID, EA.Img_file_path
+                FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
+                WHERE E.Name LIKE ?
+                AND E.Activity_ID = EA.Activity_ID;`;
                 break;
         }
 
@@ -73,14 +70,19 @@ export const search = (req, res) => {
     };
 
     if (!Array.isArray(searchFilters) || searchFilters.length === 0 || searchFilters.length === 4) {
-        const defaultQuery = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
-                            FROM EXTRACURRICULAR_ACTIVITY AS EA 
-                            LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
-                            LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
-                            WHERE EA.Name LIKE ?
-                            OR T.Tag_Name LIKE ?;`;
+        const defaultQuery = `(SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
+                                FROM EXTRACURRICULAR_ACTIVITY AS EA 
+                                LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
+                                LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
+                                WHERE EA.Name LIKE ?
+                                OR T.Tag_Name LIKE ?)
+                                UNION
+                                (SELECT DISTINCT EA.Activity_ID, E.Name, E.Description, EA.Img_file_path, E.Type
+                                FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
+                                WHERE E.Name LIKE ?
+                                AND E.Activity_ID = EA.Activity_ID);`;
 
-        const params = ['%' + searchTerm + '%', '%' + searchTerm + '%'];
+        const params = ['%' + searchTerm + '%', '%' + searchTerm + '%', '%' + searchTerm + '%'];
         
         executeQuery(defaultQuery, params, (err, results) => {
             if (err) {

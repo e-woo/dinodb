@@ -63,11 +63,11 @@ const router = createBrowserRouter([
         element: <EditEventPage />
       },
       {
-        path: "/programs/:id",
+        path: "/program/:id",
         element: <Programpage />,
       },
       {
-        path: "/programs/:id/edit",
+        path: "/program/:id/edit",
         element: <EditProgramPage />
       },
       {

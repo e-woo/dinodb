@@ -101,10 +101,10 @@ CREATE TABLE BELONGS
 
 CREATE TABLE EVENT
     (Activity_ID			CHAR(9)			NOT NULL,
-	Name					VARCHAR(15)		NOT NULL,
+	Name					VARCHAR(50)		NOT NULL,
 	Description				VARCHAR(250),
-	Type					VARCHAR(15),
-	Location				VARCHAR(15),
+	Type					VARCHAR(50),
+	Location				VARCHAR(50),
 	Date_and_Time			DATETIME,
 	PRIMARY KEY (Activity_ID, Name),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
@@ -214,7 +214,25 @@ VALUES
 ('000009', 'Information Centre/Lost and Found', 'volunteer', 'Are you a people person? Do you enjoy assisting others and providing information to campus visitors? When you volunteer at the Information Centre/Lost and Found, you’ll answer all kinds of questions from students, staff and visitors to the MacEwan Student Centre. You’ll also manage our lost and found service and keep the Information Centre updated with information on events and services. If you’re looking for a volunteer experience that fits between your class schedule, this program is perfect for you!', 0, 'Every other Friday @ 7:00 PM', 'Yes', 'Yes', 2, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
 ('000010', 'Q Centre Volunteering', 'volunteer', 'Are you interested in helping create and maintain a safe and engaging space for the LGBTQA+ community on campus? Q Centre volunteers are the heart of our programming and can focus their work on peer support and conflict resolution, organizing outreach events and host discussion groups, or managing social media.', 0, 'Weekly @ 2:00 PM', 'Yes', 'Yes', 2, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
 ('000011', 'Students for Literacy', 'volunteer', 'Looking to make a difference on campus while developing your teaching skills? Help an adult (either a new Canadian or an adult with disabilities) learn English with Students for Literacy. We train and match you with a learner with whom you will work throughout the academic year. Volunteering with this challenging program may just be one of the most rewarding experiences of your university career. Students for Literacy volunteers meet with their learners at mutually convenient times. Volunteers must commit one to three hours per week (including prep-time) throughout the academic year (September to April). Students from all faculties, not just from English and Education, are welcome to apply!', 0, 'Weekly @ 12:00 PM', 'Yes', 'Yes', 4, 'Business', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
-('000012', 'Volunteer Tax Program', 'volunteer', 'The Volunteer Tax Program takes place during tax season (February-April). Volunteers of this program assist members of the campus community complete their tax returns. Volunteers are trained by the Canada Revenue Agency. They also get to work one-on-one with actual clients and gain valuable skills to put on their resumes. Each volunteer will receive a certificate from the Canada Revenue Agency at the end of tax season to recognize their efforts.', 0, 'Monthly @ 1:30 PM', 'No', 'Yes', 4, 'Business', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742');
+('000012', 'Volunteer Tax Program', 'volunteer', 'The Volunteer Tax Program takes place during tax season (February-April). Volunteers of this program assist members of the campus community complete their tax returns. Volunteers are trained by the Canada Revenue Agency. They also get to work one-on-one with actual clients and gain valuable skills to put on their resumes. Each volunteer will receive a certificate from the Canada Revenue Agency at the end of tax season to recognize their efforts.', 0, 'Monthly @ 1:30 PM', 'No', 'Yes', 4, 'Business', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000013', 'Science Mentorship Program', 'program', 'The Science Mentorship Program (SMP) facilitates peer-to-peer undergraduate mentoring opportunities by matching first- and second-year students with more experienced Science students in third year or above. Mentees shape their learning journey with support from a senior undergraduate student, and Mentors develop leadership skills while sharing their experiences and insights.', 0, 'Monthly', 'No', 'Yes', 0, 'Science', 'https://pbs.twimg.com/profile_images/1225544709294059520/e6MzSKR3_400x400.jpg'),
+('000014', 'Science Internship Program', 'program', 'The Science Internship Program offers Science students the opportunity to participate in 8 to 16 consecutive months of work experience.', 0, 'N/A', 'No', 'Yes', 0, 'Science', 'https://pbs.twimg.com/profile_images/1225544709294059520/e6MzSKR3_400x400.jpg'),
+('000015', 'SU Tutor Registry', 'program', 'Struggling with your course work? Need assistance preparing for an exam? Your SU has developed a searchable database of independent tutors that are here to help you in a wide range of subjects. The Tutors listed on the SU Tutor Registry are current or past students of the University of Calgary who provide independent services as Tutors.', 0, 'N/A', 'Yes', 'Yes', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('000016', 'Safewalk', 'program', 'The Safewalk service is provided through Campus Security, 24-7. Safewalk volunteers walk people safely to their destinations on campus. This service is free and available to students, staff and campus visitors for destinations anywhere on campus including McMahon Stadium, Health Sciences, Student Family Housing, the Alberta Children’s Hospital and the University C-Train station. Safewalks are done in male/female pairs.', 0, 'N/A', 'No', 'No', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742');
+
+INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, Date_and_time)
+VALUES
+('000005', 'K-LIT Meet & Greet', 'Come and meet the whole crew at K-LIT! There will be pizza and drinks and many icebreaker games!', 'event', 'SB 122', '2023-09-20 18:00:00'),
+('000006', 'Card Game Pizza Night', 'Our annual card game and pizza night is happening at The Board Games Club! Come and join us!', 'event', 'MSC 125', '2023-12-05 16:00:00'),
+('000008', 'Food Bank Donation Run', 'Join us for our monthly food bank donation run!', 'event', 'MSC Event Centre', '2023-12-08 17:00:00'),
+('000004', 'Debate Night!', 'Our weekly debate night is happening this Friday, join to participate or watch.', 'event', 'TFDL 550', '2023-11-24 17:00:00');
+
+INSERT INTO PROGRAM (Activity_ID, Website)
+VALUES
+('000013', 'https://science.ucalgary.ca/current-students/undergraduate/student-experience/science-mentorship-program'),
+('000014', 'https://science.ucalgary.ca/current-students/science-internship-program'),
+('000015', 'https://www.su.ucalgary.ca/tutor-registry/'),
+('000016', 'https://www.ucalgary.ca/risk/campus-security/your-safety/safewalk');
 
 INSERT INTO CLUB (Activity_ID, Discord, Instagram)
 VALUES 
@@ -335,4 +353,8 @@ VALUES
 	('000009', '000000009'),
 	('000010', '000000009'),
 	('000011', '000000018'),
-	('000012', '000000019');
+	('000012', '000000019'),
+	('000013', '000000009'),
+	('000014', '000000009'),
+	('000015', '000000001'),
+	('000016', '000000018');

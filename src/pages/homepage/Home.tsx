@@ -1,35 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import logo from "./uofc-logo.png";
+import axios from "axios";
 
 const Home = () => {
   const posts = [
     {
-      id: 53,
-      title: "Board Game Club",
-      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
+      Activity_ID: 53,
+      Name: "Board Game Club",
+      Description: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct from video games, or even tabletop games or trading card games.",
+      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
     {
-      id: 123,
-      title: "E-Sports Club",
-      desc: "The BGC aims to provide regular, weekly event so games, or even tabletop games or trading card games.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
+      Activity_ID: 123,
+      Name: "E-Sports Club",
+      Description: "The BGC aims to provide regular, weekly event so games, or even tabletop games or trading card games.",
+      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
     {
-      id: 52,
-      title: "Clash of Clans Club",
-      desc: "lorem",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
+      Activity_ID: 52,
+      Name: "Clash of Clans Club",
+      Description: "lorem",
+      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
     {
-      id: 2,
-      title: "Plant Club",
-      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
+      Activity_ID: 2,
+      Name: "Plant Club",
+      Description: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
+      Img_file_path: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
     },
   ];
+
+  const [clubs, setClubs] = useState([]);
+  const [volunteering, setVolunteering] = useState([]);
+
+  useEffect(() => {
+    axios.get('/club/get4Clubs')
+      .then((res) => {
+        setClubs(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+
+    axios.get('/volunteer/get4Volunteer')
+      .then((res) => {
+        setVolunteering(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+  }, []);
+
   return (
     <div className="home">
       <div className="landing-page">
@@ -55,7 +78,7 @@ const Home = () => {
         <div className="benefitContainer">
           <h1 className="benefitH1">Community</h1>
           <p className="benefitP">
-            Participation in activites often leads to the formation of lasting
+            Participation in activities often leads to the formation of lasting
             friendships, creating a support system that extends beyond the
             college years.
           </p>
@@ -81,12 +104,12 @@ const Home = () => {
         header="Discover Clubs"
         desc={`
         Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
-        excurtype="club"
-        posts={posts}
+        type="club"
+        posts={clubs}
       />
       <div className="createClub">
         <h1 className="benefitH1">
-          Apply as an Executive or Start Your Own{" "}
+          Apply as an Executive and Start Your Own{" "}
           <span className="gold-text">Club</span> Today!
         </h1>
         <p className="centerP">
@@ -96,7 +119,7 @@ const Home = () => {
           lasting impact on the university community.
           <br></br>
         </p>
-        <Link className="link" to={`/club`}>
+        <Link className="link" to={`/register`}>
           <button className="postsButton findButton">
             Your leadership story begins here!
           </button>
@@ -105,13 +128,13 @@ const Home = () => {
       <ClubsSlider
         header="Volunteer on Campus"
         desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
-        excurtype="volunteer"
-        posts={posts}
+        type="volunteer"
+        posts={volunteering}
       />
       <ClubsSlider
         header="Featured Programs"
         desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
-        excurtype="programs"
+        type="program"
         posts={posts}
       />
       <div className="createClub">
@@ -144,7 +167,7 @@ const Home = () => {
       <ClubsSlider
         header="Upcoming Events"
         desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"
-        excurtype="event"
+        type="event"
         posts={posts}
       />
     </div>
@@ -154,13 +177,13 @@ const Home = () => {
 const ClubsSlider = ({
   header,
   desc,
-  excurtype,
+  type,
   posts,
 }: {
   header: string;
   desc: string;
-  excurtype: string;
-  posts: Array<{ id: number; title: string; desc: string; img: string }>;
+  type: string;
+  posts: Array<{ Activity_ID: number; Name: string; Description: string; Img_file_path: string }>;
 }) => {
   return (
     <div className="postsContainer">
@@ -170,16 +193,16 @@ const ClubsSlider = ({
       </div>
       <div className="posts">
         {posts.map((post) => (
-          <div className="post" key={post.id}>
+          <div className="post" key={post.Activity_ID}>
             <div className="postImg">
-              <img src={post.img} alt="" />
+              <img src={post.Img_file_path} alt="" />
             </div>
             <div className="postContent">
-              <Link className="link" to={`/${excurtype}/${post.id}`}>
-                <h1 className="postH1">{post.title}</h1>
+              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
+                <h1 className="postH1">{post.Name}</h1>
               </Link>
-              <p className="postP">{post.desc}</p>
-              <Link className="link" to={`/${excurtype}/${post.id}`}>
+              <p className="postP">{post.Description}</p>
+              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
                 <button className="postsButton">Learn More</button>
               </Link>
             </div>
