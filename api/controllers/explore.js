@@ -23,7 +23,7 @@ export const search = (req, res) => {
         switch (searchFilters[filterIndex]) {
 
             case 'Club':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path 
+                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
                         NATURAL JOIN CLUB
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
@@ -32,7 +32,7 @@ export const search = (req, res) => {
                         OR T.Tag_Name LIKE ?;`;
                 break;
             case 'Volunteer':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path 
+                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
                         NATURAL JOIN VOLUNTEERING_OPPORTUNITY
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
@@ -41,7 +41,7 @@ export const search = (req, res) => {
                         OR T.Tag_Name LIKE ?;`;
                 break;
             case 'Program':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path 
+                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
                         NATURAL JOIN PROGRAM
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
@@ -50,7 +50,7 @@ export const search = (req, res) => {
                         OR T.Tag_Name LIKE ?;`;
                 break;
             case 'Event':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path 
+                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                 FROM EXTRACURRICULAR_ACTIVITY AS EA 
                 NATURAL JOIN EVENT
                 LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
@@ -73,7 +73,7 @@ export const search = (req, res) => {
     };
 
     if (!Array.isArray(searchFilters) || searchFilters.length === 0 || searchFilters.length === 4) {
-        const defaultQuery = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path 
+        const defaultQuery = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                             FROM EXTRACURRICULAR_ACTIVITY AS EA 
                             LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                             LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
@@ -87,6 +87,7 @@ export const search = (req, res) => {
                 res.status(500).json(err);
             } else {
                 res.status(200).json(results);
+                console.log(results);
             }
         });
     } else {
