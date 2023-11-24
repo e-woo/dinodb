@@ -10,8 +10,6 @@ const Clubpage = () => {
   // send a request here to see if the current user should have permissions to edit the activity
   const { id } = useParams();
 
-  console.log(id);
-
   const [club, setClub] = useState({
     Activity_ID: id,
     Name: '',

@@ -1,7 +1,7 @@
 import { db } from "../db.js"
 
 export const showClub = (req, res) => {
-    // Get club data
+
     const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Fee, EA.Schedule, EA.InterviewRequired, EA.ApplicationRequired, EA.WeekCommitmentHour, EA.Faculty_Name, EA.Img_file_path, C.Discord, C.Instagram, PK.Perk
                 FROM EXTRACURRICULAR_ACTIVITY AS EA NATURAL JOIN CLUB AS C NATURAL JOIN EXTRACURRICULAR_ACTIVITY_PERKS AS PK
                 WHERE EA.Activity_ID = ?`

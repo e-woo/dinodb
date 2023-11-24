@@ -53,7 +53,7 @@ const profile = () => {
         <div className="userInfo">
           <img
             className="userImg profileImg"
-            src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           ></img>
           <div className="profileText">
             <div className="postH1">{profile.FName + ' ' + profile.LName}</div>

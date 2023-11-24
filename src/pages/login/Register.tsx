@@ -14,13 +14,20 @@ const Register = () => {
         AccountType:"STUDENT",
     })
 
+    const [isExecutive, setIsExecutive] = useState(false);
+
     const [err, setError] = useState(null)
 
     const navigate = useNavigate()
 
-    const handleChange = (e: any) => {
-        setInputs(prev => ({...prev, [e.target.name]: e.target.value}))
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.type === 'checkbox') {
+            setIsExecutive(e.target.checked);
+            setInputs(prev => ({...prev, AccountType: e.target.checked ? "EXECUTIVE" : "STUDENT"}));
+        } else {
+            setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
+        }
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -49,7 +56,20 @@ const Register = () => {
                                 <input name='LName' id='last-name-field' type='text' placeholder='Last Name' required onChange={handleChange} />
                             </span>
                         </div>
-                        
+                    </div>
+                    <div className="box-field">
+                        <div className="name-field">
+                            <label htmlFor='isExecutive'>
+                                Register as Club Executive
+                            </label>
+                            <input 
+                                    className='executive-checkbox'
+                                    type='checkbox' 
+                                    id='isExecutive' 
+                                    checked={isExecutive} 
+                                    onChange={handleChange} 
+                                />
+                        </div>
                     </div>
                     <div className='text-field'>
                         <input name='Email' type='email' placeholder='Email' required onChange={handleChange} />
@@ -69,10 +89,10 @@ const Register = () => {
                         <input name='Password' type='password' placeholder='Password' required onChange={handleChange} />
                         <i className='bx bxs-lock-alt' ></i>
                     </div>
-                    <div className='text-field'>
+                    {/* <div className='text-field'>
                         <input type='password' placeholder='Confirm Password' required />
                         <i className='bx bxs-lock-alt' ></i>
-                    </div>
+                    </div> */}
                     <button onClick={handleSubmit} className="btn">Register</button>
                     {err && <p className='error-text'>{err}</p>}
                     <div className="register">

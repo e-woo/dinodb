@@ -87,7 +87,6 @@ export const search = (req, res) => {
                 res.status(500).json(err);
             } else {
                 res.status(200).json(results);
-                console.log(results);
             }
         });
     } else {
