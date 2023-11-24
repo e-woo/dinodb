@@ -38,7 +38,7 @@ const EditProgramPage = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const res = await axios.post("/club/show", {Activity_ID: id});
+          const res = await axios.post("/program/show", {Activity_ID: id});
           setProgram({
             Activity_ID: res.data.Activity_ID,
             Name: res.data.Name,

@@ -21,11 +21,10 @@ export const search = (req, res) => {
 
         let query;
         switch (searchFilters[filterIndex]) {
-
             case 'Club':
                 query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
-                        NATURAL JOIN CLUB
+                        LEFT JOIN CLUB AS C ON EA.Activity_ID = C.Activity_ID
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                         LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
                         WHERE EA.Name LIKE ?
@@ -51,10 +50,10 @@ export const search = (req, res) => {
                 break;
             case 'Event':
                 query = `SELECT DISTINCT E.Name, E.Description, E.Type, EA.Activity_ID, EA.Img_file_path
-                FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
-                WHERE E.Name LIKE ?
-                AND E.Activity_ID = EA.Activity_ID;`;
-                break;
+                        FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
+                        WHERE E.Name LIKE ?
+                        AND E.Activity_ID = EA.Activity_ID;`;
+                        break;
         }
 
         const params = ['%' + searchTerm + '%', '%' + searchTerm + '%'];
@@ -88,6 +87,7 @@ export const search = (req, res) => {
             if (err) {
                 res.status(500).json(err);
             } else {
+                console.log(results);
                 res.status(200).json(results);
             }
         });

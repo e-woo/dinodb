@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Eventpage = () => {
-    const event = 
-    {
-      id: 53,
-      name: "Board Games Club Meet & Greet",
-      desc: "Come join us for our first meet and greet of the semester! Come to meet your fellow club mates and get a taste of what the BGC has to offer!",
-      type: "Meet & Greet",
-      location: "ST 140",
-      dateTime: "Thursday September 21, 6:00 PM",
-      img: "https://static.vecteezy.com/system/resources/previews/006/404/900/original/board-game-logo-free-vector.jpg",
-    };
+    const { id } = useParams();
+
+    const [event, setEvent] = useState({
+      Activity_ID: id,
+      Name: '',
+      Description: '',
+      Type: '',
+      Img_file_path: '',
+      Location: '',
+      DateTime: '',
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const res = await axios.post("/event/show", {Activity_ID: id});
+            setEvent({
+              Activity_ID: res.data.Activity_ID,
+              Name: res.data.Name,
+              Description: res.data.Description,
+              Type: res.data.Type,
+              Img_file_path: res.data.Img_file_path,
+              Location: res.data.Location,
+              DateTime: res.data.Date_and_Time
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        fetchData();
+      }, [id]);
 
     const editable = true;
     // send a request here to see if the current user should have permissions to edit the activity
@@ -20,30 +43,30 @@ const Eventpage = () => {
         <div className="event-page">
             <div className="title-and-img">
                 <div className="img-container">
-                    <img src={event.img}></img>
+                    <img src={event.Img_file_path}></img>
                 </div>
                 <div className="title-container">
-                    <h1>{event.name}</h1>
+                    <h1>{event.Name}</h1>
                     {editable ? 
-                    <a href={window.location.href + '/edit'}>
+                    <a href={`/event/${id}/edit`}>
                         <button className="edit-button">Edit</button>
-                    </a> : <></>}
+                    </a>: <></>}
                 </div>
             </div>
-            <div className="desc">{event.desc}</div>
+            <div className="desc">{event.Description}</div>
             <div className="more-info">
                 <div className="info-row">
                     <div className="info">
                         <h2>Type:</h2>
-                        <p>{event.type}</p>
+                        <p>{event.Type}</p>
                     </div>
                     <div className="info">
                         <h2>Location:</h2>
-                        <p>{event.location}</p>
+                        <p>{event.Location}</p>
                     </div>
                     <div className="info">
                         <h2>Date and Time:</h2>
-                        <p>{event.dateTime}</p>
+                        <p>{event.DateTime}</p>
                     </div>
                 </div>
             </div>

@@ -7,8 +7,6 @@ import axios from "axios";
 const Programpage = () => {
   const editable = true;
   // send a request here to see if the current user should have permissions to edit the activity
-    
-
   const { id } = useParams();
 
   const [program, setProgram] = useState({
@@ -29,7 +27,8 @@ const Programpage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post("/club/show", {Activity_ID: id});
+        const res = await axios.post("/program/show", {Activity_ID: id});
+        console.log(res);
         setProgram({
           Activity_ID: res.data.Activity_ID,
           Name: res.data.Name,
@@ -60,8 +59,8 @@ const Programpage = () => {
         <div className="title-container">
           <h1>{program.Name}</h1>
             {editable ? 
-            <a href={window.location.href + '/edit'}>
-                <button className="edit-button">Edit</button>
+            <a href={`/program/${id}/edit`}>
+              <button className="edit-button">Edit</button>
             </a> : <></>}
         </div>
       </div>

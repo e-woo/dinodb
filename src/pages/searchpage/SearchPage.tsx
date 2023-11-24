@@ -28,6 +28,7 @@ const SearchPage = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
     try {
       const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
