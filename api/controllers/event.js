@@ -24,7 +24,6 @@ export const get4Events = (req, res) => {
         if (err)
             return res.json(err);
 
-        console.log(data)
         return res.status(200).json(data);
     });
 }
@@ -49,7 +48,6 @@ export const createEvent = async (req, res) => {
             img
         ]);
         const activityId = result[0].insertId;
-        console.log(activityId);
 
         if (tags !== '') {
             const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 

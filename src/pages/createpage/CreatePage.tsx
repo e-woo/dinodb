@@ -32,6 +32,7 @@ interface CreateForm extends HTMLFormElement {
 const CreatePage = () => {
     const { currentUser } = useContext(AuthContext)
     const accountType = currentUser?.AccountType;
+    const accountUCID = currentUser?.UCID;
 
     const navigate = useNavigate();
     
@@ -53,6 +54,7 @@ const CreatePage = () => {
         setWarning(false);
         if (activity === 'club')
             formData = {
+                ucid: accountUCID,
                 activityType: elements.activityType.value,
                 name: elements.name.value,
                 description: elements.description.value,
@@ -71,6 +73,7 @@ const CreatePage = () => {
             };
         else if (activity === 'program')
             formData = {
+                ucid: accountUCID,
                 activityType: elements.activityType.value,
                 name: elements.name.value,
                 description: elements.description.value,
@@ -88,6 +91,7 @@ const CreatePage = () => {
             };
         else if (activity === 'event')
             formData = {
+                ucid: accountUCID,
                 activityType: elements.activityType.value,
                 name: elements.name.value,
                 description: elements.description.value,
@@ -106,6 +110,7 @@ const CreatePage = () => {
             };
         else
             formData = {
+                ucid: accountUCID,
                 activityType: elements.activityType.value,
                 name: elements.name.value,
                 description: elements.description.value,
@@ -143,9 +148,7 @@ const CreatePage = () => {
 
         if (formData && url) {
             try {
-                console.log(formData);
                 const res = await axios.post(url + "/create", formData);
-                console.log(res.data.activityId);
                 navigate(url + `/${res.data.activityId}`)
             } catch (error) {
                 console.error('Error submitting form:', error);

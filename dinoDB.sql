@@ -182,7 +182,8 @@ VALUES
 ('987654321', '1999-05-15', 'Loves outdoor activities', 'Jane', 'Smith', 'jane.smith@ucalgary.ca', 'password123', 'STUDENT'),
 ('456123789', '2002-03-22', 'Aspiring artist', 'Emily', 'Johnson', 'emily.johnson@ucalgary.ca', 'password123', 'STUDENT'),
 ('321654987', '2001-07-08', 'Passionate about music', 'Michael', 'Brown', 'michael.brown@ucalgary.ca', 'password123', 'STUDENT'),
-('789456123', '1998-11-30', 'Interested in history', 'Sarah', 'Williams', 'sarah.williams@ucalgary.ca', 'password123', 'STUDENT');
+('789456123', '1998-11-30', 'Interested in history', 'Sarah', 'Williams', 'sarah.williams@ucalgary.ca', 'password123', 'STUDENT'),
+('1', '1998-11-30', 'Admin', 'Admin', 'Admin', 'Admin', '123', 'EXECUTIVE');
 
 INSERT INTO CLUB_MEMBER (UCID, numOfMemberships)
 VALUES 
@@ -249,7 +250,12 @@ VALUES
 ('987654321', 'Vice President', '2'),
 ('456123789', 'Treasurer', '3'),
 ('321654987', 'Secretary', '4'),
-('789456123', 'Event Coordinator', '5');
+('789456123', 'Event Coordinator', '5'),
+('1', 'Executive', '1'),
+('1', 'Executive', '2'),
+('1', 'Executive', '3'),
+('1', 'Executive', '4'),
+('1', 'Executive', '5');
 
 INSERT INTO MEMBER_OF (Club_ID, Member_UCID)
 VALUES 
@@ -286,7 +292,11 @@ VALUES
 ('9', '$10 UniCard funds to spend at UCalgary stores!'),
 ('10', '$10 UniCard funds to spend at UCalgary stores!'),
 ('11', '$10 UniCard funds to spend at UCalgary stores!'),
-('12', '$10 UniCard funds to spend at UCalgary stores!');
+('12', '$10 UniCard funds to spend at UCalgary stores!'),
+('13', '$10 UniCard funds to spend at UCalgary stores!'),
+('14', 'Free LinkedIn training session!'),
+('15', 'Free subscription to Kumon'),
+('16', 'Invitation to our monthly pizza party!');
 
 INSERT INTO BELONGS (FacultyName, Student_UCID)
 VALUES 

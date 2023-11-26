@@ -71,3 +71,60 @@ export const createVolunteering = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+export const editVolunteer = async (req, res) => {
+    const { id, name, description, schedule, img, interview, application, weekHours, tags, facultyType, fee, location, perks } = req.body;
+
+    try {
+        const q1 = `UPDATE EXTRACURRICULAR_ACTIVITY 
+                    SET Name = ?, Description = ?, Fee = ?, Schedule = ?, InterviewRequired = ?, ApplicationRequired = ?, WeekCommitmentHour = ?, Faculty_Name = ?, Img_file_path = ?
+                    WHERE Activity_ID = ?`;
+
+        await db.promise().query(q1, [
+            name, 
+            description, 
+            fee === '' ? null : fee,
+            schedule, 
+            interview, 
+            application, 
+            weekHours === '' ? null : weekHours,
+            facultyType, 
+            img,
+            id
+        ]);
+
+        if (tags !== '') {
+            const q2 = `UPDATE CATEGORIZED_BY
+                        SET Tag_ID = ?
+                        WHERE Activity_ID = ?`;
+            await db.promise().query(q2, [tags, id]);
+        } else {
+            const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
+                        VALUES (?, ?)`;
+            await db.promise().query(q2, [activityId, tags]);
+        }
+
+        if (perks !== '') {
+            const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS
+                        SET Perk = ?
+                        WHERE Activity_ID = ?`;
+            await db.promise().query(q3, [perks, id]);
+        } else {
+            const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
+                        VALUES (?, ?)`;
+            await db.promise().query(q3, [activityId, perks]);
+        }
+
+        const q4 = `UPDATE VOLUNTEERING_OPPORTUNITY
+                    SET Location = ?
+                    WHERE Activity_ID = ?`;
+        await db.promise().query(q4, [location, id]);
+
+        return res.status(201).json({ activityId: id });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
+

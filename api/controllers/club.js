@@ -28,7 +28,7 @@ export const get4Clubs = (req, res) => {
 }
 
 export const createClub = async (req, res) => {
-    const { activityType, name, description, schedule, img, interview, application, weekHours, tags, facultyType, fee, discord, instagram, perks } = req.body;
+    const { ucid, activityType, name, description, schedule, img, interview, application, weekHours, tags, facultyType, fee, discord, instagram, perks } = req.body;
 
     try {
         const q1 = `INSERT INTO EXTRACURRICULAR_ACTIVITY (Name, Type, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path) 
@@ -64,6 +64,10 @@ export const createClub = async (req, res) => {
                     VALUES (?, ?, ?)`;
         await db.promise().query(q4, [activityId, discord, instagram]);
 
+        const q5 = `INSERT INTO CLUB_EXEC (UCID, PositionName, Club_ID)
+                    VALUES (?, ?, ?)`;
+        await db.promise().query(q5, [ucid, 'Exec', activityId]);
+
         return res.status(201).json({ activityId: activityId });
 
     } catch (err) {
@@ -97,6 +101,10 @@ export const editClub = async (req, res) => {
                         SET Tag_ID = ?
                         WHERE Activity_ID = ?`;
             await db.promise().query(q2, [tags, id]);
+        } else {
+            const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
+                        VALUES (?, ?)`;
+            await db.promise().query(q2, [activityId, tags]);
         }
 
         if (perks !== '') {
@@ -104,6 +112,10 @@ export const editClub = async (req, res) => {
                         SET Perk = ?
                         WHERE Activity_ID = ?`;
             await db.promise().query(q3, [perks, id]);
+        } else {
+            const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
+                        VALUES (?, ?)`;
+            await db.promise().query(q3, [activityId, perks]);
         }
 
         const q4 = `UPDATE CLUB
@@ -117,4 +129,25 @@ export const editClub = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+export const getExecs = async (req, res) => {
+    const { Activity_ID } = req.body;
+
+    try {
+        const q = `SELECT UCID
+                    FROM CLUB_EXEC
+                    WHERE Club_ID = ?`;
+        
+        db.query(q, [Activity_ID], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data);
+        });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
 

@@ -1,7 +1,8 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import './style.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../context/authContext';
 
 interface CreateElements extends HTMLFormControlsCollection   {
     name: HTMLInputElement;
@@ -28,6 +29,12 @@ const EditClubPage = () => {
     const { id } = useParams();
 
     const navigate = useNavigate()
+
+    const { currentUser } = useContext(AuthContext)
+    const accountType = currentUser?.AccountType;
+    const accountUCID = currentUser?.UCID;
+  
+    const [editable, setEditable] = useState(false);
 
     const [facultyType, setFacultyType] = useState<string>('');
     const [tags, setTags] = useState<string>('');
@@ -66,6 +73,16 @@ const EditClubPage = () => {
               Instagram: res.data.Instagram,
               Perk: res.data.Perk
             });
+
+            const execRes = await axios.post("/club/getExecs", {Activity_ID: id});
+            console.log(execRes);
+            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+            console.log(execUCIDs);
+    
+            if (execUCIDs.includes(accountUCID)) {
+              setEditable(true);
+            }
+
           } catch (error) {
             console.log(error);
           }
@@ -81,7 +98,7 @@ const EditClubPage = () => {
             name: elements.name.value,
             description: elements.description.value,
             schedule: elements.schedule.value,
-            perks: elements.schedule.value,
+            perks: elements.perks.value,
             fee: elements.fee.value,
             img: elements.img.value,
             interview: elements.interview.value,
@@ -103,11 +120,6 @@ const EditClubPage = () => {
 
     };
 
-    const editable = true;
-    // send a request here to see if the current user should have permissions to edit the activity
-
-
-    // send a get request here to get existing information on the activity, then populate the input placeholders with that info
     return (
     <div className='create'> 
         {editable ? <>
