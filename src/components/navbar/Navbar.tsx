@@ -7,6 +7,9 @@ import { AuthContext } from "../../context/authContext";
 const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext)
 
+  const accountType = currentUser?.AccountType;
+
+
   return (
     <div className="navbar">
       <div className="container">
@@ -20,6 +23,10 @@ const Navbar = () => {
           <Link to={"./"} className="link">
             Home
           </Link>
+          {accountType === 'EXECUTIVE' ?
+          <Link to={"./create"} className="link">Create</Link>
+          :
+          null}
           <Link to={"./search"} className="link">
             Explore
           </Link>

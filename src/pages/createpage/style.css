@@ -63,3 +63,17 @@
     color: rgb(255, 70, 70);
     font-weight: 600;
 }
+
+.access-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20em;
+}
+
+.two-inputs {
+    height: 50px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}

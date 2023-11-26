@@ -33,11 +33,11 @@ const Programpage = () => {
           Activity_ID: res.data.Activity_ID,
           Name: res.data.Name,
           Description: res.data.Description,
-          Fee: res.data.Fee,
+          Fee: res.data.Fee ?? '',
           Schedule: res.data.Schedule,
           InterviewRequired: res.data.InterviewRequired,
           ApplicationRequired: res.data.ApplicationRequired,
-          WeekCommitmentHour: res.data.WeekCommitmentHour,
+          WeekCommitmentHour: res.data.WeekCommitmentHour ?? '',
           Faculty: res.data.Faculty_Name,
           Img_file_path: res.data.Img_file_path,
           Website: res.data.Website,
@@ -94,6 +94,12 @@ const Programpage = () => {
             <div className="info">
               <h2>Commitment Hours per Week</h2>
               <p>{program.WeekCommitmentHour}</p>
+            </div>
+          </div>
+          <div className="info-row">
+            <div className="info">
+              <h2>Perks</h2>
+              <p>{program.Perk}</p>
             </div>
           </div>
           <div className="social-row">

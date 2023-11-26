@@ -33,17 +33,17 @@ const Clubpage = () => {
         setClub({
           Activity_ID: res.data.Activity_ID,
           Name: res.data.Name,
-          Description: res.data.Description,
-          Fee: res.data.Fee,
-          Schedule: res.data.Schedule,
-          InterviewRequired: res.data.InterviewRequired,
-          ApplicationRequired: res.data.ApplicationRequired,
-          WeekCommitmentHour: res.data.WeekCommitmentHour,
-          Faculty: res.data.Faculty_Name,
+          Description: res.data.Description ?? '',
+          Fee: res.data.Fee ?? '',
+          Schedule: res.data.Schedule ?? '',
+          InterviewRequired: res.data.InterviewRequired ?? '',
+          ApplicationRequired: res.data.ApplicationRequired ?? '',
+          WeekCommitmentHour: res.data.WeekCommitmentHour ?? '',
+          Faculty: res.data.Faculty_Name ?? '',
           Img_file_path: res.data.Img_file_path,
-          Discord: res.data.Discord,
-          Instagram: res.data.Instagram,
-          Perk: res.data.Perk
+          Discord: res.data.Discord ?? '',
+          Instagram: res.data.Instagram ?? '',
+          Perk: res.data.Perk ?? ''
         });
       } catch (error) {
         console.log(error);
