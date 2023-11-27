@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 
 const Volunteerpage = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate()
 
   const { currentUser } = useContext(AuthContext)
   const accountType = currentUser?.AccountType;
@@ -26,6 +28,20 @@ const Volunteerpage = () => {
     Location: '',
     Perk: '',
   })
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this volunteering opportunity?")) {
+      try {
+        await axios.delete(`/volunteer/delete`, { data: { Activity_ID: id } });
+        navigate(`../search`);
+        alert("Volunteering opportunity deleted successfully");
+
+      } catch (error) {
+        console.error("Error deleting volunteering opportunity", error);
+        alert("Failed to delete volunteering opportunity");
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,10 +87,16 @@ const Volunteerpage = () => {
         </div>
         <div className="title-container">
           <h1>{volunteer.Name}</h1>
-          {editable ? 
-          <a href={`/volunteer/${id}/edit`}>
-          <button className="edit-button">Edit</button>
-        </a> : <></>}
+          {editable && (
+          <>
+            <a href={`/volunteer/${id}/edit`}>
+              <button className="edit-button">Edit</button>
+            </a>
+            <button className="delete-button" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
         </div>
       </div>
       <div className="desc">{volunteer.Description}</div>

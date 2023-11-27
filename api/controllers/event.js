@@ -141,3 +141,20 @@ export const getExecs = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+export const deleteEvent = async (req, res) => {
+    const { Activity_ID } = req.body;
+
+    try {
+        await db.promise().query(`DELETE FROM ACTIVITY_EXEC WHERE Activity_ID = ?`, [Activity_ID]);
+
+        await db.promise().query(`DELETE FROM EVENT WHERE Activity_ID = ?`, [Activity_ID]);
+
+        await db.promise().query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [Activity_ID]);
+
+        return res.status(200).json({ message: "Event successfully deleted" });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

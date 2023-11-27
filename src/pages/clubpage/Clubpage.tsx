@@ -3,12 +3,13 @@ import "./style.css";
 import discordLogo from './discord-logo.jpg';
 import instagramLogo from './instagram-logo.png';
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 
 const Clubpage = () => {
-  // send a request here to see if the current user should have permissions to edit the activity
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const { currentUser } = useContext(AuthContext)
   const accountType = currentUser?.AccountType;
@@ -30,6 +31,20 @@ const Clubpage = () => {
     Instagram: '',
     Perk: '',
   })
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this club?")) {
+      try {
+        await axios.delete(`/club/delete`, { data: { Activity_ID: id } });
+        navigate(`../search`);
+        alert("Club deleted successfully");
+
+      } catch (error) {
+        console.error("Error deleting club", error);
+        alert("Failed to delete club");
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,10 +91,16 @@ const Clubpage = () => {
         </div>
         <div className="title-container">
           <h1>{club.Name}</h1>
-          {editable ? 
-          <a href={`/club/${id}/edit`}>
-            <button className="edit-button">Edit</button>
-          </a> : <></>}
+          {editable && (
+          <>
+            <a href={`/club/${id}/edit`}>
+              <button className="edit-button">Edit</button>
+            </a>
+            <button className="delete-button" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
         </div>
       </div>
       <div className="desc">{club.Description}</div>
