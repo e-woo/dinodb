@@ -1,7 +1,8 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import './style.css'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../../context/authContext';
 
 interface CreateElements extends HTMLFormControlsCollection   {
   name: HTMLInputElement;
@@ -29,6 +30,12 @@ const EditVolunteerPage = () => {
     const navigate = useNavigate()
     const [facultyType, setFacultyType] = useState<string>('');
     const [tags, setTags] = useState<string>('');
+
+    const { currentUser } = useContext(AuthContext)
+    const accountType = currentUser?.AccountType;
+    const accountUCID = currentUser?.UCID;
+  
+    const [editable, setEditable] = useState(false);
 
     const [volunteer, setVolunteer] = useState({
       Activity_ID: id,
@@ -63,6 +70,16 @@ const EditVolunteerPage = () => {
             Location: res.data.Location,
             Perk: res.data.Perk
           });
+
+          const execRes = await axios.post("/volunteer/getExecs", {Activity_ID: id});
+          console.log(execRes);
+          const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+          console.log(execUCIDs);
+  
+          if (execUCIDs.includes(accountUCID)) {
+            setEditable(true);
+          }
+
         } catch (error) {
           console.log(error);
         }
@@ -99,7 +116,6 @@ const EditVolunteerPage = () => {
 
     };
 
-    const editable = true;
     // send a request here to see if the current user should have permissions to edit the activity
 
 

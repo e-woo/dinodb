@@ -163,7 +163,6 @@ const EditClubPage = () => {
                     <input type='text' placeholder='Discord' id='discord' defaultValue={club.Discord || ''} />
                     <input type='text' placeholder='Instagram' id='instagram' defaultValue={club.Instagram || ''} />
                     <input type='text' placeholder='Image link' id='img' defaultValue={club.Img_file_path || ''} required/>
-                    {/* <input type='text' placeholder='Tags' id='Tags' /> */}
                     <button type='submit'>Confirm</button>
                 </div>
             </form>

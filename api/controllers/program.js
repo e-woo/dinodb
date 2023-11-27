@@ -38,13 +38,13 @@ export const createProgram = async (req, res) => {
         const result = await db.promise().query(q1, [
             name, 
             activityType, 
-            description, 
+            description ?? '', 
             fee === '' ? null : fee,
-            schedule, 
-            interview, 
-            application, 
+            schedule ?? '', 
+            interview ?? '', 
+            application ?? '', 
             weekHours === '' ? null : weekHours,
-            facultyType, 
+            facultyType ?? '', 
             img
         ]);
         const activityId = result[0].insertId;
@@ -66,6 +66,10 @@ export const createProgram = async (req, res) => {
                     VALUES (?, ?)`;
         await db.promise().query(q4, [activityId, website]);
 
+        const q5 = `INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
+        VALUES (?, ?, ?)`;
+        await db.promise().query(q5, [ucid, 'Program Manager', activityId]);
+
         return res.status(201).json({ activityId: activityId });
 
     } catch (err) {
@@ -83,13 +87,13 @@ export const editProgram = async (req, res) => {
 
         await db.promise().query(q1, [
             name, 
-            description, 
+            description ?? '', 
             fee === '' ? null : fee,
-            schedule, 
-            interview, 
-            application, 
+            schedule ?? '', 
+            interview ?? '', 
+            application ?? '', 
             weekHours === '' ? null : weekHours,
-            facultyType, 
+            facultyType ?? '', 
             img,
             id
         ]);
@@ -124,6 +128,22 @@ export const editProgram = async (req, res) => {
     }
 };
 
-// export const editProgram = async (req, res) => {
+export const getExecs = async (req, res) => {
+    const { Activity_ID } = req.body;
 
-// }
+    try {
+        const q = `SELECT UCID
+                    FROM ACTIVITY_EXEC
+                    WHERE Activity_ID = ?`;
+        
+        db.query(q, [Activity_ID], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data);
+        });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

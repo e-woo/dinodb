@@ -1,10 +1,11 @@
+import { sign } from "crypto";
 import { db } from "../db.js"
 
 export const showEvent = (req, res) => {
 
-    const q = `SELECT EA.Activity_ID, EA.Img_file_path, E.Name, E.Description, E.Type, E.Location, E.Date_and_Time
-                FROM EXTRACURRICULAR_ACTIVITY AS EA, EVENT AS E
-                WHERE EA.Activity_ID = ?
+    const q = `SELECT EA.Activity_ID, EA.Img_file_path, E.Name, E.Description, E.Type, E.Location, E.OnlineInPerson, E.SignUpInfo, E.Perks, E.Fee, E.Eligibility, E.Date_and_Time
+                FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
+                WHERE E.Activity_ID = ?
                 AND EA.Activity_ID = E.Activity_ID`
 
     db.query(q, [req.body.Activity_ID], (err, data) => {
@@ -29,7 +30,7 @@ export const get4Events = (req, res) => {
 }
 
 export const createEvent = async (req, res) => {
-    const { activityType, name, description, schedule, img, interview, application, weekHours, tags, facultyType, fee, discord, instagram, perks } = req.body;
+    const { ucid, name, description, img, tags, facultyType, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime, perks } = req.body;
 
     try {
         const q1 = `INSERT INTO EXTRACURRICULAR_ACTIVITY (Name, Type, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path) 
@@ -37,14 +38,14 @@ export const createEvent = async (req, res) => {
 
         const result = await db.promise().query(q1, [
             name, 
-            activityType, 
-            description, 
+            'event', 
+            description ?? '', 
             fee === '' ? null : fee,
-            schedule, 
-            interview, 
-            application, 
-            weekHours === '' ? null : weekHours,
-            facultyType, 
+            '', 
+            '', 
+            '', 
+            null,
+            facultyType ?? '', 
             img
         ]);
         const activityId = result[0].insertId;
@@ -60,10 +61,13 @@ export const createEvent = async (req, res) => {
                         VALUES (?, ?)`;
             await db.promise().query(q3, [activityId, perks]);
         }
+        const q4 = `INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, OnlineInPerson, SignUpInfo, Perks, Fee, Eligibility, Date_and_Time) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        await db.promise().query(q4, [activityId, name, description, 'event', location, onlineInPerson, signUpInfo, perks, fee === '' ? null : fee, eligibility, dateTime === '' ? null : dateTime]);
 
-        const q4 = `INSERT INTO CLUB (Activity_ID, Discord, Instagram) 
+        const q5 = `INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
                     VALUES (?, ?, ?)`;
-        await db.promise().query(q4, [activityId, discord, instagram]);
+        await db.promise().query(q5, [ucid, 'Event Organizer', activityId]);
 
         return res.status(201).json({ activityId: activityId });
 
@@ -72,3 +76,68 @@ export const createEvent = async (req, res) => {
     }
 };
 
+export const editEvent = async (req, res) => {
+    const { id, name, description, img, tags, facultyType, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime, perks } = req.body;
+
+    try {
+        const q1 = `UPDATE EXTRACURRICULAR_ACTIVITY 
+                    SET Description = ?, Fee = ?, Schedule = ?, InterviewRequired = ?, ApplicationRequired = ?, WeekCommitmentHour = ?, Faculty_Name = ?, Img_file_path = ?
+                    WHERE Activity_ID = ?`;
+
+        await db.promise().query(q1, [ 
+            description ?? '', 
+            fee === '' ? null : fee,
+            '', 
+            '', 
+            '', 
+            null,
+            facultyType ?? '', 
+            img,
+            id
+        ]);
+
+        if (tags !== '') {
+            const q2 = `UPDATE CATEGORIZED_BY
+                        SET Tag_ID = ?
+                        WHERE Activity_ID = ?`;
+            await db.promise().query(q2, [tags, id]);
+        }
+
+        // if (perks !== '') {
+        //     const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS
+        //                 SET Perk = ?
+        //                 WHERE Activity_ID = ?`;
+        //     await db.promise().query(q3, [perks, id]);
+        // }
+
+        const q4 = `UPDATE EVENT
+                    SET Description = ?, Location = ?, OnlineInPerson = ?, SignUpInfo = ?, Perks = ?, Fee = ?, Eligibility = ?, Date_and_Time = ?
+                    WHERE Activity_ID = ? AND Name = ?`;
+        await db.promise().query(q4, [description, location, onlineInPerson, signUpInfo, perks, fee === '' ? null : fee, eligibility, dateTime === '' ? null : dateTime, id, name]);
+
+        return res.status(201).json({ activityId: id });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
+export const getExecs = async (req, res) => {
+    const { Activity_ID } = req.body;
+
+    try {
+        const q = `SELECT UCID
+                    FROM ACTIVITY_EXEC
+                    WHERE Activity_ID = ?`;
+        
+        db.query(q, [Activity_ID], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data);
+        });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

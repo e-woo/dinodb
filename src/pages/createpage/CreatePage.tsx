@@ -22,7 +22,11 @@ interface CreateElements extends HTMLFormControlsCollection   {
     instagram: HTMLInputElement;
     website: HTMLInputElement;
     type: HTMLInputElement;
+    onlineInPerson: HTMLInputElement;
+    signUpInfo: HTMLInputElement;
+    eligibility: HTMLInputElement;
     location: HTMLInputElement;
+    dateTime: HTMLInputElement;
 }
    
 interface CreateForm extends HTMLFormElement {
@@ -95,18 +99,17 @@ const CreatePage = () => {
                 activityType: elements.activityType.value,
                 name: elements.name.value,
                 description: elements.description.value,
-                schedule: elements.schedule.value,
                 img: elements.img.value,
-                interview: elements.interview.value,
-                application: elements.application.value,
-                weekHours: elements.weekHours.value,
                 tags: elements.tags.value,
                 facultyType: elements.facultyType.value,
-                fee: elements.fee.value,
                 perks: elements.perks.value,
             
-                type: elements.type.value,
                 location: elements.location.value,
+                onlineInPerson: elements.onlineInPerson.value,
+                signUpInfo: elements.signUpInfo.value,
+                fee: elements.fee.value,
+                eligibility: elements.eligibility.value,
+                dateTime: elements.dateTime.value,
             };
         else
             formData = {
@@ -160,7 +163,7 @@ const CreatePage = () => {
     if (accountType !== 'EXECUTIVE') {
         return (
         <div className='access-message'>
-            <h1>Access Denied.</h1>
+            <h1>You do not have permission to access this.</h1>
         </div>
         );
     } else {
@@ -173,9 +176,52 @@ const CreatePage = () => {
                             <option value='choose'>Choose an Extracurricular Type...</option>
                             <option value='club'>Club</option>
                             <option value='program'>Program</option>
-                            {/* <option value='event'>Event</option> */}
+                            <option value='event'>Event</option>
                             <option value='volunteer'>Volunteering</option>
                         </select>
+                        <input type='text' placeholder='Name' id='name' required/>
+                        <textarea placeholder='Description...' id='description' rows={6} />
+                        <input type='text' placeholder='Perks' id='perks' required />
+                        <input type='text' placeholder='Icon image link' id='img' required/>
+                        {
+                            activityType === 'club' ?
+                            <>
+                                <input type='number' placeholder='Fee' id='fee' />
+                                <input type='text' placeholder='Schedule' id='schedule' />
+                                <input type='text' placeholder='Interview Required?' id='interview' />
+                                <input type='text' placeholder='Application Required?' id='application' />
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
+                                <input type='text' placeholder='Discord' id='discord' />
+                                <input type='text' placeholder='Instagram' id='instagram' />
+                            </> :
+                            activityType === 'program' ?
+                            <>
+                                <input type='number' placeholder='Fee' id='fee' />
+                                <input type='text' placeholder='Schedule' id='schedule' />
+                                <input type='text' placeholder='Interview Required?' id='interview' />
+                                <input type='text' placeholder='Application Required?' id='application' />
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
+                                <input type='text' placeholder='Website' id='website' />
+                            </> :
+                            activityType === 'event' ?
+                            <>
+                                <input type='number' placeholder='Fee' id='fee' />
+                                <input type='text' placeholder='Location' id='location' required/>
+                                <input type='text' placeholder='Online or In Person?' id='onlineInPerson' />
+                                <input type='text' placeholder='Sign up info' id='signUpInfo' />
+                                <input type='text' placeholder='Eligibility' id='eligibility' />
+                                <input type='datetime-local' placeholder='Date and time' id='dateTime' required/>
+                            </> :
+                            activityType === 'volunteer' ?
+                            <>
+                                <input type='number' placeholder='Fee' id='fee' />
+                                <input type='text' placeholder='Schedule' id='schedule' />
+                                <input type='text' placeholder='Interview Required?' id='interview' />
+                                <input type='text' placeholder='Application Required?' id='application' />
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
+                                <input type='text' placeholder='Location' id='location' />
+                            </> : <></>
+                        }
                         <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='dropdown' id='facultyType'>
                             <option value='Administration'>Choose a faculty...</option>
                             <option value='Science'>Science</option>
@@ -185,36 +231,7 @@ const CreatePage = () => {
                             <option value='Education'>Education</option>
                             <option value='Administration'>Administration</option>
                         </select>
-                        <input type='text' placeholder='Name' id='name' required/>
-                        <textarea placeholder='Description...' id='description' rows={6} />
-                        <input type='number' placeholder='Fee' id='fee' />
-                        <input type='text' placeholder='Schedule' id='schedule' />
-                        <input type='text' placeholder='Interview Required?' id='interview' />
-                        <input type='text' placeholder='Application Required?' id='application' />
-                        <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
-                        <input type='text' placeholder='Perks' id='perks' required />
-                        <input type='text' placeholder='Icon image link' id='img' required/>
-                        {
-                            activityType === 'club' ?
-                            <>
-                                <input type='text' placeholder='Discord' id='discord' />
-                                <input type='text' placeholder='Instagram' id='instagram' />
-                            </> :
-                            activityType === 'program' ?
-                            <>
-                                <input type='text' placeholder='Website' id='website' />
-                            </> :
-                            activityType === 'event' ?
-                            <>
-                                <input type='text' placeholder='Type' id='type' required/>
-                                <input type='text' placeholder='Location' id='location' required/>
-                            </> :
-                            activityType === 'volunteer' ?
-                            <>
-                                <input type='text' placeholder='Location' id='location' />
-                            </> : <></>
-                        }
-                        <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' >
+                        <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' required >
                             <option value=''>Choose a tag...</option>
                             <option value='000000001'>Academic</option>
                             <option value='000000002'>Arts</option>

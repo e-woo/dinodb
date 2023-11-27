@@ -45,13 +45,13 @@ CREATE TABLE CLUB
 	PRIMARY KEY(Activity_ID),
 	FOREIGN KEY(Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE	ON UPDATE CASCADE);
 
-CREATE TABLE CLUB_EXEC
+CREATE TABLE ACTIVITY_EXEC
 	(UCID				    CHAR(9)			NOT NULL,
 	PositionName			VARCHAR(50)		DEFAULT 'Exec',
-	Club_ID			        INT				NOT NULL,
-	PRIMARY KEY (UCID, Club_ID),
+	Activity_ID			    INT				NOT NULL,
+	PRIMARY KEY (UCID, Activity_ID),
 	FOREIGN KEY (UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Club_ID) REFERENCES CLUB(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
+	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE MEMBER_OF
     (Club_ID				INT				NOT NULL,
@@ -105,6 +105,11 @@ CREATE TABLE EVENT
 	Description				VARCHAR(250),
 	Type					VARCHAR(50),
 	Location				VARCHAR(50),
+	OnlineInPerson			VARCHAR(50),
+	SignUpInfo				VARCHAR(255),
+	Perks					VARCHAR(255),
+	Fee						INT				DEFAULT 0,
+	Eligibility				VARCHAR(255),
 	Date_and_Time			DATETIME,
 	PRIMARY KEY (Activity_ID, Name),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
@@ -221,12 +226,12 @@ VALUES
 ('15', 'SU Tutor Registry', 'program', 'Struggling with your course work? Need assistance preparing for an exam? Your SU has developed a searchable database of independent tutors that are here to help you in a wide range of subjects. The Tutors listed on the SU Tutor Registry are current or past students of the University of Calgary who provide independent services as Tutors.', 0, 'N/A', 'Yes', 'Yes', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
 ('16', 'Safewalk', 'program', 'The Safewalk service is provided through Campus Security, 24-7. Safewalk volunteers walk people safely to their destinations on campus. This service is free and available to students, staff and campus visitors for destinations anywhere on campus including McMahon Stadium, Health Sciences, Student Family Housing, the Alberta Children’s Hospital and the University C-Train station. Safewalks are done in male/female pairs.', 0, 'N/A', 'No', 'No', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742');
 
-INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, Date_and_time)
+INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, OnlineInPerson, SignUpInfo, Perks, Fee, Eligibility, Date_and_Time)
 VALUES
-('5', 'K-LIT Meet & Greet', 'Come and meet the whole crew at K-LIT! There will be pizza and drinks and many icebreaker games!', 'event', 'SB 122', '2023-09-20 18:00:00'),
-('6', 'Card Game Pizza Night', 'Our annual card game and pizza night is happening at The Board Games Club! Come and join us!', 'event', 'MSC 125', '2023-12-05 16:00:00'),
-('8', 'Food Bank Donation Run', 'Join us for our monthly food bank donation run!', 'event', 'MSC Event Centre', '2023-12-08 17:00:00'),
-('4', 'Debate Night!', 'Our weekly debate night is happening this Friday, join to participate or watch.', 'event', 'TFDL 550', '2023-11-24 17:00:00');
+('5', 'K-LIT Meet & Greet', 'Come and meet the whole crew at K-LIT! There will be pizza and drinks and many icebreaker games!', 'event', 'SB 122', 'In Person', 'Check our instagram for sign up!', 'Free pizza and drinks', 0, 'Anyone can join', '2023-09-20 18:00:00'),
+('6', 'Card Game Pizza Night', 'Our annual card game and pizza night is happening at The Board Games Club! Come and join us!', 'event', 'MSC 125', 'In Person', 'Check discord for sign up', 'Fee pizza and drinks!', 5, 'Must have paid the club fee to join', '2023-12-05 16:00:00'),
+('8', 'Food Bank Donation Run', 'Join us for our monthly food bank donation run!', 'event', 'MSC Event Centre', 'In Person', 'No sign-up needed', 'Free t-shirt', 0, 'Anyone can join', '2023-12-08 17:00:00'),
+('4', 'Debate Night!', 'Our weekly debate night is happening this Friday, join to participate or watch.', 'event', 'TFDL 550', 'In Person', 'Check discord for sign-up sheet', 'N/A', 0, 'Exclusive to club members', '2023-11-24 17:00:00');
 
 INSERT INTO PROGRAM (Activity_ID, Website)
 VALUES
@@ -244,7 +249,7 @@ VALUES
 ('5', 'https://discord.gg/startupclub', '@startupclub'),
 ('6', 'https://discord.gg/QNtecrqNzv', 'https://www.instagram.com/ucboardgames/');
 
-INSERT INTO CLUB_EXEC (UCID, PositionName, Club_ID)
+INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
 VALUES 
 ('123456789', 'President', '1'),
 ('987654321', 'Vice President', '2'),
@@ -255,7 +260,15 @@ VALUES
 ('1', 'Executive', '2'),
 ('1', 'Executive', '3'),
 ('1', 'Executive', '4'),
-('1', 'Executive', '5');
+('1', 'Executive', '5'),
+('1', 'Executive', '7'),
+('1', 'Executive', '8'),
+('1', 'Executive', '9'),
+('1', 'Executive', '10'),
+('1', 'Executive', '11'),
+('1', 'Executive', '13'),
+('1', 'Executive', '14'),
+('1', 'Executive', '15');
 
 INSERT INTO MEMBER_OF (Club_ID, Member_UCID)
 VALUES 

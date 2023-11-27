@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 
 const Eventpage = () => {
     const { id } = useParams();
 
+    const { currentUser } = useContext(AuthContext)
+    const accountType = currentUser?.AccountType;
+    const accountUCID = currentUser?.UCID;
+  
+    const [editable, setEditable] = useState(false);
     const [event, setEvent] = useState({
       Activity_ID: id,
       Name: '',
@@ -14,6 +20,11 @@ const Eventpage = () => {
       Img_file_path: '',
       Location: '',
       DateTime: '',
+      Perks: '',
+      OnlineInPerson: '',
+      SignUpInfo: '',
+      Fee: '',
+      Eligibility: '',
     })
 
     useEffect(() => {
@@ -27,8 +38,23 @@ const Eventpage = () => {
               Type: res.data.Type,
               Img_file_path: res.data.Img_file_path,
               Location: res.data.Location,
-              DateTime: res.data.Date_and_Time
+              DateTime: res.data.Date_and_Time,
+              Perks: res.data.Perks,
+              OnlineInPerson: res.data.OnlineInPerson,
+              SignUpInfo: res.data.SignUpInfo,
+              Fee: res.data.Fee,
+              Eligibility: res.data.Eligibility,
             });
+
+            const execRes = await axios.post("/event/getExecs", {Activity_ID: id});
+            console.log(execRes);
+            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+            console.log(execUCIDs);
+    
+            if (execUCIDs.includes(accountUCID)) {
+              setEditable(true);
+            }
+
           } catch (error) {
             console.log(error);
           }
@@ -36,7 +62,6 @@ const Eventpage = () => {
         fetchData();
       }, [id]);
 
-    const editable = true;
     // send a request here to see if the current user should have permissions to edit the activity
     
     return (
@@ -57,10 +82,6 @@ const Eventpage = () => {
             <div className="more-info">
                 <div className="info-row">
                     <div className="info">
-                        <h2>Type:</h2>
-                        <p>{event.Type}</p>
-                    </div>
-                    <div className="info">
                         <h2>Location:</h2>
                         <p>{event.Location}</p>
                     </div>
@@ -68,6 +89,32 @@ const Eventpage = () => {
                         <h2>Date and Time:</h2>
                         <p>{event.DateTime}</p>
                     </div>
+                </div>
+                <div className="info-row">
+                    <div className="info">
+                        <h2>Perks:</h2>
+                        <p>{event.Perks}</p>
+                    </div>
+                    <div className="info">
+                        <h2>Sign-Up Info:</h2>
+                        <p>{event.SignUpInfo}</p>
+                    </div>
+                </div>
+                <div className="info-row">
+                    <div className="info">
+                        <h2>Online or In Person:</h2>
+                        <p>{event.OnlineInPerson}</p>
+                    </div>
+                    <div className="info">
+                        <h2>Fee:</h2>
+                        <p>{event.Fee}</p>
+                    </div>
+                </div>
+                <div className="info-row">
+                  <div className="info">
+                      <h2>Eligibility:</h2>
+                      <p>{event.Eligibility}</p>
+                  </div>
                 </div>
             </div>
         </div>

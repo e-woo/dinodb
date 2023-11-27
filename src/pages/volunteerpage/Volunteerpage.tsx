@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 
 const Volunteerpage = () => {
   const { id } = useParams();
 
+  const { currentUser } = useContext(AuthContext)
+  const accountType = currentUser?.AccountType;
+  const accountUCID = currentUser?.UCID;
+
+  const [editable, setEditable] = useState(false);
   const [volunteer, setVolunteer] = useState({
     Activity_ID: id,
     Name: '',
@@ -39,6 +45,16 @@ const Volunteerpage = () => {
           Location: res.data.Location,
           Perk: res.data.Perk
         });
+
+        const execRes = await axios.post("/volunteer/getExecs", {Activity_ID: id});
+        console.log(execRes);
+        const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+        console.log(execUCIDs);
+
+        if (execUCIDs.includes(accountUCID)) {
+          setEditable(true);
+        }
+
       } catch (error) {
         console.log(error);
       }
@@ -46,7 +62,6 @@ const Volunteerpage = () => {
     fetchData();
   }, [id]);
 
-  const editable = true;
     // send a request here to see if the current user should have permissions to edit the activity
   return (
     <div className="volunteer-page">

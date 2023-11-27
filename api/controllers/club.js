@@ -37,13 +37,13 @@ export const createClub = async (req, res) => {
         const result = await db.promise().query(q1, [
             name, 
             activityType, 
-            description, 
+            description ?? '', 
             fee === '' ? null : fee,
-            schedule, 
-            interview, 
-            application, 
+            schedule ?? '', 
+            interview ?? '', 
+            application ?? '', 
             weekHours === '' ? null : weekHours,
-            facultyType, 
+            facultyType ?? '', 
             img
         ]);
         const activityId = result[0].insertId;
@@ -64,9 +64,9 @@ export const createClub = async (req, res) => {
                     VALUES (?, ?, ?)`;
         await db.promise().query(q4, [activityId, discord, instagram]);
 
-        const q5 = `INSERT INTO CLUB_EXEC (UCID, PositionName, Club_ID)
+        const q5 = `INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
                     VALUES (?, ?, ?)`;
-        await db.promise().query(q5, [ucid, 'Exec', activityId]);
+        await db.promise().query(q5, [ucid, 'Club Executive', activityId]);
 
         return res.status(201).json({ activityId: activityId });
 
@@ -85,13 +85,13 @@ export const editClub = async (req, res) => {
 
         await db.promise().query(q1, [
             name, 
-            description, 
+            description ?? '', 
             fee === '' ? null : fee,
-            schedule, 
-            interview, 
-            application, 
+            schedule ?? '', 
+            interview ?? '', 
+            application ?? '', 
             weekHours === '' ? null : weekHours,
-            facultyType, 
+            facultyType ?? '', 
             img,
             id
         ]);
@@ -101,10 +101,6 @@ export const editClub = async (req, res) => {
                         SET Tag_ID = ?
                         WHERE Activity_ID = ?`;
             await db.promise().query(q2, [tags, id]);
-        } else {
-            const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-            await db.promise().query(q2, [activityId, tags]);
         }
 
         if (perks !== '') {
@@ -112,10 +108,6 @@ export const editClub = async (req, res) => {
                         SET Perk = ?
                         WHERE Activity_ID = ?`;
             await db.promise().query(q3, [perks, id]);
-        } else {
-            const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
-                        VALUES (?, ?)`;
-            await db.promise().query(q3, [activityId, perks]);
         }
 
         const q4 = `UPDATE CLUB
@@ -135,8 +127,8 @@ export const getExecs = async (req, res) => {
 
     try {
         const q = `SELECT UCID
-                    FROM CLUB_EXEC
-                    WHERE Club_ID = ?`;
+                    FROM ACTIVITY_EXEC
+                    WHERE Activity_ID = ?`;
         
         db.query(q, [Activity_ID], (err, data) => {
             if (err)

@@ -72,14 +72,14 @@ const EditProgramPage = () => {
             Perk: res.data.Perk
           });
 
-          // const execRes = await axios.post("/club/getExecs", {Activity_ID: id});
-          // console.log(execRes);
-          // const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
-          // console.log(execUCIDs);
+          const execRes = await axios.post("/program/getExecs", {Activity_ID: id});
+          console.log(execRes);
+          const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+          console.log(execUCIDs);
   
-          // if (execUCIDs.includes(accountUCID)) {
-          //   setEditable(true);
-          // }
+          if (execUCIDs.includes(accountUCID)) {
+            setEditable(true);
+          }
 
         } catch (error) {
           console.log(error);
