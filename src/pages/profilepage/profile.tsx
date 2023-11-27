@@ -61,9 +61,9 @@ const profile = () => {
             <div className="postP">Email: {profile.Email}</div>
             <div className="postP">{profile.Bio}</div>
             <div className="postP">Account Type: {profile.AccountType}</div>
-            <Link to={`/write?edit=2`}>
+            <a href='/profile/edit'>
               <button className="postsButton editButton">Edit</button>
-            </Link>
+            </a>
           </div>
         </div>
         <div className="activityInfo">

@@ -1,5 +1,8 @@
 import express from "express"
+import { editProfile } from "../controllers/student.js";
 
-const router = express.Router()
+const router = express.Router();
 
-export default router
+router.post("/edit", editProfile);
+
+export default router;
