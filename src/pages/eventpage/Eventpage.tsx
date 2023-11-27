@@ -89,14 +89,14 @@ const Eventpage = () => {
                 <div className="title-container">
                     <h1>{event.Name}</h1>
                     {editable && (
-                    <>
-                        <a href={`/event/${id}/edit`}>
-                        <button className="edit-button">Edit</button>
-                        </a>
-                        <button className="delete-button" onClick={handleDelete}>
-                        Delete
-                        </button>
-                    </>
+                        <>
+                            <a href={`/event/${id}/edit`}>
+                            <button className="edit-button">Edit</button>
+                            </a>
+                            <button className="delete-button" onClick={handleDelete}>
+                            Delete
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
