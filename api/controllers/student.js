@@ -10,3 +10,14 @@ export const editProfile = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+export const changePassword = async (req, res) => {
+    const {ucid, password} = req.body;
+    const q = 'UPDATE student SET Password = ? WHERE UCID = ?';
+    try {
+        await db.promise().query(q, [password, ucid]);
+        return res.status(200).json({message: 'Password updated!', status: 200});
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

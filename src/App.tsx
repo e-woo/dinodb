@@ -27,6 +27,7 @@ import EditEventPage from "./pages/eventpage/EditEventpage";
 import EditProgramPage from "./pages/programpage/EditProgrampage";
 import EditVolunteerPage from "./pages/volunteerpage/EditVolunteerpage";
 import EditProfile from "./pages/profilepage/editprofile";
+import EditPassword from "./pages/profilepage/editpassword";
 
 const Layout = () => {
   return (
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/edit',
         element: <EditProfile />
+      },
+      {
+        path: '/profile/editpassword',
+        element: <EditPassword />
       },
       {
         path: "/admin/",

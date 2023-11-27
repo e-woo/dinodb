@@ -1,8 +1,9 @@
 import express from "express"
-import { editProfile } from "../controllers/student.js";
+import { changePassword, editProfile } from "../controllers/student.js";
 
 const router = express.Router();
 
 router.post("/edit", editProfile);
+router.post("/password", changePassword);
 
 export default router;

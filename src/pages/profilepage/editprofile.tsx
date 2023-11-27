@@ -15,12 +15,11 @@ const EditProfile = () => {
 	useEffect(() => {
 		async function getProfile() {
 			try {
-				const userStr = localStorage.getItem("user");
-				if (!userStr) {
+				if (!user) {
 					console.log("User data not found in localStorage");
 					return;
 				}
-				const id = JSON.parse(userStr).UCID;
+				const id = JSON.parse(user).UCID;
 				const result = await axios.post("/profile/show", {UCID: id})
 				setFields({
 					Bio: result.data.Bio,
@@ -44,7 +43,7 @@ const EditProfile = () => {
 			fName: elements.fName.value,
 			lName: elements.lName.value
 		}
-		console.log(formData);
+		
 		try {
 			await axios.post('/student/edit', formData);
 			navigate('../profile');

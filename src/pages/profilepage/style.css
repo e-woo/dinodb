@@ -47,3 +47,12 @@
 .inputSection input {
   width: 100%;
 }
+
+.profileButtons {
+  display: flex;
+  gap: 16px;
+}
+
+.warning {
+  color: rgb(255, 70, 70);
+}
