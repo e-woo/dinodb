@@ -59,9 +59,20 @@ const EditProfile = () => {
 					<h1 className="bigHeader">Edit Profile</h1>
 					<form onSubmit={handleSubmit} method='post'>
 						<div className='createBody'>
-							<input type='text' placeholder='First Name' id='fName' defaultValue={fields.FName} required/>
-							<input type='text' placeholder='Last Name' id='lName' defaultValue={fields.LName} required/>
-							<textarea placeholder='Bio' id='bio' rows={4} defaultValue={fields.Bio}/>
+							<div className='nameBody'>
+								<div className='inputSection'>
+									<h4>First Name</h4>
+									<input type='text' placeholder='First Name' id='fName' defaultValue={fields.FName} required/>
+								</div>
+								<div className='inputSection'>
+									<h4>Last Name</h4>
+									<input type='text' placeholder='Last Name' id='lName' defaultValue={fields.LName} required/>
+								</div>
+							</div>
+							<div className='inputSection'>
+								<h4>Bio</h4>
+								<textarea placeholder='Bio' id='bio' rows={4} defaultValue={fields.Bio}/>
+							</div>
 							<button type='submit'>Confirm</button>
 						</div>
 					</form>

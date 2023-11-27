@@ -28,3 +28,22 @@
   gap: 15px;
   display: flex;
 }
+
+.create .nameBody {
+  width: 420px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nameBody .inputSection {
+  width: 47%;
+}
+
+.create h4 {
+  margin: 8px;
+}
+
+.inputSection input {
+  width: 100%;
+}
