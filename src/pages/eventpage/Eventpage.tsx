@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 
 const Eventpage = () => {
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
     const { currentUser } = useContext(AuthContext)
     const accountType = currentUser?.AccountType;
@@ -26,6 +28,20 @@ const Eventpage = () => {
       Fee: '',
       Eligibility: '',
     })
+
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this event?")) {
+          try {
+            await axios.delete(`/event/delete`, { data: { Activity_ID: id } });
+            navigate(`../search`);
+            alert("Event deleted successfully");
+    
+          } catch (error) {
+            console.error("Error deleting event", error);
+            alert("Failed to delete event");
+          }
+        }
+      }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,10 +88,16 @@ const Eventpage = () => {
                 </div>
                 <div className="title-container">
                     <h1>{event.Name}</h1>
-                    {editable ? 
-                    <a href={`/event/${id}/edit`}>
-                        <button className="edit-button">Edit</button>
-                    </a>: <></>}
+                    {editable && (
+                        <>
+                            <a href={`/event/${id}/edit`}>
+                            <button className="edit-button">Edit</button>
+                            </a>
+                            <button className="delete-button" onClick={handleDelete}>
+                            Delete
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="desc">{event.Description}</div>

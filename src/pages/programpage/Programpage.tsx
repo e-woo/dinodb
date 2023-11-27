@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import websiteLogo from "./website-logo.png";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 
 const Programpage = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate()
 
   const { currentUser } = useContext(AuthContext)
   const accountType = currentUser?.AccountType;
@@ -27,6 +29,20 @@ const Programpage = () => {
     Website: '',
     Perk: '',
   })
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this program?")) {
+      try {
+        await axios.delete(`/program/delete`, { data: { Activity_ID: id } });
+        navigate(`../search`);
+        alert("Program deleted successfully");
+
+      } catch (error) {
+        console.error("Error deleting program", error);
+        alert("Failed to delete program");
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,10 +88,16 @@ const Programpage = () => {
         </div>
         <div className="title-container">
           <h1>{program.Name}</h1>
-            {editable ? 
+          {editable && (
+          <>
             <a href={`/program/${id}/edit`}>
               <button className="edit-button">Edit</button>
-            </a> : <></>}
+            </a>
+            <button className="delete-button" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
         </div>
       </div>
       <div className="desc">{program.Description}</div>
