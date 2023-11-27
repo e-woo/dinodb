@@ -92,15 +92,15 @@ const Clubpage = () => {
         <div className="title-container">
           <h1>{club.Name}</h1>
           {editable && (
-          <>
-            <a href={`/club/${id}/edit`}>
-              <button className="edit-button">Edit</button>
-            </a>
-            <button className="delete-button" onClick={handleDelete}>
-              Delete
-            </button>
-          </>
-        )}
+            <>
+              <a href={`/club/${id}/edit`}>
+                <button className="edit-button">Edit</button>
+              </a>
+              <button className="delete-button" onClick={handleDelete}>
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="desc">{club.Description}</div>
