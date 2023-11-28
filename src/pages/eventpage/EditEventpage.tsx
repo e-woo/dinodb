@@ -9,9 +9,6 @@ interface CreateElements extends HTMLFormControlsCollection   {
     description: HTMLInputElement;
     perks: HTMLInputElement;
     fee: HTMLInputElement;
-    facultyType: HTMLInputElement;
-    tags: HTMLInputElement;
-    img: HTMLInputElement;
 
     type: HTMLInputElement;
     onlineInPerson: HTMLInputElement;
@@ -36,14 +33,11 @@ const EditEventPage = () => {
   
     const [editable, setEditable] = useState(false);
 
-    const [facultyType, setFacultyType] = useState<string>('');
-    const [tags, setTags] = useState<string>('');
     const [event, setEvent] = useState({
       Activity_ID: id,
       Name: '',
       Description: '',
       Type: '',
-      Img_file_path: '',
       Location: '',
       DateTime: '',
       Perks: '',
@@ -51,7 +45,6 @@ const EditEventPage = () => {
       SignUpInfo: '',
       Fee: '',
       Eligibility: '',
-      Faculty: '',
     })
 
     useEffect(() => {
@@ -63,7 +56,6 @@ const EditEventPage = () => {
               Name: res.data.Name,
               Description: res.data.Description,
               Type: res.data.Type,
-              Img_file_path: res.data.Img_file_path,
               Location: res.data.Location,
               DateTime: res.data.Date_and_Time,
               Perks: res.data.Perks,
@@ -71,14 +63,13 @@ const EditEventPage = () => {
               SignUpInfo: res.data.SignUpInfo,
               Fee: res.data.Fee,
               Eligibility: res.data.Eligibility,
-              Faculty: facultyType
             });
 
-            const execRes = await axios.post("/event/getExecs", {Activity_ID: id});
-            console.log(execRes);
-            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
-            console.log(execUCIDs);
+            const idRes = await axios.post("/event/getID", { Name: id });
 
+            const execRes = await axios.post("/event/getExecs", {Activity_ID: idRes.data.Activity_ID});
+            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+    
             if (execUCIDs.includes(accountUCID)) {
               setEditable(true);
             }
@@ -94,12 +85,8 @@ const EditEventPage = () => {
         e.preventDefault();
         const elements = e.currentTarget.elements;
         const formData = {
-          id: id,
-          name: event.Name,
+          name: id,
           description: elements.description.value,
-          img: elements.img.value,
-          tags: elements.tags.value,
-          facultyType: elements.facultyType.value,
           perks: elements.perks.value,
       
           location: elements.location.value,
@@ -127,40 +114,13 @@ const EditEventPage = () => {
             <form onSubmit={handleSubmit} method='post'>
                 <div className='createBody'>
                     <textarea placeholder='Description...' id='description' rows={6} defaultValue={event.Description || ''} />
-                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='dropdown' id='facultyType'>
-                      <option value='Science'>Science</option>
-                      <option value='Arts'>Arts</option>
-                      <option value='Engineering'>Engineering</option>
-                      <option value='Business'>Business</option>
-                      <option value='Education'>Education</option>
-                      <option value='Administration'>Administration</option>
-                    </select>
-                    <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' >
-                      <option value='000000001'>Academic</option>
-                      <option value='000000002'>Arts</option>
-                      <option value='000000003'>Recreation</option>
-                      <option value='000000004'>Technology</option>
-                      <option value='000000006'>Community</option>
-                      <option value='000000007'>STEM</option>
-                      <option value='000000008'>Cultural</option>
-                      <option value='000000009'>Career Development</option>
-                      <option value='000000012'>Coding</option>
-                      <option value='000000013'>Literacy</option>
-                      <option value='000000014'>Music and Performing Arts</option>
-                      <option value='000000015'>Health and Wellness</option>
-                      <option value='000000017'>Food and Cooking</option>
-                      <option value='000000018'>Advocacy and Social Issues</option>
-                      <option value='000000019'>Leadership</option>
-                      <option value='000000020'>Gaming</option>
-                    </select>
                     <input type='number' placeholder='Fee' id='fee' defaultValue={event.Fee || ''} />
                     <input type='text' placeholder='Perks' id='perks' defaultValue={event.Perks || ''} />
-                    <input type='text' placeholder='Image link' id='img' defaultValue={event.Img_file_path || ''} />
                     <input type='text' placeholder='Location' id='location' defaultValue={event.Location || ''} />
                     <input type='text' placeholder='Online or In Person?' id='onlineInPerson' defaultValue={event.OnlineInPerson || ''} />
                     <input type='text' placeholder='Sign up info' id='signUpInfo' defaultValue={event.SignUpInfo || ''} />
                     <input type='text' placeholder='Eligibility' id='eligibility' defaultValue={event.Eligibility || ''} />
-                    <input type='datetime-local' placeholder='Date and time' id='dateTime' defaultValue={event.DateTime || ''} />
+                    <input type='datetime-local' placeholder='Date and time' id='dateTime' required defaultValue={event.DateTime || ''} />
                     <button type='submit'>Confirm</button>
                 </div>
             </form>

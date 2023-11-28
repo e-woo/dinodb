@@ -1,5 +1,5 @@
 import express from "express"
-import { showClub, get4Clubs, createClub, editClub, getExecs, deleteClub } from "../controllers/club.js"
+import { showClub, get4Clubs, createClub, editClub, getExecs, deleteClub, joinClub, leaveClub } from "../controllers/club.js"
 
 const router = express.Router()
 
@@ -9,5 +9,7 @@ router.post("/create", createClub)
 router.post("/edit", editClub)
 router.post("/getExecs", getExecs)
 router.delete("/delete", deleteClub)
+router.post("/join", joinClub)
+router.delete("/leave", leaveClub)
 
 export default router

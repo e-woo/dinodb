@@ -158,3 +158,33 @@ export const deleteClub = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+export const joinClub = async (req, res) => {
+    const { UCID, Activity_ID } = req.body;
+
+    try {
+        const q = `INSERT INTO MEMBER_OF (Club_ID, Member_UCID)
+                    VALUES (?, ?)`;
+        db.query(q, [Activity_ID, UCID]);
+
+        return res.status(201).json({ Activity_ID: Activity_ID });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+export const leaveClub = async (req, res) => {
+    const { UCID, Activity_ID } = req.body;
+
+    try {
+        const q = `DELETE FROM MEMBER_OF
+                    WHERE Member_UCID = ? AND Club_ID = ?`;
+        db.query(q, [UCID, Activity_ID]);
+
+        return res.status(201).json({ message: "Successfully left club" });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

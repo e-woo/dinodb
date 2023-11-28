@@ -29,20 +29,6 @@ const Eventpage = () => {
       Eligibility: '',
     })
 
-    const handleDelete = async () => {
-        if (window.confirm("Are you sure you want to delete this event?")) {
-          try {
-            await axios.delete(`/event/delete`, { data: { Activity_ID: id } });
-            navigate(`../search`);
-            alert("Event deleted successfully");
-    
-          } catch (error) {
-            console.error("Error deleting event", error);
-            alert("Failed to delete event");
-          }
-        }
-      }
-
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -62,10 +48,10 @@ const Eventpage = () => {
               Eligibility: res.data.Eligibility,
             });
 
-            const execRes = await axios.post("/event/getExecs", {Activity_ID: id});
-            console.log(execRes);
+            const idRes = await axios.post("/event/getID", { Name: id });
+
+            const execRes = await axios.post("/event/getExecs", {Activity_ID: idRes.data.Activity_ID});
             const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
-            console.log(execUCIDs);
     
             if (execUCIDs.includes(accountUCID)) {
               setEditable(true);
@@ -76,7 +62,33 @@ const Eventpage = () => {
           }
         }
         fetchData();
-      }, [id]);
+    }, [id]);
+
+    const handleDelete = async () => {
+      if (window.confirm("Are you sure you want to delete this event?")) {
+        try {
+          const clubIDRes = await axios.post("/event/getClubID", { Name: id });
+
+          if (clubIDRes.data) {
+            console.log("lol")
+            await axios.delete(`/event/delete2`, { data: {Name: id}});
+            navigate(`../search`);
+            alert("Event deleted successfully");
+
+          } else {
+            console.log("lol2")
+            const idRes = await axios.post("/event/getID", { Name: id });
+            await axios.delete(`/event/delete`, { data: { Activity_ID: idRes.data.Activity_ID } });
+            navigate(`../search`);
+            alert("Event deleted successfully");
+          }
+  
+        } catch (error) {
+          console.error("Error deleting event", error);
+          alert("Failed to delete event");
+        }
+      }
+    }
 
     // send a request here to see if the current user should have permissions to edit the activity
     

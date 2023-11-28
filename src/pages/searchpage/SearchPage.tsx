@@ -116,11 +116,11 @@ const PostsRow = ({
               <img src={post.Img_file_path|| 'default-image-url.jpg'} alt={post.Name} />
             </div>
             <div className="postContent">
-              <Link className="link" to={`/${post.Type}/${post.Activity_ID}`}>
+              <Link className="link" to={`/${post.Type}/${post.Type === 'event' ? post.Name : post.Activity_ID}`}>
                 <h1 className="postH1">{post.Name}</h1>
               </Link>
               <p className="postP">{post.Description}</p>
-              <form action={"./" + post.Type + "/" + post.Activity_ID}>
+              <form action={`./${post.Type}/${post.Type === 'event' ? post.Name : post.Activity_ID}`}>
                 <button className="postsButton">Learn More</button>
               </form>
             </div>

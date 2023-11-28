@@ -15,6 +15,7 @@ const Clubpage = () => {
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
 
+  const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
   const [club, setClub] = useState({
     Activity_ID: id,
@@ -42,6 +43,35 @@ const Clubpage = () => {
       } catch (error) {
         console.error("Error deleting club", error);
         alert("Failed to delete club");
+      }
+    }
+  }
+
+  const handleJoin = async () => {
+    try {
+      await axios.post(`/club/join`, { UCID: accountUCID, Activity_ID: id });
+      setJoined(true);
+
+    } catch (error) {
+      console.log("Error joining club", error);
+      alert("Failed to join club");
+    }
+  }
+
+  const handleLeave = async () => {
+    if (window.confirm("Are you sure you want to leave this club?")) {
+      try {
+        await axios.delete(`/club/leave`, {
+          data: {
+            UCID: accountUCID,
+            Activity_ID: id
+          }
+        });
+        setJoined(false);
+  
+      } catch (error) {
+        console.log("Error leaving club", error);
+        alert("Failed to leave club");
       }
     }
   }
@@ -91,6 +121,13 @@ const Clubpage = () => {
         </div>
         <div className="title-container">
           <h1>{club.Name}</h1>
+          {currentUser ? (
+            joined ? (
+              <button className="delete-button" onClick={handleLeave}>Leave</button>
+            ) : (
+              <button className="edit-button" onClick={handleJoin}>Join</button>
+            )
+          ) : null}
           {editable && (
             <>
               <a href={`/club/${id}/edit`}>

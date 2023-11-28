@@ -5,10 +5,10 @@ export const showEvent = (req, res) => {
 
     const q = `SELECT EA.Activity_ID, EA.Img_file_path, E.Name, E.Description, E.Type, E.Location, E.OnlineInPerson, E.SignUpInfo, E.Perks, E.Fee, E.Eligibility, E.Date_and_Time
                 FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
-                WHERE E.Activity_ID = ?
-                AND EA.Activity_ID = E.Activity_ID`
+                WHERE EA.Activity_ID = E.Activity_ID
+                AND (E.Activity_ID = ? OR E.Name = ?)`
 
-    db.query(q, [req.body.Activity_ID], (err, data) => {
+    db.query(q, [req.body.Activity_ID, req.body.Activity_ID], (err, data) => {
         if (err)
             return res.json(err)
 
@@ -77,45 +77,15 @@ export const createEvent = async (req, res) => {
 };
 
 export const editEvent = async (req, res) => {
-    const { id, name, description, img, tags, facultyType, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime, perks } = req.body;
+    const { name, description, perks, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime } = req.body;
 
     try {
-        const q1 = `UPDATE EXTRACURRICULAR_ACTIVITY 
-                    SET Description = ?, Fee = ?, Schedule = ?, InterviewRequired = ?, ApplicationRequired = ?, WeekCommitmentHour = ?, Faculty_Name = ?, Img_file_path = ?
-                    WHERE Activity_ID = ?`;
-
-        await db.promise().query(q1, [ 
-            description ?? '', 
-            fee === '' ? null : fee,
-            '', 
-            '', 
-            '', 
-            null,
-            facultyType ?? '', 
-            img,
-            id
-        ]);
-
-        if (tags !== '') {
-            const q2 = `UPDATE CATEGORIZED_BY
-                        SET Tag_ID = ?
-                        WHERE Activity_ID = ?`;
-            await db.promise().query(q2, [tags, id]);
-        }
-
-        // if (perks !== '') {
-        //     const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS
-        //                 SET Perk = ?
-        //                 WHERE Activity_ID = ?`;
-        //     await db.promise().query(q3, [perks, id]);
-        // }
-
-        const q4 = `UPDATE EVENT
+        const q = `UPDATE EVENT
                     SET Description = ?, Location = ?, OnlineInPerson = ?, SignUpInfo = ?, Perks = ?, Fee = ?, Eligibility = ?, Date_and_Time = ?
-                    WHERE Activity_ID = ? AND Name = ?`;
-        await db.promise().query(q4, [description, location, onlineInPerson, signUpInfo, perks, fee === '' ? null : fee, eligibility, dateTime === '' ? null : dateTime, id, name]);
+                    WHERE Name = ?`;
+        await db.promise().query(q, [description, location, onlineInPerson, signUpInfo, perks, fee === '' ? null : fee, eligibility, dateTime === '' ? null : dateTime, name]);
 
-        return res.status(201).json({ activityId: id });
+        return res.status(201).json({ Name: name });
 
     } catch (err) {
         return res.status(500).json(err);
@@ -142,6 +112,47 @@ export const getExecs = async (req, res) => {
     }
 }
 
+export const getID = async (req, res) => {
+    const { Name } = req.body;
+
+    try {
+        const q = `SELECT Activity_ID
+                    FROM EVENT
+                    WHERE Name = ?`
+
+        db.query(q, [Name], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data[0]);
+        })
+        
+    } catch {
+        return res.status(500).json(err);
+    }
+}
+
+export const getClubID = async (req, res) => {
+    const { Name } = req.body;
+
+    try {
+        const q = `SELECT DISTINCT C.Activity_ID
+                    FROM CLUB AS C, EVENT AS E
+                    WHERE Name = ?
+                    AND C.Activity_ID = E.Activity_ID`
+
+        db.query(q, [Name], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data[0]);
+        })
+        
+    } catch {
+        return res.status(500).json(err);
+    }
+}
+
 export const deleteEvent = async (req, res) => {
     const { Activity_ID } = req.body;
 
@@ -151,6 +162,20 @@ export const deleteEvent = async (req, res) => {
         await db.promise().query(`DELETE FROM EVENT WHERE Activity_ID = ?`, [Activity_ID]);
 
         await db.promise().query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [Activity_ID]);
+
+        return res.status(200).json({ message: "Event successfully deleted" });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+export const deleteEvent2 = async (req, res) => {
+    const { Name } = req.body;
+
+    try {
+
+        await db.promise().query(`DELETE FROM EVENT WHERE Name = ?`, [Name]);
 
         return res.status(200).json({ message: "Event successfully deleted" });
 
