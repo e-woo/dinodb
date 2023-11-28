@@ -19,7 +19,6 @@ import SearchPage from "./pages/searchpage/SearchPage";
 import Announcements from "./pages/announcementslist/Announcements";
 import Announcement from "./pages/announcementpage/Announcement";
 import CreatePage from "./pages/createpage/CreatePage";
-import AdminPage from "./pages/adminpage/admin";
 import ProfilePage from "./pages/profilepage/profile";
 import CreateAnnouncement from "./pages/createpage/CreateAnnouncement";
 import EditClubpage from "./pages/clubpage/EditClubpage";
@@ -54,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "club/:id/edit",
-        element: <EditClubpage />
+        element: <EditClubpage />,
       },
       {
         path: "/event/:id",
@@ -62,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/event/:id/edit",
-        element: <EditEventPage />
+        element: <EditEventPage />,
       },
       {
         path: "/program/:id",
@@ -70,7 +69,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/program/:id/edit",
-        element: <EditProgramPage />
+        element: <EditProgramPage />,
       },
       {
         path: "/volunteer/:id",
@@ -78,7 +77,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/volunteer/:id/edit",
-        element: <EditVolunteerPage />
+        element: <EditVolunteerPage />,
       },
       {
         path: "/search",
@@ -98,23 +97,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/announce",
-        element: <CreateAnnouncement />
+        element: <CreateAnnouncement />,
       },
       {
         path: "/profile",
         element: <ProfilePage />,
       },
       {
-        path: '/profile/edit',
-        element: <EditProfile />
+        path: "/profile/edit",
+        element: <EditProfile />,
       },
       {
-        path: '/profile/editpassword',
-        element: <EditPassword />
-      },
-      {
-        path: "/admin/",
-        element: <AdminPage />,
+        path: "/profile/editpassword",
+        element: <EditPassword />,
       },
     ],
   },
