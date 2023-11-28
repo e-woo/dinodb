@@ -97,12 +97,17 @@ const Clubpage = () => {
         });
 
         const execRes = await axios.post("/club/getExecs", {Activity_ID: id});
-        console.log(execRes);
         const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
-        console.log(execUCIDs);
 
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
+        }
+
+        const memRes = await axios.post("/club/getMembers", {Activity_ID: id});
+        const memUCIDs = memRes.data.map((member: { Member_UCID: any; }) => member.Member_UCID);
+
+        if (memUCIDs.includes(accountUCID)) {
+          setJoined(true);
         }
 
       } catch (error) {

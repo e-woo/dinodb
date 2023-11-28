@@ -142,6 +142,26 @@ export const getExecs = async (req, res) => {
     }
 }
 
+export const getMembers = async (req, res) => {
+    const { Activity_ID } = req.body;
+
+    try {
+        const q = `SELECT Member_UCID
+                    FROM MEMBER_OF
+                    WHERE Club_ID = ?`;
+        
+        db.query(q, [Activity_ID], (err, data) => {
+            if (err)
+                return res.json(err);
+
+            return res.status(200).json(data);
+        });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
 export const deleteClub = async (req, res) => {
     const { Activity_ID } = req.body;
 
