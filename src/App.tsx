@@ -24,6 +24,7 @@ import ProfilePage from "./pages/profilepage/profile";
 import CreateAnnouncement from "./pages/createpage/CreateAnnouncement";
 import EditClubpage from "./pages/clubpage/EditClubpage";
 import EditEventPage from "./pages/eventpage/EditEventpage";
+import CreateEventPage from "./pages/createpage/CreateEventpage";
 import EditProgramPage from "./pages/programpage/EditProgrampage";
 import EditVolunteerPage from "./pages/volunteerpage/EditVolunteerpage";
 import EditProfile from "./pages/profilepage/editprofile";
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/event/:id/edit",
         element: <EditEventPage />
+      },
+      {
+        path: "/event/:id/create",
+        element: <CreateEventPage />
       },
       {
         path: "/program/:id",

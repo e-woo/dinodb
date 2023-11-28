@@ -88,8 +88,15 @@ const Programpage = () => {
         </div>
         <div className="title-container">
           <h1>{program.Name}</h1>
-          {editable && (
+
+        </div>
+      </div>
+      <div className="button-row">
+      {editable && (
           <>
+            <a href={`/event/${id}/create`}>
+              <button className="edit-button">Create Event</button>
+            </a>
             <a href={`/program/${id}/edit`}>
               <button className="edit-button">Edit</button>
             </a>
@@ -98,7 +105,6 @@ const Programpage = () => {
             </button>
           </>
         )}
-        </div>
       </div>
       <div className="desc">{program.Description}</div>
         <div className="more-info">

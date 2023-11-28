@@ -76,6 +76,21 @@ export const createEvent = async (req, res) => {
     }
 };
 
+export const createEvent2 = async (req, res) => {
+    const { id, name, description, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime, perks } = req.body;
+
+    try {
+        const q = `INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, OnlineInPerson, SignUpInfo, Perks, Fee, Eligibility, Date_and_Time) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        await db.promise().query(q, [id, name, description, 'event', location, onlineInPerson, signUpInfo, perks, fee === '' ? null : fee, eligibility, dateTime === '' ? null : dateTime]);
+
+        return res.status(200).json({ message: "Event successfully created" });
+
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
 export const editEvent = async (req, res) => {
     const { name, description, perks, location, onlineInPerson, signUpInfo, fee, eligibility, dateTime } = req.body;
 
@@ -137,9 +152,11 @@ export const getClubID = async (req, res) => {
 
     try {
         const q = `SELECT DISTINCT C.Activity_ID
-                    FROM CLUB AS C, EVENT AS E
+                    FROM CLUB AS C, EVENT AS E, PROGRAM AS P, VOLUNTEERING_OPPORTUNITY AS V
                     WHERE Name = ?
-                    AND C.Activity_ID = E.Activity_ID`
+                    AND (C.Activity_ID = E.Activity_ID
+                        OR P.Activity_ID = E.Activity_ID
+                        OR V.Activity_ID = E.Activity_ID)`;
 
         db.query(q, [Name], (err, data) => {
             if (err)

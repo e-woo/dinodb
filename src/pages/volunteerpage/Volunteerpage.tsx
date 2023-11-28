@@ -81,14 +81,20 @@ const Volunteerpage = () => {
     // send a request here to see if the current user should have permissions to edit the activity
   return (
     <div className="volunteer-page">
-              <div className="title-and-img">
+      <div className="title-and-img">
         <div className="img-container">
           <img src={volunteer.Img_file_path} alt="Club Logo"></img>
         </div>
         <div className="title-container">
           <h1>{volunteer.Name}</h1>
-          {editable && (
+        </div>
+      </div>
+      <div className="button-row">
+      {editable && (
           <>
+            <a href={`/event/${id}/create`}>
+              <button className="edit-button">Create Event</button>
+            </a>
             <a href={`/volunteer/${id}/edit`}>
               <button className="edit-button">Edit</button>
             </a>
@@ -97,7 +103,6 @@ const Volunteerpage = () => {
             </button>
           </>
         )}
-        </div>
       </div>
       <div className="desc">{volunteer.Description}</div>
         <div className="more-info">
