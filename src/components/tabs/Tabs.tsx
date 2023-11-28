@@ -21,7 +21,7 @@ const ReactTabs = () => {
     },
   ];
   const [value, setValue] = React.useState(0);
-  const excurtypes = ["clubs", "volunteer", "programs", "events"];
+  const excurtypes = ["club", "volunteer", "programs", "events"];
 
   return (
     <div className="activityInfo">

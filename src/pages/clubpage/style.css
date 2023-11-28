@@ -154,6 +154,10 @@
         background-color: rgb(255, 70, 70);
         color: white;
     }
+
+    &.announcement-button {
+        width: 200px;
+    }
 }
 
 .delete-button {

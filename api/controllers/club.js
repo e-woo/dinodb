@@ -208,3 +208,31 @@ export const leaveClub = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+export const getExecClubs = async (req, res) => {
+    const { id } = req.body;
+
+    try {
+        const q = 'SELECT UCID FROM activity_exec WHERE ACTIVITY_ID = ?'
+        db.query(q, [id], (err, data) => {
+            if (err)
+                return res.json(err);
+            return res.status(200).json(data);
+        })
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+export const postAnnouncement = async (req, res) => {
+    const { id, title, body, author, date } = req.body;
+
+    try {
+        const q = 'INSERT INTO announcement (Activity_ID, Title, Announcement, Author, Date) VALUES (?, ?, ?, ?, ?)';
+
+        db.query(q, [id, title, body, author, date]);
+        return res.status(201).json({ message: "Successfully posted announcement!", status: 201 });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}

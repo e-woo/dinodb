@@ -1,10 +1,12 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import './style.css'
+import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../../context/authContext';
+import axios from 'axios';
 
-interface CreateElements extends HTMLFormControlsCollection   {
-    extracurricular: HTMLInputElement;
+interface CreateElements extends HTMLFormControlsCollection {
     title: HTMLInputElement;
-    announcement: HTMLInputElement;
+    body: HTMLInputElement;
 
 }
    
@@ -13,45 +15,57 @@ interface CreateForm extends HTMLFormElement {
 }
 
 const CreateAnnouncement = () => {
-    const [extracurricular, setExtracurricular] = useState<string>('');
-    const [warning, setWarning] = useState<boolean>(false);
+
+    const navigate = useNavigate()
+    
+    const { id } = useParams();
+    const [exec, setExec] = useState(false);
+    const { currentUser } = useContext(AuthContext)
+    const accountUCID = currentUser?.UCID;
+
+    useEffect(() => {
+        async function getExecs() {
+            const execRes = await axios.post("/club/getExecs", {Activity_ID: id});
+            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
+
+            setExec(execUCIDs.includes(accountUCID));
+        }
+        getExecs();
+    }, [])
+
+
+
     const handleSubmit = async (e : FormEvent<CreateForm>) => {
         e.preventDefault();
+        console.log(currentUser)
         const elements = e.currentTarget.elements;
-        const chosenExtracurricular = e.currentTarget.elements.extracurricular.value;
-        
-        if (chosenExtracurricular === 'choose') {
-            setWarning(true);
-            return;
-        }
         const formData = {
-            extracurricular: elements.extracurricular.value,
+            id: id,
             title: elements.title.value,
-            announcement: elements.announcement.value
+            body: elements.body.value,
+            author: currentUser.FName + ' ' + currentUser.LName,
+            date: new Date().toISOString().split('T')[0]
         }
-        console.log(formData);
-        setWarning(false);
-        // send formData here
 
+        console.log(formData);
+        // send formData here
+        console.log(await axios.post('/club/postAnnouncement', formData));
+        navigate(`../club/${id}`)
     };
 
     return (
     <div className='create'>
-        <h1 className="bigHeader">Create an Announcement!</h1>
-        <form onSubmit={handleSubmit} method='post'>
-            <div className='createBody'>
-                {/* select menu to choose which extracurricular to create an announcement for (user must be a higher up)*/}
-                <select value={extracurricular} onChange={e => {setExtracurricular(e.target.value)}} className='dropdown' id='extracurricular'>
-                    <option value='choose'>Choose an Extracurricular...</option>
-                    <option value='club1'>Club1</option>
-                    <option value='club2'>Club2</option>
-                </select>
-                <input type='text' placeholder='Title' id='title' required/>
-                <textarea placeholder='Announcement...' id='announcement' rows={6} required/>
-                <button type='submit'>Create</button>
-                { warning ? <p className='warningText'>Please choose an extracurricular to post to!</p> : <></> }
-            </div>
-        </form>
+        {exec ? <>
+        <h1 className="bigHeader">Post Announcement!</h1>
+            <form onSubmit={handleSubmit} method='post'>
+                <div className='createBody'>
+                    <input type='text' placeholder='Title' id='title' required/>
+                    <textarea placeholder='Body...' id='body' rows={6} required/>
+                    <button type='submit'>Post</button>
+                </div>
+            </form>
+        </> : <h1 className="bigHeader">You do not have permission to access this page!</h1>
+        }
     </div>
   )
 }

@@ -144,6 +144,9 @@ const Clubpage = () => {
               <a href={`/club/${id}/edit`}>
                 <button className="edit-button">Edit</button>
               </a>
+              <a href={`/club/${id}/announcement`}>
+                <button className="edit-button announcement-button">Post Announcement</button>
+              </a>
               <button className="delete-button" onClick={handleDelete}>
                 Delete
               </button>

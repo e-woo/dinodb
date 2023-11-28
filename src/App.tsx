@@ -58,6 +58,10 @@ const router = createBrowserRouter([
         element: <EditClubpage />
       },
       {
+        path: 'club/:id/announcement',
+        element: <CreateAnnouncement />
+      },
+      {
         path: "/event/:id",
         element: <Eventpage />,
       },
