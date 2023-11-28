@@ -11,6 +11,7 @@ import {
   deleteEvent2,
   joinEvent,
   leaveEvent,
+  createEvent2,
 } from "../controllers/event.js";
 
 const router = express.Router();
@@ -18,6 +19,8 @@ const router = express.Router();
 router.post("/show", showEvent);
 router.get("/get4Events", get4Events);
 router.post("/create", createEvent);
+
+router.post("/create2", createEvent2);
 router.post("/edit", editEvent);
 router.post("/getID", getID);
 router.post("/getExecs", getExecs);

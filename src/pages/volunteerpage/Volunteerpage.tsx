@@ -145,6 +145,21 @@ const Volunteerpage = () => {
           )}
         </div>
       </div>
+      <div className="button-row">
+        {editable && (
+          <>
+            <a href={`/event/${id}/create`}>
+              <button className="edit-button">Create Event</button>
+            </a>
+            <a href={`/volunteer/${id}/edit`}>
+              <button className="edit-button">Edit</button>
+            </a>
+            <button className="delete-button" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
+      </div>
       <div className="desc">{volunteer.Description}</div>
       <div className="more-info">
         <div className="info-row">

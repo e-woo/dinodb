@@ -126,7 +126,10 @@ const Clubpage = () => {
         </div>
         <div className="title-container">
           <h1>{club.Name}</h1>
-          {currentUser ? (
+        </div>
+      </div>
+      <div className="button-row">
+        {currentUser ? (
             joined ? (
               <button className="delete-button" onClick={handleLeave}>Leave</button>
             ) : (
@@ -135,8 +138,14 @@ const Clubpage = () => {
           ) : null}
           {editable && (
             <>
+              <a href={`/event/${id}/create`}>
+                <button className="edit-button">Create Event</button>
+              </a>
               <a href={`/club/${id}/edit`}>
                 <button className="edit-button">Edit</button>
+              </a>
+              <a href={`/club/${id}/announcement`}>
+                <button className="edit-button announcement-button">Post Announcement</button>
               </a>
               <button className="delete-button" onClick={handleDelete}>
                 Delete
@@ -144,7 +153,6 @@ const Clubpage = () => {
             </>
           )}
         </div>
-      </div>
       <div className="desc">{club.Description}</div>
         <div className="more-info">
           <div className="info-row">
