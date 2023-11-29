@@ -106,6 +106,16 @@ const Volunteerpage = () => {
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
         }
+        const memRes = await axios.post("/volunteer/getMembers", {
+          Activity_ID: id,
+        });
+        const memUCIDs = memRes.data.map(
+          (member: { Student_UCID: any }) => member.Student_UCID
+        );
+
+        if (memUCIDs.includes(accountUCID)) {
+          setJoined(true);
+        }
       } catch (error) {
         console.log(error);
       }

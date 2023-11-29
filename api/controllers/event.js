@@ -271,27 +271,45 @@ export const deleteEvent2 = async (req, res) => {
   }
 };
 
-export const joinEvent = async (req, res) => {
-  const { UCID, Activity_ID, Event_name, Sign_up } = req.body;
+export const getMembers = async (req, res) => {
+  const { Event_Name } = req.body;
 
   try {
-    const q = `INSERT INTO ATTENDS (Activity_ID, Student_UCID, Event_Name, Sign_Up)
-                      VALUES (?, ?, ?, ?)`;
-    db.query(q, [Activity_ID, UCID, Event_name, Sign_up]);
+    const q = `SELECT Student_UCID
+                    FROM ATTENDS
+                    WHERE Event_Name = ?`;
 
-    return res.status(201).json({ Activity_ID: Activity_ID });
+    db.query(q, [Event_Name], (err, data) => {
+      if (err) return res.json(err);
+
+      return res.status(200).json(data);
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const joinEvent = async (req, res) => {
+  const { UCID, Name } = req.body;
+
+  try {
+    const q = `INSERT INTO ATTENDS (Student_UCID, Event_Name)
+                      VALUES (?, ?)`;
+    db.query(q, [UCID, Name]);
+
+    return res.status(201).json({ Name: Name });
   } catch (err) {
     return res.status(500).json(err);
   }
 };
 
 export const leaveEvent = async (req, res) => {
-  const { UCID, Activity_ID } = req.body;
+  const { UCID, Name } = req.body;
 
   try {
     const q = `DELETE FROM ATTENDS
-                      WHERE Student_UCID = ? AND Activity_ID = ?`;
-    db.query(q, [UCID, Activity_ID]);
+                      WHERE Student_UCID = ? AND Event_Name = ?`;
+    db.query(q, [UCID, Name]);
 
     return res.status(201).json({ message: "Successfully left event" });
   } catch (err) {
@@ -322,7 +340,7 @@ export const execEvents = async (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
     FROM ACTIVITY_EXEC AS E 
     JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
-    JOIN EVENT AS C ON E.Program_ID = C.Activity_ID
+    JOIN EVENT AS C ON E.Activity_ID = C.Activity_ID
     WHERE E.UCID = ?`;
 
   try {

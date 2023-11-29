@@ -10,6 +10,7 @@ import {
   leaveProgram,
   joinedPrograms,
   execPrograms,
+  getMembers,
 } from "../controllers/program.js";
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.post("/create", createProgram);
 router.post("/edit", editProgram);
 router.post("/getExecs", getExecs);
 router.delete("/delete", deleteProgram);
+router.post("/getMembers", getMembers);
 router.post("/join", joinProgram);
 router.delete("/leave", leaveProgram);
 

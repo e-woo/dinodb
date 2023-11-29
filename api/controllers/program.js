@@ -197,6 +197,24 @@ export const deleteProgram = async (req, res) => {
   }
 };
 
+export const getMembers = async (req, res) => {
+  const { Activity_ID } = req.body;
+
+  try {
+    const q = `SELECT Student_UCID
+                    FROM PART_OF
+                    WHERE Program_ID = ?`;
+
+    db.query(q, [Activity_ID], (err, data) => {
+      if (err) return res.json(err);
+
+      return res.status(200).json(data);
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
 export const joinProgram = async (req, res) => {
   const { UCID, Activity_ID } = req.body;
 
@@ -248,7 +266,7 @@ export const execPrograms = async (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
     FROM ACTIVITY_EXEC AS E 
     JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
-    JOIN PROGRAM AS C ON E.Program_ID = C.Activity_ID
+    JOIN PROGRAM AS C ON E.Activity_ID = C.Activity_ID
     WHERE E.UCID = ?`;
 
   try {

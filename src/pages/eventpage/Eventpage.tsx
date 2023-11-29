@@ -59,6 +59,17 @@ const Eventpage = () => {
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
         }
+
+        const memRes = await axios.post("/event/getMembers", {
+          Activity_ID: id,
+        });
+        const memUCIDs = memRes.data.map(
+          (member: { Event_Name: any }) => member.Event_Name
+        );
+
+        if (memUCIDs.includes(accountUCID)) {
+          setJoined(true);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -94,7 +105,7 @@ const Eventpage = () => {
 
   const handleJoin = async () => {
     try {
-      await axios.post(`/event/join`, { UCID: accountUCID, Activity_ID: id });
+      await axios.post(`/event/join`, { UCID: accountUCID, Name: id });
       setJoined(true);
     } catch (error) {
       console.log("Error joining event", error);
@@ -108,7 +119,7 @@ const Eventpage = () => {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: accountUCID,
-            Activity_ID: id,
+            Name: id,
           },
         });
         setJoined(false);

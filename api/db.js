@@ -5,7 +5,10 @@ const pool = mysql.createPool({
   connectionLimit: 10, // Set a limit for the number of connections in the pool
   host: "localhost",
   user: "root",
-  password: "DDegasi[545]?",
+  password: "KAl722kXge7yrLu",
+  // KAl722kXge7yrLu
+  // DDegasi[545]?
+
   database: "dinodb",
 });
 
