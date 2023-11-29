@@ -15,6 +15,7 @@ const Register = () => {
   });
 
   const [isExecutive, setIsExecutive] = useState(false);
+  const [isSupervisor, setIsSupervisor] = useState(false);
 
   const [err, setError] = useState(null);
 
@@ -22,11 +23,24 @@ const Register = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.type === "checkbox") {
-      setIsExecutive(e.target.checked);
+      if (e.target.id === "isExecutive") {
+        setIsExecutive(e.target.checked);
+        if (e.target.checked) {
+          setIsSupervisor(!e.target.checked);
+        }
+        setInputs((prev) => ({
+          ...prev,
+          AccountType: e.target.checked ? "EXECUTIVE" : "STUDENT",
+        }));
+      } else if (e.target.id === "isSupervisor") {
+        setIsSupervisor(e.target.checked);
+        if (e.target.checked) {
+          setIsExecutive(!e.target.checked);
+        }
       setInputs((prev) => ({
         ...prev,
-        AccountType: e.target.checked ? "EXECUTIVE" : "STUDENT",
       }));
+      }
     } else {
       setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
@@ -89,6 +103,18 @@ const Register = () => {
               />
             </div>
           </div>
+          <div className="box-field2">
+            <div className="name-field">
+              <label htmlFor="isSupervisor">Register as Supervisor</label>
+              <input
+                className="executive-checkbox"
+                type="checkbox"
+                id="isSupervisor"
+                checked={isSupervisor}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
           <div className="text-field">
             <input
               name="Email"
@@ -99,29 +125,33 @@ const Register = () => {
             />
             <i className="bx bxs-envelope"></i>
           </div>
-          <div className="text-field">
-            <input
-              name="UCID"
-              type="text"
-              placeholder="UCID"
-              pattern="[0-9]{8}"
-              required
-              onChange={handleChange}
-            />
-            <i className="bx bxs-id-card"></i>
-          </div>
-          <div className="text-field">
-            <input
-              name="DOB"
-              type="text"
-              placeholder="Date of Birth"
-              onFocus={(e) => (e.target.type = "date")}
-              onBlur={DateOnBlur}
-              required
-              onChange={handleChange}
-            />
-            <i className="bx bxs-calendar"></i>
-          </div>
+          {!isSupervisor ? 
+          <>
+            <div className="text-field">
+              <input
+                name="UCID"
+                type="text"
+                placeholder="UCID"
+                pattern="[0-9]{8}"
+                required
+                onChange={handleChange}
+              />
+              <i className="bx bxs-id-card"></i>
+            </div>
+            <div className="text-field">
+              <input
+                name="DOB"
+                type="text"
+                placeholder="Date of Birth"
+                onFocus={(e) => (e.target.type = "date")}
+                onBlur={DateOnBlur}
+                required
+                onChange={handleChange}
+              />
+              <i className="bx bxs-calendar"></i>
+            </div>
+          </> : null
+          }
           <div className="text-field">
             <input
               name="Password"
