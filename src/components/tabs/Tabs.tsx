@@ -6,19 +6,236 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { exec } from "child_process";
 
 const ReactTabs = () => {
+  const navigate = useNavigate();
+  const [joined, setJoined] = useState(false);
+
   const [clubs, setClubs] = useState([]);
+  const [volunteers, setVolunteers] = useState([]);
+  const [programs, setPrograms] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  const [execClubs, setExecClubs] = useState([]);
+  const [execVolunteer, setExecVolunteer] = useState([]);
+  const [execPrograms, setExecPrograms] = useState([]);
+  const [execEvents, setExecEvents] = useState([]);
+
   const [value, setValue] = React.useState(0);
   const { currentUser } = useContext(AuthContext);
   const Member_UCID = currentUser?.UCID;
-  const excurtypes = ["clubs", "volunteer", "programs", "events"];
+  const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
+  const type = ["club", "volunteer", "program", "event"];
+  const membertypes = ["Member", "Executive"];
+  const allPosts = [clubs, volunteers, programs, events];
+  const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
+
+  const handleDeleteClub = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to delete this club?")) {
+      try {
+        await axios.delete(`/club/delete`, {
+          data: { Activity_ID: Activity_ID },
+        });
+        navigate(`../search`);
+        alert("Club deleted successfully");
+      } catch (error) {
+        console.error("Error deleting club", error);
+        alert("Failed to delete club");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleLeaveClub = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to leave this club?")) {
+      try {
+        await axios.delete(`/club/leave`, {
+          data: {
+            UCID: Member_UCID,
+            Activity_ID: Activity_ID,
+          },
+        });
+        setJoined(false);
+      } catch (error) {
+        console.log("Error leaving club", error);
+        alert("Failed to leave club");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleDeleteVolunteer = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to delete this volunteer?")) {
+      try {
+        await axios.delete(`/volunteer/delete`, {
+          data: { Activity_ID: Activity_ID },
+        });
+        navigate(`../search`);
+        alert("Volunteer deleted successfully");
+      } catch (error) {
+        console.error("Error deleting volunteer", error);
+        alert("Failed to delete volunteer");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleLeaveVolunteer = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to leave this volunteer?")) {
+      try {
+        await axios.delete(`/volunteer/leave`, {
+          data: {
+            UCID: Member_UCID,
+            Activity_ID: Activity_ID,
+          },
+        });
+        setJoined(false);
+      } catch (error) {
+        console.log("Error leaving volunteer", error);
+        alert("Failed to leave volunteer");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleDeleteProgram = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to delete this program?")) {
+      try {
+        await axios.delete(`/program/delete`, {
+          data: { Activity_ID: Activity_ID },
+        });
+        navigate(`../search`);
+        alert("Program deleted successfully");
+      } catch (error) {
+        console.error("Error deleting program", error);
+        alert("Failed to delete program");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleLeaveProgram = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to leave this program?")) {
+      try {
+        await axios.delete(`/program/leave`, {
+          data: {
+            UCID: Member_UCID,
+            Activity_ID: Activity_ID,
+          },
+        });
+        setJoined(false);
+      } catch (error) {
+        console.log("Error leaving program", error);
+        alert("Failed to leave program");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleDeleteEvent = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      try {
+        await axios.delete(`/event/delete`, {
+          data: { Activity_ID: Activity_ID },
+        });
+        navigate(`../search`);
+        alert("Event deleted successfully");
+      } catch (error) {
+        console.error("Error deleting event", error);
+        alert("Failed to delete event");
+      }
+    }
+    window.location.reload();
+  };
+
+  const handleLeaveEvent = async (Activity_ID: number) => {
+    if (window.confirm("Are you sure you want to leave this event?")) {
+      try {
+        await axios.delete(`/event/leave`, {
+          data: {
+            UCID: Member_UCID,
+            Activity_ID: Activity_ID,
+          },
+        });
+        setJoined(false);
+      } catch (error) {
+        console.log("Error leaving event", error);
+        alert("Failed to leave event");
+      }
+    }
+    window.location.reload();
+  };
 
   useEffect(() => {
     axios
       .post("/club/joinedClubs", { UCID: Member_UCID })
       .then((res) => {
         setClubs(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/club/execClubs", { UCID: Member_UCID })
+      .then((res) => {
+        setExecClubs(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/volunteer/joinedVolunteer", { UCID: Member_UCID })
+      .then((res) => {
+        setVolunteers(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/volunteer/execVolunteer", { UCID: Member_UCID })
+      .then((res) => {
+        setExecVolunteer(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/program/joinedPrograms", { UCID: Member_UCID })
+      .then((res) => {
+        setPrograms(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/program/execPrograms", { UCID: Member_UCID })
+      .then((res) => {
+        setExecPrograms(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/event/joinedEvents", { UCID: Member_UCID })
+      .then((res) => {
+        setEvents(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+    axios
+      .post("/event/execEvents", { UCID: Member_UCID })
+      .then((res) => {
+        setExecEvents(res.data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -40,27 +257,79 @@ const ReactTabs = () => {
           <Tab label="Programs" />
           <Tab label="Event History" />
         </Tabs>
-        <ActivityList excurtype={excurtypes[value]} posts={clubs} />
+        <ActivityList
+          membertypes={membertypes[0]}
+          excurtype={excurtypes[value]}
+          type={type[value]}
+          posts={allPosts[value]}
+          handleDeleteClub={handleDeleteClub}
+          handleLeaveClub={handleLeaveClub}
+          handleDeleteVolunteer={handleDeleteVolunteer}
+          handleLeaveVolunteer={handleLeaveVolunteer}
+          handleDeleteProgram={handleDeleteProgram}
+          handleLeaveProgram={handleLeaveProgram}
+          handleDeleteEvent={handleDeleteEvent}
+          handleLeaveEvent={handleLeaveEvent}
+        />
+        <ActivityList
+          membertypes={membertypes[1]}
+          excurtype={excurtypes[value]}
+          type={type[value]}
+          posts={allExecPosts[value]}
+          handleDeleteClub={handleDeleteClub}
+          handleLeaveClub={handleLeaveClub}
+          handleDeleteVolunteer={handleDeleteVolunteer}
+          handleLeaveVolunteer={handleLeaveVolunteer}
+          handleDeleteProgram={handleDeleteProgram}
+          handleLeaveProgram={handleLeaveProgram}
+          handleDeleteEvent={handleDeleteEvent}
+          handleLeaveEvent={handleLeaveEvent}
+        />
       </Paper>
     </div>
   );
 };
 
 const ActivityList = ({
+  membertypes,
   excurtype,
+  type,
   posts,
+  handleDeleteClub,
+  handleLeaveClub,
+  handleDeleteVolunteer,
+  handleLeaveVolunteer,
+  handleDeleteProgram,
+  handleLeaveProgram,
+  handleDeleteEvent,
+  handleLeaveEvent,
 }: {
+  membertypes: string;
   excurtype: string;
+  type: string;
   posts: Array<{
     Activity_ID: number;
     Name: string;
     Description: string;
     Img_file_path: string;
   }>;
+  handleDeleteClub: (Activity_ID: number) => Promise<void>;
+  handleLeaveClub: (Activity_ID: number) => Promise<void>;
+
+  handleDeleteVolunteer: (Activity_ID: number) => Promise<void>;
+  handleLeaveVolunteer: (Activity_ID: number) => Promise<void>;
+
+  handleDeleteProgram: (Activity_ID: number) => Promise<void>;
+  handleLeaveProgram: (Activity_ID: number) => Promise<void>;
+
+  handleDeleteEvent: (Activity_ID: number) => Promise<void>;
+  handleLeaveEvent: (Activity_ID: number) => Promise<void>;
 }) => {
   return (
     <div className="tabSections">
-      <h1>Joined {excurtype}</h1>
+      <h1>
+        {membertypes} {excurtype}
+      </h1>
       <div className="tabPosts">
         {posts.map((post) => (
           <div className="gridPost" key={post.Activity_ID}>
@@ -68,40 +337,106 @@ const ActivityList = ({
               <img src={post.Img_file_path} alt="" />
             </div>
             <div className="gridContent">
-              <Link className="link" to={`/${excurtype}/${post.Activity_ID}`}>
+              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
                 <h1 className="postH1">{post.Name}</h1>
               </Link>
               <p className="postP">{post.Description}</p>
               <div className="buttons">
-                <Link to={`/${excurtype}/${post.Activity_ID}`}>
+                <Link to={`/${type}/${post.Activity_ID}`}>
                   <button className="postsButton createButton">View</button>
                 </Link>
-                <button className="postsButton deleteButton">Leave</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <h1>Hosted {excurtype}</h1>
-      <div className="tabPosts">
-        {posts.map((post) => (
-          <div className="gridPost" key={post.Activity_ID}>
-            <div className="gridImg">
-              <img src={post.Img_file_path} alt="" />
-            </div>
-            <div className="gridContent">
-              <Link className="link" to={`/${excurtype}/${post.Activity_ID}`}>
-                <h1 className="postH1">{post.Name}</h1>
-              </Link>
-              <p className="postP">{post.Description}</p>
-              <div className="buttons">
-                <Link to={`/${excurtype}/${post.Activity_ID}`}>
-                  <button className="postsButton createButton">View</button>
-                </Link>
-                <Link to={`/write?edit=2`}>
-                  <button className="postsButton editButton">Edit</button>
-                </Link>
-                <button className="postsButton deleteButton">Delete</button>
+
+                {excurtype === "Clubs" ? (
+                  membertypes === "Executive" ? (
+                    <div>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteClub(post.Activity_ID)}
+                      >
+                        Delete
+                      </button>
+                      <a href={`/${type}/${post.Activity_ID}/edit`}>
+                        <button className="edit-button">Edit</button>
+                      </a>
+                    </div>
+                  ) : membertypes === "Member" ? (
+                    <button
+                      className="postsButton deleteButton"
+                      onClick={() => handleLeaveClub(post.Activity_ID)}
+                    >
+                      Leave
+                    </button>
+                  ) : null
+                ) : null}
+
+                {excurtype === "Volunteer" ? (
+                  membertypes === "Executive" ? (
+                    <div>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteVolunteer(post.Activity_ID)}
+                      >
+                        Delete
+                      </button>
+                      <a href={`/${type}/${post.Activity_ID}/edit`}>
+                        <button className="edit-button">Edit</button>
+                      </a>
+                    </div>
+                  ) : membertypes === "Member" ? (
+                    <button
+                      className="postsButton deleteButton"
+                      onClick={() => handleLeaveVolunteer(post.Activity_ID)}
+                    >
+                      Leave
+                    </button>
+                  ) : null
+                ) : null}
+
+                {excurtype === "Programs" ? (
+                  membertypes === "Executive" ? (
+                    <div>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteProgram(post.Activity_ID)}
+                      >
+                        Delete
+                      </button>
+                      <a href={`/${type}/${post.Activity_ID}/edit`}>
+                        <button className="edit-button">Edit</button>
+                      </a>
+                    </div>
+                  ) : membertypes === "Member" ? (
+                    <button
+                      className="postsButton deleteButton"
+                      onClick={() => handleLeaveProgram(post.Activity_ID)}
+                    >
+                      Leave
+                    </button>
+                  ) : null
+                ) : null}
+
+                {excurtype === "Events" ? (
+                  membertypes === "Executive" ? (
+                    <div>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteEvent(post.Activity_ID)}
+                      >
+                        Delete
+                      </button>
+                      <a href={`/${type}/${post.Activity_ID}/edit`}>
+                        <button className="edit-button">Edit</button>
+                      </a>
+                    </div>
+                  ) : membertypes === "Member" ? (
+                    <button
+                      className="postsButton deleteButton"
+                      onClick={() => handleLeaveEvent(post.Activity_ID)}
+                    >
+                      Leave
+                    </button>
+                  ) : null
+                ) : null}
               </div>
             </div>
           </div>

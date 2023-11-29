@@ -12,6 +12,8 @@ import {
   joinEvent,
   leaveEvent,
   createEvent2,
+  joinedEvents,
+  execEvents,
 } from "../controllers/event.js";
 
 const router = express.Router();
@@ -30,4 +32,6 @@ router.delete("/delete2", deleteEvent2);
 router.post("/join", joinEvent);
 router.delete("/leave", leaveEvent);
 
+router.post("/joinedEvents", joinedEvents);
+router.post("/execEvents", execEvents);
 export default router;
