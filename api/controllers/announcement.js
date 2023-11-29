@@ -14,3 +14,15 @@ export const postAnnouncement = async (req, res) => {
       return res.status(500).json(err);
     }
 };
+
+export const getAnnouncements = async (req, res) => {
+    const q = `SELECT Activity_ID, Title, Announcement, Author, Date, Img_file_path
+                FROM announcement NATURAL JOIN extracurricular_activity
+                ORDER BY Date DESC`
+
+    db.query(q, (err, data) => {
+        if (err)
+            return res.json(err);
+        return res.status(200).json(data);
+    })
+}

@@ -43,7 +43,7 @@ const CreateAnnouncement = () => {
             title: elements.title.value,
             body: elements.body.value,
             author: currentUser.FName + ' ' + currentUser.LName,
-            date: new Date().toISOString().split('T')[0]
+            date: new Date().toISOString().slice(0, 19).replace('T', ' ')
         }
 
         // send formData here
