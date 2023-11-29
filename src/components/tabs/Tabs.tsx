@@ -135,13 +135,31 @@ const ReactTabs = () => {
   };
 
   const handleDeleteEvent = async (Activity_ID: number) => {
+    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
-        await axios.delete(`/event/delete`, {
-          data: { Activity_ID: Activity_ID },
+        const clubIDRes = await axios.post("/event/getClubID", {
+          Name: res.data.Name,
         });
-        navigate(`../search`);
-        alert("Event deleted successfully");
+
+        if (clubIDRes.data) {
+          console.log("lol");
+          await axios.delete(`/event/delete2`, {
+            data: { Name: res.data.Name },
+          });
+          navigate(`../search`);
+          alert("Event deleted successfully");
+        } else {
+          console.log("lol2");
+          const idRes = await axios.post("/event/getID", {
+            Name: res.data.Name,
+          });
+          await axios.delete(`/event/delete`, {
+            data: { Activity_ID: Activity_ID },
+          });
+          navigate(`../search`);
+          alert("Event deleted successfully");
+        }
       } catch (error) {
         console.error("Error deleting event", error);
         alert("Failed to delete event");
@@ -151,12 +169,14 @@ const ReactTabs = () => {
   };
 
   const handleLeaveEvent = async (Activity_ID: number) => {
+    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
     if (window.confirm("Are you sure you want to leave this event?")) {
       try {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: Member_UCID,
             Activity_ID: Activity_ID,
+            Name: res.data.Name,
           },
         });
         setJoined(false);

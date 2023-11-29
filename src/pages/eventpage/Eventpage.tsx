@@ -34,6 +34,7 @@ const Eventpage = () => {
     const fetchData = async () => {
       try {
         const res = await axios.post("/event/show", { Activity_ID: id });
+
         setEvent({
           Activity_ID: res.data.Activity_ID,
           Name: res.data.Name,
@@ -61,11 +62,14 @@ const Eventpage = () => {
         }
 
         const memRes = await axios.post("/event/getMembers", {
+          Event_Name: res.data.Name,
           Activity_ID: id,
         });
+        console.log("memres = " + memRes);
         const memUCIDs = memRes.data.map(
-          (member: { Event_Name: any }) => member.Event_Name
+          (member: { Student_UCID: any }) => member.Student_UCID
         );
+        console.log("ucids" + memUCIDs);
 
         if (memUCIDs.includes(accountUCID)) {
           setJoined(true);
@@ -105,7 +109,15 @@ const Eventpage = () => {
 
   const handleJoin = async () => {
     try {
-      await axios.post(`/event/join`, { UCID: accountUCID, Name: id });
+      const res = await axios.post("/event/show", { Activity_ID: id });
+
+      await axios.post(`/event/join`, {
+        UCID: accountUCID,
+        Activity_ID: id,
+        Name: res.data.Name,
+        signUpInfo: res.data.signUpInfo,
+      });
+
       setJoined(true);
     } catch (error) {
       console.log("Error joining event", error);
@@ -114,12 +126,14 @@ const Eventpage = () => {
   };
 
   const handleLeave = async () => {
+    const res = await axios.post("/event/show", { Activity_ID: id });
     if (window.confirm("Are you sure you want to leave this event?")) {
       try {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: accountUCID,
-            Name: id,
+            Activity_ID: id,
+            Name: res.data.Name,
           },
         });
         setJoined(false);
