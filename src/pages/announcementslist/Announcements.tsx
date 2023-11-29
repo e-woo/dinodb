@@ -1,66 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import axios from "axios";
 
 const Announcements = () => {
-  const posts = [
-    {
-      id: 121,
-      title: "Hackathon Winner Announced!",
-      date: "updated on Nov 12 2023",
-      author: "posted by bob for coding club",
-      desc: "Hacktahon that took place over the reading week winner announced",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      id: 113,
-      title: "New halloween event",
-      date: "updated on Nov 12 2023",
-      author: "posted by bob for coding club",
-      desc: "join.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      id: 452,
-      title: "Clash of Clans Clan War",
-      date: "updated on Nov 12 2023",
-      author: "posted by bob for coding club",
-      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct. The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-    {
-      id: 1312,
-      title: "Plant Club welcomes new executive",
-      date: "updated on Nov 12 2023",
-      author: "posted by bob for coding club",
-      desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-      img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-    },
-  ];
+  const [posts, setPosts] = useState<Array<Post>>([]);
+  useEffect(() => { 
+    async function getAnnouncements() {
+      setPosts((await axios.post('/announcement/getAnnouncements')).data);
+    }
+    getAnnouncements();
+  }, []) 
   return (
     <div className="announcements">
       <div className="bigHeader"> Announcements</div>
       <div className="gridPosts">
         {posts.map((post) => (
-          <div className="gridPost" key={post.id}>
+          <div className="gridPost" key={post.Activity_ID}>
             <div className="gridImg">
-              <img src={post.img} alt="" />
+              <img src={post.Img_file_path} alt="" />
             </div>
             <div className="gridContent">
               <div className="about">
-                <Link className="link" to={`/announcement/${post.id}`}>
-                  <h1 className="postH1">{post.title}</h1>
+                <Link className="link" to={`/announcement/${post.Activity_ID}`}>
+                  <h1 className="postH1">{post.Title}</h1>
                 </Link>
                 <div className="announcementInfo">
-                  <p className="userAuthor">{post.author}</p>
-                  <span>{post.date}</span>
+                  <p className="userAuthor">{post.Author}</p>
+                  <span>{new Intl.DateTimeFormat('en-CA', {
+                    dateStyle: 'long',
+                    timeStyle: 'short',
+                    hour12: true
+                  }).format(new Date(post.Date))}</span>
                 </div>
               </div>
 
               <div className="postP">
-                <p>{post.desc}</p>
+                <p>{post.Announcement}</p>
               </div>
-              <Link className="link" to={`/announcement/${post.id}`}>
+              <Link className="link" to={`/announcement/${post.Activity_ID}`}>
                 <button className="postsButton">Read More</button>
               </Link>
             </div>
@@ -70,5 +48,14 @@ const Announcements = () => {
     </div>
   );
 };
+
+interface Post {
+  Activity_ID: number,
+  Title: string,
+  Announcement: string,
+  Author: string,
+  Date: string,
+  Img_file_path: string
+}
 
 export default Announcements;

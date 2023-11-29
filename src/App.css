@@ -115,7 +115,6 @@ ul {
 
 .gridPosts {
   display: grid;
-  grid-auto-flow: column;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   margin: 5rem 7rem;
