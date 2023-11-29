@@ -298,3 +298,36 @@ export const leaveEvent = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+export const joinedEvents = async (req, res) => {
+  const { UCID } = req.body;
+
+  const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+               FROM ATTENDS AS MO 
+               JOIN EVENT AS C ON MO.Activity_ID = C.Activity_ID 
+               JOIN EXTRACURRICULAR_ACTIVITY AS EA ON C.Activity_ID = EA.Activity_ID
+               WHERE MO.Student_UCID = ?`;
+
+  try {
+    const [data] = await db.promise().query(q, [UCID]);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const execEvents = async (req, res) => {
+  const { UCID } = req.body;
+
+  const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+    FROM ACTIVITY_EXEC AS E 
+    JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
+    WHERE E.UCID = ?`;
+
+  try {
+    const [data] = await db.promise().query(q, [UCID]);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};

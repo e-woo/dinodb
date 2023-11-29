@@ -224,3 +224,36 @@ export const leaveProgram = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+export const joinedPrograms = async (req, res) => {
+  const { UCID } = req.body;
+
+  const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+               FROM PART_OF AS MO 
+               JOIN PROGRAM AS C ON MO.Program_ID = C.Activity_ID 
+               JOIN EXTRACURRICULAR_ACTIVITY AS EA ON C.Activity_ID = EA.Activity_ID
+               WHERE MO.Student_UCID = ?`;
+
+  try {
+    const [data] = await db.promise().query(q, [UCID]);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const execPrograms = async (req, res) => {
+  const { UCID } = req.body;
+
+  const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+    FROM ACTIVITY_EXEC AS E 
+    JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
+    WHERE E.UCID = ?`;
+
+  try {
+    const [data] = await db.promise().query(q, [UCID]);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};

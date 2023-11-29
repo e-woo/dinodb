@@ -251,7 +251,6 @@ export const joinedClubs = async (req, res) => {
 
   try {
     const [data] = await db.promise().query(q, [UCID]);
-    console.log(data); // Log the data here
     return res.status(200).json(data);
   } catch (err) {
     return res.status(500).json(err);
