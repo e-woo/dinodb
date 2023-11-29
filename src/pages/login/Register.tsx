@@ -37,9 +37,6 @@ const Register = () => {
         if (e.target.checked) {
           setIsExecutive(!e.target.checked);
         }
-      setInputs((prev) => ({
-        ...prev,
-      }));
       }
     } else {
       setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -48,15 +45,22 @@ const Register = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("/auth/register", inputs);
-      navigate("/login");
-    } catch (err: any) {
-      setError(err.response.data);
+    if (!isSupervisor) {
+      try {
+        const res = await axios.post("/auth/register", inputs);
+        navigate("/login");
+      } catch (err: any) {
+        setError(err.response.data);
+      }
+    } else {
+      try {
+        const res = await axios.post("/auth/registerSupervisor", inputs);
+        navigate("/login");
+      } catch (err: any) {
+        setError(err.response.data);
+      }
     }
   };
-
-  console.log(inputs);
 
   return (
     <div className="form">

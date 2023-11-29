@@ -29,27 +29,82 @@ export const register = (req, res) => {
   });
 };
 
-export const login = (req, res) => {
+export const registerSupervisor = (req, res) => {
   // Check if user already exists
-  const q = "SELECT * FROM student WHERE Email = ?";
+  const q = "SELECT * FROM SUPERVISOR WHERE Email = ?";
 
-  db.query(q, [req.body.Email], (err, data) => {
+  db.query(q, [req.body.email], (err, data) => {
     if (err) return res.json(err);
-    if (data.length === 0) return res.status(404).json("User not found!");
+    if (data.length) return res.status(409).json("Supervisor already exists!");
 
-    // Check password
-    if (req.body.Password !== data[0].Password)
-      return res.status(400).json("Incorrect email or password.");
+    const q = `INSERT INTO SUPERVISOR(FName, LName, Email, Password) 
+                VALUES (?)`;
+    const values = [
+      req.body.FName,
+      req.body.LName,
+      req.body.Email,
+      req.body.Password,
+    ];
 
-    const token = jwt.sign({ UCID: data[0].UCID }, "jwtkey");
-    const { password, ...other } = data[0];
+    db.query(q, [values], (err, data) => {
+      if (err) return res.json(err);
+      else return res.status(200).json("Supervisor user has been created.");
+    });
+  });
+};
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json(other);
+export const login = (req, res) => {
+  // Check in both student and supervisor tables
+  const studentQuery = "SELECT * FROM student WHERE Email = ?";
+  const supervisorQuery = "SELECT * FROM supervisor WHERE Email = ?";
+
+  // First check in student table
+  db.query(studentQuery, [req.body.Email], (err, studentData) => {
+    if (err) return res.json(err);
+
+    if (studentData.length) {
+      // Student user exists, check password
+      if (req.body.Password !== studentData[0].Password) {
+        return res.status(400).json("Incorrect email or password.");
+      }
+
+      // Generate token and respond
+      const token = jwt.sign({ UCID: studentData[0].UCID, type: "student" }, "jwtkey");
+      const { Password, ...studentOther } = studentData[0];
+
+      return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(studentOther);
+    } else {
+      // If not a student, check in supervisor table
+      db.query(supervisorQuery, [req.body.Email], (err, supervisorData) => {
+        if (err) return res.json(err);
+
+        if (supervisorData.length) {
+          // Supervisor user exists, check password
+          if (req.body.Password !== supervisorData[0].Password) {
+            return res.status(400).json("Incorrect email or password.");
+          }
+
+          // Generate token and respond
+          const token = jwt.sign({ UCID: supervisorData[0].Supervisor_ID, Email: supervisorData[0].Email, type: "supervisor" }, "jwtkey");
+          const { Password, ...supervisorOther } = supervisorData[0];
+
+          return res
+            .cookie("access_token", token, {
+              httpOnly: true,
+            })
+            .status(200)
+            .json(supervisorOther);
+        } else {
+          // User not found in both tables
+          return res.status(404).json("User not found!");
+        }
+      });
+    }
   });
 };
 
