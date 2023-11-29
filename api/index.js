@@ -7,6 +7,7 @@ import clubRoutes from "./routes/club.js"
 import volunteerRoutes from "./routes/volunteer.js"
 import programRoutes from "./routes/program.js"
 import eventRoutes from "./routes/event.js"
+import announcementRoutes from "./routes/announcement.js"
 import cookieParser from "cookie-parser"
 
 const app = express()
@@ -23,6 +24,7 @@ app.use("/api/club", clubRoutes)
 app.use("/api/volunteer", volunteerRoutes)
 app.use("/api/program", programRoutes)
 app.use("/api/event", eventRoutes)
+app.use("/api/announcement", announcementRoutes)
 
 app.listen(8800, () => {
     console.log("Connected to backend.")

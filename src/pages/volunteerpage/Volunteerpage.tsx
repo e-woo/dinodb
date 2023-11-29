@@ -133,16 +133,6 @@ const Volunteerpage = () => {
               </button>
             )
           ) : null}
-          {editable && (
-            <>
-              <a href={`/volunteer/${id}/edit`}>
-                <button className="edit-button">Edit</button>
-              </a>
-              <button className="delete-button" onClick={handleDelete}>
-                Delete
-              </button>
-            </>
-          )}
         </div>
       </div>
       <div className="button-row">
@@ -153,6 +143,11 @@ const Volunteerpage = () => {
             </a>
             <a href={`/volunteer/${id}/edit`}>
               <button className="edit-button">Edit</button>
+            </a>
+            <a href={`/program/${id}/announcement`}>
+              <button className="edit-button announcement-button">
+                Post Announcement
+              </button>
             </a>
             <button className="delete-button" onClick={handleDelete}>
               Delete

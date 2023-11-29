@@ -12,7 +12,6 @@ import {
   joinedClubs,
   execClubs,
   getExecClubs,
-  postAnnouncement,
 } from "../controllers/club.js";
 import { exec } from "child_process";
 
@@ -30,6 +29,5 @@ router.post("/getMembers", getMembers);
 router.post("/joinedClubs", joinedClubs);
 router.post("/execClubs", execClubs);
 router.post("/getExecClubs", getExecClubs);
-router.post("/postAnnouncement", postAnnouncement);
 
 export default router;

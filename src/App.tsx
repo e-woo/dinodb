@@ -81,6 +81,10 @@ const router = createBrowserRouter([
         element: <EditProgramPage />,
       },
       {
+        path: '/program/:id/announcement',
+        element: <CreateAnnouncement />
+      },
+      {
         path: "/volunteer/:id",
         element: <Volunteerpage />,
       },

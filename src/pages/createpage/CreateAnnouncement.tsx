@@ -37,7 +37,6 @@ const CreateAnnouncement = () => {
 
     const handleSubmit = async (e : FormEvent<CreateForm>) => {
         e.preventDefault();
-        console.log(currentUser)
         const elements = e.currentTarget.elements;
         const formData = {
             id: id,
@@ -47,10 +46,9 @@ const CreateAnnouncement = () => {
             date: new Date().toISOString().split('T')[0]
         }
 
-        console.log(formData);
         // send formData here
-        console.log(await axios.post('/club/postAnnouncement', formData));
-        navigate(`../club/${id}`)
+        await axios.post('/announcement/post', formData);
+        navigate(`../announcements`)
     };
 
     return (
