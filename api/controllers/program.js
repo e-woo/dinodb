@@ -248,6 +248,7 @@ export const execPrograms = async (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
     FROM ACTIVITY_EXEC AS E 
     JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
+    JOIN PROGRAM AS C ON E.Program_ID = C.Activity_ID
     WHERE E.UCID = ?`;
 
   try {
