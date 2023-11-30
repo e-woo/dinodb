@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
+import { Announcement } from "../announcementpage/Announcement";
 
 const Announcements = () => {
-  const [posts, setPosts] = useState<Array<Post>>([]);
+  const [posts, setPosts] = useState<Array<Announcement>>([]);
   useEffect(() => { 
     async function getAnnouncements() {
       setPosts((await axios.post('/announcement/getAnnouncements')).data);
@@ -49,13 +50,6 @@ const Announcements = () => {
   );
 };
 
-interface Post {
-  Activity_ID: number,
-  Title: string,
-  Announcement: string,
-  Author: string,
-  Date: string,
-  Img_file_path: string
-}
+
 
 export default Announcements;

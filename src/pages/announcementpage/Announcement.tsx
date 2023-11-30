@@ -7,10 +7,19 @@ import { AuthContext } from "../../context/authContext";
 
 const Announcement = () => {
   const { title } = useParams();
+  const { currentUser } = useContext(AuthContext);
+
   const [editable, setEditable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [announcement, setAnnouncement] = useState<Announcement>({
+    Activity_ID: -1,
+    Title: '',
+    Announcement: '',
+    Author: '',
+    Date: '',
+    Img_file_path: ''
+  })
 
-  const { currentUser } = useContext(AuthContext);
   const accountUCID = currentUser?.UCID;
 
   
@@ -20,6 +29,22 @@ const Announcement = () => {
         const res = await axios.post("/announcement/getAnnouncementExecs", { title: title });
         const execUCIDs = res.data.map((exec: { UCID: any }) => exec.UCID);
         setEditable(execUCIDs.includes(accountUCID));
+
+        const res2 = await axios.post("/announcement/getAnnouncement", { title: title }).catch(() => {return null});
+        if (res2 !== null && (res2.data as any[]).length > 0) {
+          setAnnouncement(res2!.data[0])
+        }
+        else {
+          setAnnouncement({
+            Activity_ID: -1,
+            Title: 'Announcement not found!',
+            Announcement: '',
+            Author: '',
+            Date: '',
+            Img_file_path: ''
+          });
+        }
+
       } catch (err) {
         console.log(err);
       }
@@ -42,16 +67,20 @@ const Announcement = () => {
       <div className="announcementContent">
         <img
           className="announcementImg"
-          src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
+          src={announcement ? announcement.Img_file_path : ''}
         ></img>
         <div className="user">
           <img
             className="userImg"
-            src="https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg"
+            src={announcement.Img_file_path}
           ></img>
           <div className="announcementInfo">
-            <span className="userAuthor">bob by coding club</span>
-            <p>updated november</p>
+            <span className="userAuthor">{announcement.Author}</span>
+            <p>Posted on {announcement.Date ? new Intl.DateTimeFormat('en-CA', {
+                    dateStyle: 'long',
+                    timeStyle: 'short',
+                    hour12: true
+                  }).format(new Date(announcement.Date)) : ''}</p>
           </div>
           {editable ?
             <>
@@ -74,39 +103,21 @@ const Announcement = () => {
 
         </div>
 
-        <h1 className="announcementHeader">CISSA November Newsletter</h1>
-        <p className="announcementP">
-          Upcoming Dates: November 6 - TD Indigenous Student Scholarship.
-          November 11 - Remembrance day. November 12 - Start of Reading Week.
-          November 20 - Tales From the Rez Screening from 6pm - 8pm. November 30
-          - TC Energy Indigenous Student Opportunities applications close. Club
-          Updates: We are very excited to announce our first in-person event
-          this year, on November 20th! We are hosting a screening of the six
-          part horror-comedy series, Tales From the Rez. Events: We are hosting
-          a screening of Tales From The Rez on November 20th, from 6pm to 8pm.
-          Find out more about the screening on our instagram. RSVP for the event
-          Here. Job/Volunteer Opportunities: TC Energy Student positions in both
-          Canada and the United States. Postings for engineering, business, law,
-          environmental science, computer science, and other students, you can
-          find the posting here. TC Energy Indigenous Student Opportunities in
-          Canada, Apply by November 30 here. Cenovus Energy Student positions
-          available across Canada. Postings for engineering, business, and
-          communications students, find the postings here. Petronas Canada
-          student opportunities available in Calgary. Postings for engineering,
-          business, IT, geology, and legal students, find the postings here.
-          Shell Canada New Graduate Program, find more about the program here.
-          Ivey Business School Women in Asset Management internship, find out
-          more information here. Scholarships: TD Indigenous Student Scholarship
-          is open to Indigenous students studying a 2 year minimum program. The
-          deadline to apply is November 6th, you can find the scholarship here.
-          Blue cross Indigenous Peoples Scholarship is open to students entering
-          their first year, and mature students. The deadline to apply is
-          January 31, 2024, you can find the scholarship here.
-        </p>
+        <h1 className="announcementHeader">{announcement.Title}</h1>
+        <p className="announcementP">{announcement.Announcement}</p>
       </div>
       <Menu />
     </div>
   );
 };
+
+export interface Announcement {
+  Activity_ID: number,
+  Title: string,
+  Announcement: string,
+  Author: string,
+  Date: string,
+  Img_file_path: string
+}
 
 export default Announcement;

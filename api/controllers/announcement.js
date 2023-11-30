@@ -64,3 +64,20 @@ export const updateAnnouncement = async (req, res) => {
 		return res.status(500).json(err);
 	}
 }
+
+export const getAnnouncement = async (req, res) => {
+	const { title } = req.body;
+	try {
+		const q = `SELECT Activity_ID, Title, Announcement, Author, Date, Img_file_path
+					FROM announcement NATURAL JOIN extracurricular_activity
+					WHERE announcement.Title = ?`
+		db.query(q, [title], (err, data) => {
+			if (err)
+				return res.json(err);
+			return res.status(200).json(data);
+		})
+	} catch (err) {
+		return res.status(500).json(err);
+	}
+
+}

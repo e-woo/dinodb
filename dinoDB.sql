@@ -116,7 +116,7 @@ CREATE TABLE EVENT
 
 CREATE TABLE ANNOUNCEMENT
     (Activity_ID			INT				NOT NULL,
-	Title					VARCHAR(15)		NOT NULL,
+	Title					VARCHAR(50)		NOT NULL,
 	Announcement			VARCHAR(512)	NOT NULL,
 	Author					VARCHAR(30),
 	Date					DATETIME,
@@ -356,3 +356,8 @@ VALUES
 	('14', '000000009'),
 	('15', '000000001'),
 	('16', '000000018');
+
+INSERT INTO ANNOUNCEMENT
+VALUES
+	(1, 'Welcome to Chess Club!', 'Welcome!', 'John Doe', '2023-11-30 05:27:52'),
+	(2, 'Test Announcement', 'This is a test announcement!', 'Michael Brown', '2023-11-30 05:27:52')
