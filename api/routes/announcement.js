@@ -1,9 +1,11 @@
 import express from "express"
-import { getAnnouncements, postAnnouncement } from "../controllers/announcement.js"
+import { getAnnouncementExecs, getAnnouncements, postAnnouncement, updateAnnouncement } from "../controllers/announcement.js"
 
 const router = express.Router();
 
 router.post("/post", postAnnouncement);
 router.post("/getAnnouncements", getAnnouncements);
+router.post("/getAnnouncementExecs", getAnnouncementExecs);
+router.post("/update", updateAnnouncement);
 
 export default router;

@@ -1,0 +1,55 @@
+.announcementContainer textarea {
+    width: 420px;
+    border: var(--g-border);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    resize: none;
+}
+
+.announcementContainer .editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.announcementContainer .editButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.announcementContainer .confirmButton {
+    width: 80px;
+    background-color: #4681f4;
+    border: 2px solid #f5f7f8;
+    color: #f5f7f8;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    
+  
+    &:hover {
+      border: 2px solid #4681f4;
+      background-color: #f5f7f8;
+      color: #4681f4;
+    }
+}
+
+.announcementContainer .cancelButton {
+    width: 80px;
+    background-color: #f5f7f8;
+    border: 2px solid rgb(255, 70, 70);
+    color: rgb(255, 70, 70);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    
+  
+    &:hover {
+      background-color: rgb(255, 70, 70);
+      color: white;
+    }
+}

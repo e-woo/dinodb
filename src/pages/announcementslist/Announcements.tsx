@@ -22,7 +22,7 @@ const Announcements = () => {
             </div>
             <div className="gridContent">
               <div className="about">
-                <Link className="link" to={`/announcement/${post.Activity_ID}`}>
+                <Link className="link" to={`/announcement/${post.Title}`}>
                   <h1 className="postH1">{post.Title}</h1>
                 </Link>
                 <div className="announcementInfo">
@@ -38,7 +38,7 @@ const Announcements = () => {
               <div className="postP">
                 <p>{post.Announcement}</p>
               </div>
-              <Link className="link" to={`/announcement/${post.Activity_ID}`}>
+              <Link className="link" to={`/announcement/${post.Title}`}>
                 <button className="postsButton">Read More</button>
               </Link>
             </div>

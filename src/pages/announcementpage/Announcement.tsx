@@ -1,9 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import "./style.css";
 import Menu from "../../components/menu/Menu";
+import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 
 const Announcement = () => {
+  const { title } = useParams();
+  const [editable, setEditable] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const { currentUser } = useContext(AuthContext);
+  const accountUCID = currentUser?.UCID;
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.post("/announcement/getAnnouncementExecs", { title: title });
+        const execUCIDs = res.data.map((exec: { UCID: any }) => exec.UCID);
+        setEditable(execUCIDs.includes(accountUCID));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleEdit = async () => {
+    const body = (document.getElementById('editBody') as HTMLTextAreaElement).value;
+    try {
+      await axios.post("/announcement/update", { title: title, announcement: body});
+      setIsEditing(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="announcementContainer">
       <div className="announcementContent">
@@ -20,13 +53,25 @@ const Announcement = () => {
             <span className="userAuthor">bob by coding club</span>
             <p>updated november</p>
           </div>
+          {editable ?
+            <>
+              {isEditing ? 
+              <div className="editForm">
+                <textarea placeholder='Body...' id='editBody' rows={6} required></textarea>
+                <div className="editButtons">
+                  <button className="confirmButton" onClick={handleEdit}>Confirm</button>
+                  <button className="cancelButton" onClick={() => setIsEditing(false)}>Cancel</button>
+                </div>
+              </div>
+              : 
+              <>
+                <button className="postsButton editButton" onClick={() => setIsEditing(true)}>Edit</button>
+                <button className="postsButton deleteButton">Delete</button>
+              </>
+              }
 
-          <div className="edit">
-            <Link to={`/write?edit=2`}>
-              <button className="postsButton editButton">Edit</button>
-            </Link>
-            <button className="postsButton deleteButton">Delete</button>
-          </div>
+            </>: <></>}
+
         </div>
 
         <h1 className="announcementHeader">CISSA November Newsletter</h1>
