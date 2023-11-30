@@ -20,6 +20,7 @@ const CreateAnnouncement = () => {
     
     const { id } = useParams();
     const [exec, setExec] = useState(false);
+    const [duplicateWarning, setDuplicateWarning] = useState(false);
     const { currentUser } = useContext(AuthContext)
     const accountUCID = currentUser?.UCID;
 
@@ -37,6 +38,7 @@ const CreateAnnouncement = () => {
 
     const handleSubmit = async (e : FormEvent<CreateForm>) => {
         e.preventDefault();
+        setDuplicateWarning(false);
         const elements = e.currentTarget.elements;
         const formData = {
             id: id,
@@ -47,8 +49,13 @@ const CreateAnnouncement = () => {
         }
 
         // send formData here
-        await axios.post('/announcement/post', formData);
-        navigate(`../announcements`)
+        let success = true;
+        const result = await axios.post('/announcement/post', formData).catch(err => {
+            success = false;
+            setDuplicateWarning(true);
+        });
+        if (success)
+            navigate(`../announcements`)
     };
 
     return (
@@ -60,6 +67,7 @@ const CreateAnnouncement = () => {
                     <input type='text' placeholder='Title' id='title' required/>
                     <textarea placeholder='Body...' id='body' rows={6} required/>
                     <button type='submit'>Post</button>
+                    {duplicateWarning ? <h3 className='warningText'>This title already exists! Please use a different one.</h3> : <></>}
                 </div>
             </form>
         </> : <h1 className="bigHeader">You do not have permission to access this page!</h1>

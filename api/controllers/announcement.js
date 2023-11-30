@@ -1,10 +1,21 @@
 import { db } from "../db.js";
 export const postAnnouncement = async (req, res) => {
     const { id, title, body, author, date } = req.body;
-  
+    const titles = [];
+
     try {
-      const q =
-        "INSERT INTO announcement (Activity_ID, Title, Announcement, Author, Date) VALUES (?, ?, ?, ?, ?)";
+      let q = 'SELECT title FROM announcement';
+      const titles = [];
+      db.query(q, (err, data) => {
+        if (err)
+          return res.json(err);
+        data.forEach(i => titles.push(i.title))
+      });
+      await new Promise(r => setTimeout(r, 500));
+      console.log(titles.includes(title));
+      if (titles.includes(title))
+        return res.status(403).json( {status: 403, message: 'Title already exists!'} );
+      q = "INSERT INTO announcement (Activity_ID, Title, Announcement, Author, Date) VALUES (?, ?, ?, ?, ?)";
   
       db.query(q, [id, title, body, author, date]);
       return res
