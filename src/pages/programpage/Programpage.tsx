@@ -129,8 +129,10 @@ const Programpage = () => {
         </div>
         <div className="title-container">
           <h1>{program.Name}</h1>
-
-          {currentUser ? (
+        </div>
+      </div>
+      <div className="button-row">
+      {currentUser ? (
             joined ? (
               <button className="delete-button" onClick={handleLeave}>
                 Leave
@@ -141,9 +143,6 @@ const Programpage = () => {
               </button>
             )
           ) : null}
-        </div>
-      </div>
-      <div className="button-row">
         {editable && (
           <>
             <a href={`/event/${id}/create`}>

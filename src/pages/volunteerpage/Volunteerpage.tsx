@@ -132,7 +132,10 @@ const Volunteerpage = () => {
         </div>
         <div className="title-container">
           <h1>{volunteer.Name}</h1>
-          {currentUser ? (
+        </div>
+      </div>
+      <div className="button-row">
+      {currentUser ? (
             joined ? (
               <button className="delete-button" onClick={handleLeave}>
                 Leave
@@ -143,9 +146,6 @@ const Volunteerpage = () => {
               </button>
             )
           ) : null}
-        </div>
-      </div>
-      <div className="button-row">
         {editable && (
           <>
             <a href={`/event/${id}/create`}>

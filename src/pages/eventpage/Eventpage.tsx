@@ -154,7 +154,10 @@ const Eventpage = () => {
         </div>
         <div className="title-container">
           <h1>{event.Name}</h1>
-          {currentUser ? (
+        </div>
+      </div>
+      <div className="button-row">
+      {currentUser ? (
             joined ? (
               <button className="delete-button" onClick={handleLeave}>
                 Leave
@@ -175,7 +178,6 @@ const Eventpage = () => {
               </button>
             </>
           )}
-        </div>
       </div>
       <div className="desc">{event.Description}</div>
       <div className="more-info">
