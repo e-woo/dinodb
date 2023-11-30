@@ -17,7 +17,6 @@ export const Menu = () => {
           break;
         p.push(res.data[i]);
       }
-      console.log(p);
       setPosts(p);
     }
     getAnnouncements();

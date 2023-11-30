@@ -3,24 +3,21 @@ export const postAnnouncement = async (req, res) => {
 	const { id, title, body, author, date } = req.body;
 
 	try {
-	  let q = 'SELECT title FROM announcement';
+	  const q = 'SELECT title FROM announcement';
 	  const titles = [];
-	  await db.promise().query(q, (err, data) => {
-		if (err)
-		  return res.json(err);
-		data.forEach(i => titles.push(i.title))
-	  });
-	//   await new Promise(r => setTimeout(r, 500));
-	  console.log(titles.includes(title));
+	  const res2 = await db.promise().query(q);
+	  res2[0].forEach(i => titles.push(i.title))
+
 	  if (titles.includes(title))
 		return res.status(403).json( {status: 403, message: 'Title already exists!'} );
-	  q = "INSERT INTO announcement (Activity_ID, Title, Announcement, Author, Date) VALUES (?, ?, ?, ?, ?)";
+	  const q2 = "INSERT INTO announcement (Activity_ID, Title, Announcement, Author, Date) VALUES (?, ?, ?, ?, ?)";
   
-	  db.query(q, [id, title, body, author, date]);
+	  db.query(q2, [id, title, body, author, date]);
 	  return res
 		.status(201)
 		.json({ message: "Successfully posted announcement!", status: 201 });
 	} catch (err) {
+		console.log(err);
 	  return res.status(500).json(err);
 	}
 };
@@ -79,5 +76,15 @@ export const getAnnouncement = async (req, res) => {
 	} catch (err) {
 		return res.status(500).json(err);
 	}
+}
 
+export const deleteAnnouncement = async (req, res) => {
+	const { title } = req.body;
+	try {
+		const q = 'DELETE FROM announcement WHERE Title = ?'
+		db.query(q, [title]);
+		return res.status(200).json( {status: 200, message: 'Succesfully deleted announcement!'});
+	} catch (err) {
+		return res.status(500).json(err);
+	}
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./style.css";
 import Menu from "../../components/menu/Menu";
 import axios from "axios";
@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/authContext";
 const Announcement = () => {
   const { title } = useParams();
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   const [editable, setEditable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -62,6 +63,15 @@ const Announcement = () => {
     }
   }
 
+  const handleDelete = async () => {
+    try {
+      console.log(await axios.post("/announcement/deleteAnnouncement", { title: title }));
+      navigate(`../announcements`)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="announcementContainer">
       <div className="announcementContent">
@@ -95,7 +105,7 @@ const Announcement = () => {
               : 
               <>
                 <button className="postsButton editButton" onClick={() => setIsEditing(true)}>Edit</button>
-                <button className="postsButton deleteButton">Delete</button>
+                <button className="postsButton deleteButton" onClick={() => handleDelete()}>Delete</button>
               </>
               }
 

@@ -51,6 +51,7 @@ const CreateAnnouncement = () => {
         // send formData here
         let success = true;
         const result = await axios.post('/announcement/post', formData).catch(err => {
+            console.log(err);
             success = false;
             setDuplicateWarning(true);
         });
