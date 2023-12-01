@@ -11,36 +11,40 @@ const Home = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get('/club/get4Clubs')
+    axios
+      .get("/club/get4Clubs")
       .then((res) => {
         setClubs(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-    axios.get('/volunteer/get4Volunteer')
+    axios
+      .get("/volunteer/get4Volunteer")
       .then((res) => {
         setVolunteering(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-      axios.get('/program/get4Programs')
+    axios
+      .get("/program/get4Programs")
       .then((res) => {
         setPrograms(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-      axios.get('/event/get4Events')
+    axios
+      .get("/event/get4Events")
       .then((res) => {
         setEvents(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
   }, []);
 
@@ -174,7 +178,12 @@ const ClubsSlider = ({
   header: string;
   desc: string;
   type: string;
-  posts: Array<{ Activity_ID: number; Name: string; Description: string; Img_file_path: string }>;
+  posts: Array<{
+    Activity_ID: number;
+    Name: string;
+    Description: string;
+    Img_file_path: string;
+  }>;
 }) => {
   return (
     <div className="postsContainer">
@@ -184,19 +193,38 @@ const ClubsSlider = ({
       </div>
       <div className="posts">
         {posts.map((post) => (
-          <div className="post" key={post.Activity_ID}>
-            <div className="postImg">
-              <img src={post.Img_file_path} alt="" />
-            </div>
-            <div className="postContent">
-              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
-                <h1 className="postH1">{post.Name}</h1>
-              </Link>
-              <p className="postP">{post.Description}</p>
-              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
-                <button className="postsButton">Learn More</button>
-              </Link>
-            </div>
+          <div>
+            {type === "event" ? (
+              <div className="post" key={post.Name}>
+                <div className="postImg">
+                  <img src={post.Img_file_path} alt="" />
+                </div>
+                <div className="postContent">
+                  <Link className="link" to={`/${type}/${post.Name}`}>
+                    <h1 className="postH1">{post.Name}</h1>
+                  </Link>
+                  <p className="postP">{post.Description}</p>
+                  <Link className="link" to={`/${type}/${post.Name}`}>
+                    <button className="postsButton">Learn More</button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="post" key={post.Activity_ID}>
+                <div className="postImg">
+                  <img src={post.Img_file_path} alt="" />
+                </div>
+                <div className="postContent">
+                  <Link className="link" to={`/${type}/${post.Activity_ID}`}>
+                    <h1 className="postH1">{post.Name}</h1>
+                  </Link>
+                  <p className="postP">{post.Description}</p>
+                  <Link className="link" to={`/${type}/${post.Activity_ID}`}>
+                    <button className="postsButton">Learn More</button>
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>

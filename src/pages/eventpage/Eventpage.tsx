@@ -16,8 +16,8 @@ const Eventpage = () => {
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
   const [event, setEvent] = useState({
-    Activity_ID: id,
-    Name: "",
+    Activity_ID: "",
+    Name: id,
     Description: "",
     Type: "",
     Img_file_path: "",
@@ -53,17 +53,18 @@ const Eventpage = () => {
         const idRes = await axios.post("/event/getID", { Name: id });
 
         const execRes = await axios.post("/event/getExecs", {
-          Activity_ID: idRes.data.Activity_ID,
+          Activity_ID: res.data.Activity_ID,
         });
+        console.log("name :" + id + " activity id " + res.data.Activity_ID);
         const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
-
+        console.log(execUCIDs);
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
         }
 
         const memRes = await axios.post("/event/getMembers", {
           Event_Name: res.data.Name,
-          Activity_ID: id,
+          Activity_ID: res.data.Activity_ID,
         });
         console.log("memres = " + memRes);
         const memUCIDs = memRes.data.map(
@@ -113,8 +114,8 @@ const Eventpage = () => {
 
       await axios.post(`/event/join`, {
         UCID: accountUCID,
-        Activity_ID: id,
-        Name: res.data.Name,
+        Activity_ID: res.data.Activity_ID,
+        Name: id,
         signUpInfo: res.data.signUpInfo,
       });
 
@@ -132,7 +133,7 @@ const Eventpage = () => {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: accountUCID,
-            Activity_ID: id,
+            Activity_ID: res.data.Activity_ID,
             Name: res.data.Name,
           },
         });
@@ -157,27 +158,27 @@ const Eventpage = () => {
         </div>
       </div>
       <div className="button-row">
-      {currentUser ? (
-            joined ? (
-              <button className="delete-button" onClick={handleLeave}>
-                Leave
-              </button>
-            ) : (
-              <button className="edit-button" onClick={handleJoin}>
-                Join
-              </button>
-            )
-          ) : null}
-          {editable && (
-            <>
-              <a href={`/event/${id}/edit`}>
-                <button className="edit-button">Edit</button>
-              </a>
-              <button className="delete-button" onClick={handleDelete}>
-                Delete
-              </button>
-            </>
-          )}
+        {currentUser ? (
+          joined ? (
+            <button className="delete-button" onClick={handleLeave}>
+              Leave
+            </button>
+          ) : (
+            <button className="edit-button" onClick={handleJoin}>
+              Join
+            </button>
+          )
+        ) : null}
+        {editable && (
+          <>
+            <a href={`/event/${id}/edit`}>
+              <button className="edit-button">Edit</button>
+            </a>
+            <button className="delete-button" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
       </div>
       <div className="desc">{event.Description}</div>
       <div className="more-info">

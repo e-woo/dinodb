@@ -5,9 +5,9 @@ export const showEvent = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Img_file_path, E.Name, E.Description, E.Type, E.Location, E.OnlineInPerson, E.SignUpInfo, E.Perks, E.Fee, E.Eligibility, E.Date_and_Time
                 FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
                 WHERE EA.Activity_ID = E.Activity_ID
-                AND (E.Activity_ID = ? OR E.Name = ?)`;
+                AND  E.Name = ?`;
 
-  db.query(q, [req.body.Activity_ID, req.body.Activity_ID], (err, data) => {
+  db.query(q, [req.body.Activity_ID], (err, data) => {
     if (err) return res.json(err);
 
     return res.status(200).json(data[0]);
@@ -96,7 +96,7 @@ export const createEvent = async (req, res) => {
                     VALUES (?, ?, ?)`;
     await db.promise().query(q5, [ucid, "Event Organizer", activityId]);
 
-    return res.status(201).json({ activityId: activityId });
+    return res.status(201).json({ activityId: activityId, name: name });
   } catch (err) {
     return res.status(500).json(err);
   }

@@ -26,12 +26,13 @@ const ReactTabs = () => {
   const [value, setValue] = React.useState(0);
   const { currentUser } = useContext(AuthContext);
   const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
+
   const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
   const type = ["club", "volunteer", "program", "event"];
   const membertypes = ["Member", "Executive"];
   const allPosts = [clubs, volunteers, programs, events];
   const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
-
   const handleDeleteClub = async (Activity_ID: number) => {
     if (window.confirm("Are you sure you want to delete this club?")) {
       try {
@@ -134,8 +135,8 @@ const ReactTabs = () => {
     window.location.reload();
   };
 
-  const handleDeleteEvent = async (Activity_ID: number) => {
-    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
+  const handleDeleteEvent = async (Name: string) => {
+    const res = await axios.post("/event/show", { Activity_ID: Name });
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
         const clubIDRes = await axios.post("/event/getClubID", {
@@ -155,7 +156,7 @@ const ReactTabs = () => {
             Name: res.data.Name,
           });
           await axios.delete(`/event/delete`, {
-            data: { Activity_ID: Activity_ID },
+            data: { Activity_ID: res.data.Activity_ID },
           });
           navigate(`../search`);
           alert("Event deleted successfully");
@@ -168,14 +169,14 @@ const ReactTabs = () => {
     window.location.reload();
   };
 
-  const handleLeaveEvent = async (Activity_ID: number) => {
-    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
+  const handleLeaveEvent = async (Name: string) => {
+    const res = await axios.post("/event/show", { Activity_ID: Name });
     if (window.confirm("Are you sure you want to leave this event?")) {
       try {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: Member_UCID,
-            Activity_ID: Activity_ID,
+            Activity_ID: res.data.Activity_ID,
             Name: res.data.Name,
           },
         });
@@ -291,20 +292,22 @@ const ReactTabs = () => {
           handleDeleteEvent={handleDeleteEvent}
           handleLeaveEvent={handleLeaveEvent}
         />
-        <ActivityList
-          membertypes={membertypes[1]}
-          excurtype={excurtypes[value]}
-          type={type[value]}
-          posts={allExecPosts[value]}
-          handleDeleteClub={handleDeleteClub}
-          handleLeaveClub={handleLeaveClub}
-          handleDeleteVolunteer={handleDeleteVolunteer}
-          handleLeaveVolunteer={handleLeaveVolunteer}
-          handleDeleteProgram={handleDeleteProgram}
-          handleLeaveProgram={handleLeaveProgram}
-          handleDeleteEvent={handleDeleteEvent}
-          handleLeaveEvent={handleLeaveEvent}
-        />
+        {accountType === "EXECUTIVE" ? (
+          <ActivityList
+            membertypes={membertypes[1]}
+            excurtype={excurtypes[value]}
+            type={type[value]}
+            posts={allExecPosts[value]}
+            handleDeleteClub={handleDeleteClub}
+            handleLeaveClub={handleLeaveClub}
+            handleDeleteVolunteer={handleDeleteVolunteer}
+            handleLeaveVolunteer={handleLeaveVolunteer}
+            handleDeleteProgram={handleDeleteProgram}
+            handleLeaveProgram={handleLeaveProgram}
+            handleDeleteEvent={handleDeleteEvent}
+            handleLeaveEvent={handleLeaveEvent}
+          />
+        ) : null}
       </Paper>
     </div>
   );
@@ -342,126 +345,143 @@ const ActivityList = ({
   handleDeleteProgram: (Activity_ID: number) => Promise<void>;
   handleLeaveProgram: (Activity_ID: number) => Promise<void>;
 
-  handleDeleteEvent: (Activity_ID: number) => Promise<void>;
-  handleLeaveEvent: (Activity_ID: number) => Promise<void>;
+  handleDeleteEvent: (Name: string) => Promise<void>;
+  handleLeaveEvent: (Name: string) => Promise<void>;
 }) => {
+  const hasNoPosts = posts.length === 0;
+  const noPostsMessage =
+    membertypes === "Member"
+      ? `Join a ${type} to populate this list!`
+      : `Become an executive for ${type} to populate this list!`;
+
   return (
     <div className="tabSections">
       <h1>
         {membertypes} {excurtype}
       </h1>
-      <div className="tabPosts">
-        {posts.map((post) => (
-          <div className="gridPost" key={post.Activity_ID}>
-            <div className="gridImg">
-              <img src={post.Img_file_path} alt="" />
-            </div>
-            <div className="gridContent">
-              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
+      {hasNoPosts ? (
+        // Render this if there are no posts
+        <div className="postP">{noPostsMessage}</div>
+      ) : (
+        <div className="tabPosts">
+          {posts.map((post) => (
+            <div className="gridPost" key={post.Activity_ID}>
+              <div className="gridImg">
+                <img src={post.Img_file_path} alt="" />
+              </div>
+              <div className="gridContent">
                 <h1 className="postH1">{post.Name}</h1>
-              </Link>
-              <p className="postP">{post.Description}</p>
-              <div className="buttons">
-                <Link to={`/${type}/${post.Activity_ID}`}>
-                  <button className="postsButton createButton">View</button>
-                </Link>
+                <p className="postP">{post.Description}</p>
+                <div className="buttons">
+                  {excurtype === "Events" ? (
+                    <Link to={`/${type}/${post.Name}`}>
+                      <button className="postsButton createButton">View</button>
+                    </Link>
+                  ) : (
+                    <Link to={`/${type}/${post.Activity_ID}`}>
+                      <button className="postsButton createButton">View</button>
+                    </Link>
+                  )}
 
-                {excurtype === "Clubs" ? (
-                  membertypes === "Executive" ? (
-                    <div>
+                  {excurtype === "Clubs" ? (
+                    membertypes === "Executive" ? (
+                      <div>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteClub(post.Activity_ID)}
+                        >
+                          Delete
+                        </button>
+                        <a href={`/${type}/${post.Activity_ID}/edit`}>
+                          <button className="edit-button">Edit</button>
+                        </a>
+                      </div>
+                    ) : membertypes === "Member" ? (
                       <button
-                        className="delete-button"
-                        onClick={() => handleDeleteClub(post.Activity_ID)}
+                        className="postsButton deleteButton"
+                        onClick={() => handleLeaveClub(post.Activity_ID)}
                       >
-                        Delete
+                        Leave
                       </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="postsButton deleteButton"
-                      onClick={() => handleLeaveClub(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
+                    ) : null
+                  ) : null}
 
-                {excurtype === "Volunteer" ? (
-                  membertypes === "Executive" ? (
-                    <div>
+                  {excurtype === "Volunteer" ? (
+                    membertypes === "Executive" ? (
+                      <div>
+                        <button
+                          className="delete-button"
+                          onClick={() =>
+                            handleDeleteVolunteer(post.Activity_ID)
+                          }
+                        >
+                          Delete
+                        </button>
+                        <a href={`/${type}/${post.Activity_ID}/edit`}>
+                          <button className="edit-button">Edit</button>
+                        </a>
+                      </div>
+                    ) : membertypes === "Member" ? (
                       <button
-                        className="delete-button"
-                        onClick={() => handleDeleteVolunteer(post.Activity_ID)}
+                        className="postsButton deleteButton"
+                        onClick={() => handleLeaveVolunteer(post.Activity_ID)}
                       >
-                        Delete
+                        Leave
                       </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="postsButton deleteButton"
-                      onClick={() => handleLeaveVolunteer(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
+                    ) : null
+                  ) : null}
 
-                {excurtype === "Programs" ? (
-                  membertypes === "Executive" ? (
-                    <div>
+                  {excurtype === "Programs" ? (
+                    membertypes === "Executive" ? (
+                      <div>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteProgram(post.Activity_ID)}
+                        >
+                          Delete
+                        </button>
+                        <a href={`/${type}/${post.Activity_ID}/edit`}>
+                          <button className="edit-button">Edit</button>
+                        </a>
+                      </div>
+                    ) : membertypes === "Member" ? (
                       <button
-                        className="delete-button"
-                        onClick={() => handleDeleteProgram(post.Activity_ID)}
+                        className="postsButton deleteButton"
+                        onClick={() => handleLeaveProgram(post.Activity_ID)}
                       >
-                        Delete
+                        Leave
                       </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="postsButton deleteButton"
-                      onClick={() => handleLeaveProgram(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
+                    ) : null
+                  ) : null}
 
-                {excurtype === "Events" ? (
-                  membertypes === "Executive" ? (
-                    <div>
+                  {excurtype === "Events" ? (
+                    membertypes === "Executive" ? (
+                      <div>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteEvent(post.Name)}
+                        >
+                          Delete
+                        </button>
+                        <a href={`/${type}/${post.Name}/edit`}>
+                          <button className="edit-button">Edit</button>
+                        </a>
+                      </div>
+                    ) : membertypes === "Member" ? (
                       <button
-                        className="delete-button"
-                        onClick={() => handleDeleteEvent(post.Activity_ID)}
+                        className="postsButton deleteButton"
+                        onClick={() => handleLeaveEvent(post.Name)}
                       >
-                        Delete
+                        Leave
                       </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="postsButton deleteButton"
-                      onClick={() => handleLeaveEvent(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
+                    ) : null
+                  ) : null}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -99,6 +99,7 @@ const Clubpage = () => {
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
         }
+        console.log(execUCIDs);
 
         const memRes = await axios.post("/club/getMembers", {
           Activity_ID: id,
