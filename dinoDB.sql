@@ -148,7 +148,7 @@ CREATE TABLE TAG
 
 CREATE TABLE ORGANIZATION
     (Org_ID				    CHAR(9)			NOT NULL,
-	Org_Name				VARCHAR(15)		NOT NULL,
+	Org_Name				VARCHAR(80)		NOT NULL,
 	PRIMARY KEY (Org_ID));
 
 CREATE TABLE SUPERVISOR
@@ -167,11 +167,12 @@ CREATE TABLE CATEGORIZED_BY
     FOREIGN KEY (Tag_ID) REFERENCES TAG(Tag_ID) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE INVITES
-    (Activity_ID			INT				NOT NULL,
-	Org_ID					CHAR(9)			NOT NULL,
-	PRIMARY KEY (Activity_ID, Org_ID),
-	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Org_ID) REFERENCES ORGANIZATION(Org_ID) ON DELETE CASCADE ON UPDATE CASCADE);
+	(Activity_ID		INT				NOT NULL,
+    Org_ID			CHAR(9)			NOT NULL,
+    PRIMARY KEY (Activity_ID, Org_ID),
+    FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON UPDATE CASCADE,
+    FOREIGN KEY (Org_ID) REFERENCES ORGANIZATION(Org_ID) ON UPDATE CASCADE);
+
 
 CREATE TABLE SUPERVISED_BY
     (Activity_ID			INT				NOT NULL,
@@ -360,4 +361,33 @@ VALUES
 INSERT INTO ANNOUNCEMENT
 VALUES
 	(1, 'Welcome to Chess Club!', 'Welcome!', 'John Doe', '2023-11-30 05:27:52'),
-	(2, 'Test Announcement', 'This is a test announcement!', 'Michael Brown', '2023-11-30 05:27:52')
+	(2, 'Test Announcement', 'This is a test announcement!', 'Michael Brown', '2023-11-30 05:27:52');
+
+INSERT INTO ORGANIZATION
+VALUES
+	('000000001', 'Google'),
+	('000000002', 'Canadian Global Care'),
+	('000000003', 'The Mustard Seed'),
+	('000000004', 'Calgary Humane Society'),
+	('000000005', 'JUMP Math'),
+	('000000006', 'Calgary Food Bank'),
+	('000000007', 'Meta'),
+	('000000008', 'Air Canada'),
+	('000000021', 'West Jet'),
+	('000000009', 'Netflix'),
+	('000000010', 'Amazon'),
+	('000000011', 'Chick-fil-A'),
+	('000000012', 'NASA'),
+	('000000013', 'Canadian Armed Forces'),
+	('000000014', 'Canadian Police Services'),
+	('000000015', 'YMCA'),
+	('000000016', 'Red Cross'),
+	('000000017', 'Safe Spaces'),
+	('000000018', 'The Salvation Army'),
+	('000000019', 'Heritage Park'),
+	('000000020', 'Doctors Without Borders');
+
+INSERT INTO INVITES (Activity_ID, Org_ID)
+VALUES
+	('8', '000000004'),
+	('4', '000000002');
