@@ -18,14 +18,6 @@ body {
   background-position: center;
 }
 
-.app {
-  display: flex;
-  justify-content: center;
-}
-.app .container {
-  width: 100%;
-}
-
 .link {
   text-decoration: none;
   color: rgb(255, 70, 70);
