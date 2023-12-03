@@ -37,9 +37,8 @@ const ReactTabs = () => {
   const handleDeleteClub = async (Activity_ID: number) => {
     if (window.confirm("Are you sure you want to delete this club?")) {
       try {
-        console.log(Activity_ID.toString());
         await axios.delete(`/club/delete`, {
-          data: { Activity_ID: Activity_ID },
+          data: { Activity_ID: Activity_ID.toString() },
         });
 
         navigate(`../profile`);
@@ -58,7 +57,7 @@ const ReactTabs = () => {
         await axios.delete(`/club/leave`, {
           data: {
             UCID: Member_UCID,
-            Activity_ID: Activity_ID,
+            Activity_ID: Activity_ID.toString(),
           },
         });
         setJoined(false);
@@ -74,9 +73,9 @@ const ReactTabs = () => {
     if (window.confirm("Are you sure you want to delete this volunteer?")) {
       try {
         await axios.delete(`/volunteer/delete`, {
-          data: { Activity_ID: Activity_ID },
+          data: { Activity_ID: Activity_ID.toString() },
         });
-        navigate(`../search`);
+        navigate(`../profile`);
         alert("Volunteer deleted successfully");
       } catch (error) {
         console.error("Error deleting volunteer", error);
@@ -92,7 +91,7 @@ const ReactTabs = () => {
         await axios.delete(`/volunteer/leave`, {
           data: {
             UCID: Member_UCID,
-            Activity_ID: Activity_ID,
+            Activity_ID: Activity_ID.toString(),
           },
         });
         setJoined(false);
@@ -108,9 +107,9 @@ const ReactTabs = () => {
     if (window.confirm("Are you sure you want to delete this program?")) {
       try {
         await axios.delete(`/program/delete`, {
-          data: { Activity_ID: Activity_ID },
+          data: { Activity_ID: Activity_ID.toString() },
         });
-        navigate(`../search`);
+        navigate(`../profile`);
         alert("Program deleted successfully");
       } catch (error) {
         console.error("Error deleting program", error);
@@ -126,7 +125,7 @@ const ReactTabs = () => {
         await axios.delete(`/program/leave`, {
           data: {
             UCID: Member_UCID,
-            Activity_ID: Activity_ID,
+            Activity_ID: Activity_ID.toString(),
           },
         });
         setJoined(false);
@@ -151,7 +150,7 @@ const ReactTabs = () => {
           await axios.delete(`/event/delete2`, {
             data: { Name: res.data.Name },
           });
-          navigate(`../search`);
+          navigate(`../profile`);
           alert("Event deleted successfully");
         } else {
           console.log("lol2");
@@ -161,7 +160,7 @@ const ReactTabs = () => {
           await axios.delete(`/event/delete`, {
             data: { Activity_ID: res.data.Activity_ID },
           });
-          navigate(`../search`);
+          navigate(`../profile`);
           alert("Event deleted successfully");
         }
       } catch (error) {
