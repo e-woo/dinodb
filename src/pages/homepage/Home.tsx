@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import logo from "./uofc-logo.png";
 import axios from "axios";
+
+import { AuthContext } from "../../context/authContext";
 
 const Home = () => {
   const [clubs, setClubs] = useState([]);
   const [volunteering, setVolunteering] = useState([]);
   const [programs, setPrograms] = useState([]);
   const [events, setEvents] = useState([]);
+
+  const { currentUser } = useContext(AuthContext);
+  const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
+
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   useEffect(() => {
     axios
@@ -47,6 +55,10 @@ const Home = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
+
+  const isSupervisor = () => {
+    return accountType === null || supervisorAccount != null;
+  };
 
   return (
     <div className="home">
@@ -95,70 +107,78 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <ClubsSlider
-        header="Discover Clubs"
-        desc={`
-        Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
-        type="club"
-        posts={clubs}
-      />
-      <div className="createClub">
-        <h1 className="benefitH1">
-          Apply as an Executive and Start Your Own{" "}
-          <span className="gold-text">Club</span> Today!
-        </h1>
-        <p className="centerP">
-          Ready to lead? Join as an executive in an existing club or ignite your
-          own journey by founding a brand new one.
-          <br></br>Your vision, your rules—be the trailblazer and leave a
-          lasting impact on the university community.
-          <br></br>
-        </p>
-        <Link className="link" to={`/register`}>
-          <button className="postsButton findButton">
-            Your leadership story begins here!
-          </button>
-        </Link>
-      </div>
-      <ClubsSlider
-        header="Volunteer on Campus"
-        desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
-        type="volunteer"
-        posts={volunteering}
-      />
+      {!isSupervisor() && (
+        <ClubsSlider
+          header="Discover Clubs"
+          desc={`Clubs are a great way to meet new people and pursue your passions! Clubs can be academic, social, representational, or cultural.`}
+          type="club"
+          posts={clubs}
+        />
+      )}
+      {!isSupervisor() && (
+        <div className="createClub">
+          <h1 className="benefitH1">
+            Apply as an Executive and Start Your Own{" "}
+            <span className="gold-text">Club</span> Today!
+          </h1>
+          <p className="centerP">
+            Ready to lead? Join as an executive in an existing club or ignite
+            your own journey by founding a brand new one.
+            <br></br>Your vision, your rules—be the trailblazer and leave a
+            lasting impact on the university community.
+            <br></br>
+          </p>
+          <Link className="link" to={`/register`}>
+            <button className="postsButton findButton">
+              Your leadership story begins here!
+            </button>
+          </Link>
+        </div>
+      )}
+      {!isSupervisor() && (
+        <ClubsSlider
+          header="Volunteer on Campus"
+          desc="Volunteering on campus often provides students with an opportunity to earn co-curricular hours, which can enhance their academic transcript and showcase engagement."
+          type="volunteer"
+          posts={volunteering}
+        />
+      )}
       <ClubsSlider
         header="Featured Programs"
         desc="Programs offer hands-on experiences that complement classroom learning. Beneficial for students seeking to apply theoretical knowledge in real-world situations."
         type="program"
         posts={programs}
       />
-      <div className="createClub">
-        <h1 className="benefitH1">
-          Elevate Your Club Experience -{" "}
-          <span className="gold-text">Join Us Today!</span>
-        </h1>
-        <div className="benefitsList">
-          <div className="benefitSection">
-            <h2 className="benefitTitle">Club Executives</h2>
-            <ul className="benefitItems">
-              <li>Announce with impact, manage with ease.</li>
-              <li>Seamless event coordination at your fingertips.</li>
-              <li>Engage and inspire your team, leading by example.</li>
-            </ul>
+
+      {!isSupervisor() && (
+        <div className="createClub">
+          <h1 className="benefitH1">
+            Elevate Your Club Experience -{" "}
+            <span className="gold-text">Join Us Today!</span>
+          </h1>
+          <div className="benefitsList">
+            <div className="benefitSection">
+              <h2 className="benefitTitle">Club Executives</h2>
+              <ul className="benefitItems">
+                <li>Announce with impact, manage with ease.</li>
+                <li>Seamless event coordination at your fingertips.</li>
+                <li>Engage and inspire your team, leading by example.</li>
+              </ul>
+            </div>
+            <div className="benefitSection">
+              <h2 className="benefitTitle">Club Members</h2>
+              <ul className="benefitItems">
+                <li>Simplify your club management and tracking.</li>
+                <li>Stay updated with tailored club notifications.</li>
+                <li>Organize your club events and calendars effortlessly.</li>
+              </ul>
+            </div>
           </div>
-          <div className="benefitSection">
-            <h2 className="benefitTitle">Club Members</h2>
-            <ul className="benefitItems">
-              <li>Simplify your club management and tracking.</li>
-              <li>Stay updated with tailored club notifications.</li>
-              <li>Organize your club events and calendars effortlessly.</li>
-            </ul>
-          </div>
+          <Link className="link" to={`/login`}>
+            <button className="postsButton findButton">Sign In Now</button>
+          </Link>
         </div>
-        <Link className="link" to={`/login`}>
-          <button className="postsButton findButton">Sign In Now</button>
-        </Link>
-      </div>
+      )}
       <ClubsSlider
         header="Upcoming Events"
         desc="Events can also serve as recreational outlets, offering students a break from their academic routine. Join us for our next event!"

@@ -129,33 +129,33 @@ const Register = () => {
             />
             <i className="bx bxs-envelope"></i>
           </div>
-          {!isSupervisor ? 
-          <>
-            <div className="text-field">
-              <input
-                name="UCID"
-                type="text"
-                placeholder="UCID"
-                pattern="[0-9]{8}"
-                required
-                onChange={handleChange}
-              />
-              <i className="bx bxs-id-card"></i>
-            </div>
-            <div className="text-field">
-              <input
-                name="DOB"
-                type="text"
-                placeholder="Date of Birth"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={DateOnBlur}
-                required
-                onChange={handleChange}
-              />
-              <i className="bx bxs-calendar"></i>
-            </div>
-          </> : null
-          }
+          {!isSupervisor ? (
+            <>
+              <div className="text-field">
+                <input
+                  name="UCID"
+                  type="text"
+                  placeholder="UCID"
+                  pattern="[0-9]{8}"
+                  required
+                  onChange={handleChange}
+                />
+                <i className="bx bxs-id-card"></i>
+              </div>
+              <div className="text-field">
+                <input
+                  name="DOB"
+                  type="text"
+                  placeholder="Date of Birth"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={DateOnBlur}
+                  required
+                  onChange={handleChange}
+                />
+                <i className="bx bxs-calendar"></i>
+              </div>
+            </>
+          ) : null}
           <div className="text-field">
             <input
               name="Password"

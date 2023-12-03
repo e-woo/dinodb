@@ -27,6 +27,7 @@ const ReactTabs = () => {
   const { currentUser } = useContext(AuthContext);
   const Member_UCID = currentUser?.UCID;
   const accountType = currentUser?.AccountType;
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
   const type = ["club", "volunteer", "program", "event"];

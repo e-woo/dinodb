@@ -38,6 +38,8 @@ const CreatePage = () => {
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
 
+  const supervisorAccount = currentUser?.Supervisor_ID;
+
   const navigate = useNavigate();
 
   const [activityType, setActivityType] = useState<string>("");
@@ -162,7 +164,7 @@ const CreatePage = () => {
     }
   };
 
-  if (accountType !== "EXECUTIVE") {
+  if (accountType !== "EXECUTIVE" && !supervisorAccount) {
     return (
       <div className="access-message">
         <h1>You do not have permission to access this.</h1>
@@ -183,10 +185,12 @@ const CreatePage = () => {
               id="activityType"
             >
               <option value="choose">Choose an Extracurricular Type...</option>
-              <option value="club">Club</option>
+              {!supervisorAccount && <option value="club">Club</option>}
+              {!supervisorAccount && (
+                <option value="volunteer">Volunteering</option>
+              )}
               <option value="program">Program</option>
               <option value="event">Event</option>
-              <option value="volunteer">Volunteering</option>
             </select>
             <input type="text" placeholder="Name" id="name" required />
             <textarea placeholder="Description..." id="description" rows={6} />

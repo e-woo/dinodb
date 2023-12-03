@@ -5,10 +5,10 @@ import Logo from "./rexlogo.png";
 import { AuthContext } from "../../context/authContext";
 
 const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext)
+  const { currentUser, logout } = useContext(AuthContext);
 
   const accountType = currentUser?.AccountType;
-
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   return (
     <div className="navbar">
@@ -23,32 +23,35 @@ const Navbar = () => {
           <Link to={"./"} className="link">
             Home
           </Link>
-          {accountType === 'EXECUTIVE' ?
-          <Link to={"./create"} className="link">Create</Link>
-          :
-          null}
+          {accountType === "EXECUTIVE" || supervisorAccount ? (
+            <Link to={"./create"} className="link">
+              Create
+            </Link>
+          ) : null}
           <Link to={"./search"} className="link">
             Explore
           </Link>
           <Link to={"./announcements"} className="link">
             Announcements
           </Link>
-          {currentUser ?
-          <Link to={"./profile"} className="link">
-            Profile
-          </Link> : null}
-          {currentUser ? 
+          {currentUser ? (
+            <Link to={"./profile"} className="link">
+              Profile
+            </Link>
+          ) : null}
+          {currentUser ? (
             <span className="signin">
               <Link onClick={logout} to={"/"} className="link" id="sign-in">
                 Logout
               </Link>
-            </span> 
-            : 
+            </span>
+          ) : (
             <span className="signin">
-            <Link to={"./login"} className="link" id="sign-in">
-              Sign in
-            </Link>
-          </span>}
+              <Link to={"./login"} className="link" id="sign-in">
+                Sign in
+              </Link>
+            </span>
+          )}
         </nav>
       </div>
     </div>

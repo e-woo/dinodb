@@ -69,7 +69,10 @@ export const login = (req, res) => {
       }
 
       // Generate token and respond
-      const token = jwt.sign({ UCID: studentData[0].UCID, type: "student" }, "jwtkey");
+      const token = jwt.sign(
+        { UCID: studentData[0].UCID, type: "student" },
+        "jwtkey"
+      );
       const { Password, ...studentOther } = studentData[0];
 
       return res
@@ -90,7 +93,14 @@ export const login = (req, res) => {
           }
 
           // Generate token and respond
-          const token = jwt.sign({ UCID: supervisorData[0].Supervisor_ID, Email: supervisorData[0].Email, type: "supervisor" }, "jwtkey");
+          const token = jwt.sign(
+            {
+              UCID: supervisorData[0].Supervisor_ID,
+              Email: supervisorData[0].Email,
+              type: "supervisor",
+            },
+            "jwtkey"
+          );
           const { Password, ...supervisorOther } = supervisorData[0];
 
           return res
