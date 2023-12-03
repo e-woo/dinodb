@@ -37,10 +37,12 @@ const ReactTabs = () => {
   const handleDeleteClub = async (Activity_ID: number) => {
     if (window.confirm("Are you sure you want to delete this club?")) {
       try {
+        console.log(Activity_ID.toString());
         await axios.delete(`/club/delete`, {
           data: { Activity_ID: Activity_ID },
         });
-        navigate(`../search`);
+
+        navigate(`../profile`);
         alert("Club deleted successfully");
       } catch (error) {
         console.error("Error deleting club", error);
