@@ -15,6 +15,7 @@ const Volunteerpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState('');
   const [volunteer, setVolunteer] = useState({
     Activity_ID: id,
     Name: "",
@@ -95,6 +96,9 @@ const Volunteerpage = () => {
           Location: res.data.Location,
           Perk: res.data.Perk,
         });
+
+        const orgRes = await axios.post(`/volunteer/getOrganization`, { Activity_ID: id });
+        setOrganization(orgRes.data.Org_Name);
 
         const execRes = await axios.post("/volunteer/getExecs", {
           Activity_ID: id,
@@ -205,6 +209,12 @@ const Volunteerpage = () => {
           <div className="info">
             <h2>Perks:</h2>
             <p>{volunteer.Perk}</p>
+          </div>
+        </div>
+        <div className="info-row">
+          <div className="info">
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
           </div>
         </div>
       </div>

@@ -11,11 +11,13 @@ import {
   joinedVolunteer,
   execVolunteer,
   getMembers,
+  getOrganization,
 } from "../controllers/volunteer.js";
 
 const router = express.Router();
 
 router.post("/show", showVolunteering);
+router.post("/getOrganization", getOrganization);
 router.get("/get4Volunteer", get4Volunteer);
 router.post("/create", createVolunteering);
 router.post("/edit", editVolunteer);

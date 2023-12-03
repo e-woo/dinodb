@@ -17,6 +17,7 @@ interface CreateElements extends HTMLFormControlsCollection {
   fee: HTMLInputElement;
   facultyType: HTMLInputElement;
   perks: HTMLInputElement;
+  organization: HTMLInputElement;
 
   discord: HTMLInputElement;
   instagram: HTMLInputElement;
@@ -42,10 +43,12 @@ const CreatePage = () => {
 
   const navigate = useNavigate();
 
+  const [organization, setOrganization] = useState<string>("");
   const [activityType, setActivityType] = useState<string>("");
   const [facultyType, setFacultyType] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
+
   const handleSubmit = async (e: FormEvent<CreateForm>) => {
     e.preventDefault();
     const elements = e.currentTarget.elements;
@@ -58,6 +61,7 @@ const CreatePage = () => {
       return;
     }
     setWarning(false);
+
     if (activity === "club")
       formData = {
         ucid: accountUCID,
@@ -73,6 +77,7 @@ const CreatePage = () => {
         facultyType: elements.facultyType.value,
         fee: elements.fee.value,
         perks: elements.perks.value,
+        organization: elements.organization.value,
 
         discord: elements.discord.value,
         instagram: elements.instagram.value,
@@ -92,6 +97,7 @@ const CreatePage = () => {
         facultyType: elements.facultyType.value,
         fee: elements.fee.value,
         perks: elements.perks.value,
+        organization: elements.organization.value,
 
         website: elements.website.value,
       };
@@ -128,6 +134,7 @@ const CreatePage = () => {
         facultyType: elements.facultyType.value,
         fee: elements.fee.value,
         perks: elements.perks.value,
+        organization: elements.organization.value,
 
         location: elements.location.value,
       };
@@ -222,6 +229,36 @@ const CreatePage = () => {
                 />
                 <input type="text" placeholder="Discord" id="discord" />
                 <input type="text" placeholder="Instagram" id="instagram" />
+                <select
+                  value={organization}
+                  onChange={(e) => {
+                    setOrganization(e.target.value);
+                  }}
+                  id="organization"
+                >
+                  <option value="">Choose an organization...</option>
+                  <option value="000000001">Google</option>
+                  <option value="000000002">Canadian Global Care</option>
+                  <option value="000000003">The Mustard Seed</option>
+                  <option value="000000004">Calgary Humane Society</option>
+                  <option value="000000005">JUMP Math</option>
+                  <option value="000000006">Calgary Food Bank</option>
+                  <option value="000000007">Meta</option>
+                  <option value="000000008">Air Canada</option>
+                  <option value="000000021">West Jet</option>
+                  <option value="000000009">Netflix</option>
+                  <option value="000000010">Amazon</option>
+                  <option value="000000011">Chick-fil-A</option>
+                  <option value="000000012">NASA</option>
+                  <option value="000000013">Canadian Armed Forces</option>
+                  <option value="000000014">Canadian Police Services</option>
+                  <option value="000000015">YMCA</option>
+                  <option value="000000016">Red Cross</option>
+                  <option value="000000017">Safe Spaces</option>
+                  <option value="000000018">The Salvation Army</option>
+                  <option value="000000019">Heritage Park</option>
+                  <option value="000000020">Doctors Without Borders</option>
+                </select>
               </>
             ) : activityType === "program" ? (
               <>
@@ -242,7 +279,38 @@ const CreatePage = () => {
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                 />
-                <input type="text" placeholder="Website" id="website" />
+                <input type="text" placeholder="Website" id="website"
+                />
+                <select
+                  value={organization}
+                  onChange={(e) => {
+                    setOrganization(e.target.value);
+                  }}
+                  id="organization"
+                >
+                  <option value="">Choose an organization...</option>
+                  <option value="000000001">Google</option>
+                  <option value="000000002">Canadian Global Care</option>
+                  <option value="000000003">The Mustard Seed</option>
+                  <option value="000000004">Calgary Humane Society</option>
+                  <option value="000000005">JUMP Math</option>
+                  <option value="000000006">Calgary Food Bank</option>
+                  <option value="000000007">Meta</option>
+                  <option value="000000008">Air Canada</option>
+                  <option value="000000021">West Jet</option>
+                  <option value="000000009">Netflix</option>
+                  <option value="000000010">Amazon</option>
+                  <option value="000000011">Chick-fil-A</option>
+                  <option value="000000012">NASA</option>
+                  <option value="000000013">Canadian Armed Forces</option>
+                  <option value="000000014">Canadian Police Services</option>
+                  <option value="000000015">YMCA</option>
+                  <option value="000000016">Red Cross</option>
+                  <option value="000000017">Safe Spaces</option>
+                  <option value="000000018">The Salvation Army</option>
+                  <option value="000000019">Heritage Park</option>
+                  <option value="000000020">Doctors Without Borders</option>
+                </select>
               </>
             ) : activityType === "event" ? (
               <>
@@ -286,7 +354,38 @@ const CreatePage = () => {
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                 />
-                <input type="text" placeholder="Location" id="location" />
+                <input type="text" placeholder="Location" id="location"
+                />
+                <select
+                  value={organization}
+                  onChange={(e) => {
+                    setOrganization(e.target.value);
+                  }}
+                  id="organization"
+                >
+                  <option value="">Choose an organization...</option>
+                  <option value="000000001">Google</option>
+                  <option value="000000002">Canadian Global Care</option>
+                  <option value="000000003">The Mustard Seed</option>
+                  <option value="000000004">Calgary Humane Society</option>
+                  <option value="000000005">JUMP Math</option>
+                  <option value="000000006">Calgary Food Bank</option>
+                  <option value="000000007">Meta</option>
+                  <option value="000000008">Air Canada</option>
+                  <option value="000000021">West Jet</option>
+                  <option value="000000009">Netflix</option>
+                  <option value="000000010">Amazon</option>
+                  <option value="000000011">Chick-fil-A</option>
+                  <option value="000000012">NASA</option>
+                  <option value="000000013">Canadian Armed Forces</option>
+                  <option value="000000014">Canadian Police Services</option>
+                  <option value="000000015">YMCA</option>
+                  <option value="000000016">Red Cross</option>
+                  <option value="000000017">Safe Spaces</option>
+                  <option value="000000018">The Salvation Army</option>
+                  <option value="000000019">Heritage Park</option>
+                  <option value="000000020">Doctors Without Borders</option>
+                </select>
               </>
             ) : (
               <></>

@@ -16,6 +16,7 @@ const Programpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState('');
   const [program, setProgram] = useState({
     Activity_ID: id,
     Name: "",
@@ -90,6 +91,9 @@ const Programpage = () => {
           Website: res.data.Website,
           Perk: res.data.Perk,
         });
+
+        const orgRes = await axios.post(`/program/getOrganization`, { Activity_ID: id });
+        setOrganization(orgRes.data.Org_Name);
 
         const execRes = await axios.post("/program/getExecs", {
           Activity_ID: id,
@@ -198,6 +202,10 @@ const Programpage = () => {
           <div className="info">
             <h2>Perks</h2>
             <p>{program.Perk}</p>
+          </div>
+          <div className="info">
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
           </div>
         </div>
         <div className="social-row">

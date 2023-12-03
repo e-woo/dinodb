@@ -17,6 +17,7 @@ const Clubpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState('');
   const [club, setClub] = useState({
     Activity_ID: id,
     Name: "",
@@ -93,13 +94,15 @@ const Clubpage = () => {
           Perk: res.data.Perk ?? "",
         });
 
+        const orgRes = await axios.post(`/club/getOrganization`, { Activity_ID: id });
+        setOrganization(orgRes.data.Org_Name);
+
         const execRes = await axios.post("/club/getExecs", { Activity_ID: id });
         const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
 
         if (execUCIDs.includes(accountUCID)) {
           setEditable(true);
         }
-        console.log(execUCIDs);
 
         const memRes = await axios.post("/club/getMembers", {
           Activity_ID: id,
@@ -196,6 +199,10 @@ const Clubpage = () => {
           <div className="info">
             <h2>Perks:</h2>
             <p>{club.Perk}</p>
+          </div>
+          <div className="info">
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
           </div>
         </div>
 

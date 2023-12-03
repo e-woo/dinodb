@@ -13,6 +13,18 @@ export const showProgram = (req, res) => {
   });
 };
 
+export const getOrganization = (req, res) => {
+  const q = `SELECT O.Org_Name
+              FROM PROGRAM AS P LEFT JOIN INVITES AS I ON P.Activity_ID = I.Activity_ID
+              LEFT JOIN ORGANIZATION AS O ON I.Org_ID = O.Org_ID
+              WHERE P.Activity_ID = ?`;
+  db.query(q, [req.body.Activity_ID], (err, data) => {
+    if (err) return res.json(err);
+
+    return res.status(200).json(data[0]);
+  })
+}
+
 export const get4Programs = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
                 FROM EXTRACURRICULAR_ACTIVITY AS EA NATURAL JOIN PROGRAM
@@ -27,6 +39,7 @@ export const get4Programs = (req, res) => {
 
 export const createProgram = async (req, res) => {
   const {
+    ucid,
     activityType,
     name,
     description,
@@ -40,6 +53,7 @@ export const createProgram = async (req, res) => {
     fee,
     website,
     perks,
+    organization,
   } = req.body;
 
   try {
@@ -73,6 +87,12 @@ export const createProgram = async (req, res) => {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
                         VALUES (?, ?)`;
       await db.promise().query(q3, [activityId, perks]);
+    }
+
+    if (organization !== '') {
+      const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
+                  VALUES (?, ?)`
+      await db.promise().query(q6, [activityId, organization]);
     }
 
     const q4 = `INSERT INTO PROGRAM (Activity_ID, Website) 

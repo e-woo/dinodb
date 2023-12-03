@@ -12,12 +12,14 @@ import {
   joinedClubs,
   execClubs,
   getExecClubs,
+  getOrganization,
 } from "../controllers/club.js";
 import { exec } from "child_process";
 
 const router = express.Router();
 
 router.post("/show", showClub);
+router.post("/getOrganization", getOrganization);
 router.get("/get4Clubs", get4Clubs);
 router.post("/create", createClub);
 router.post("/edit", editClub);
