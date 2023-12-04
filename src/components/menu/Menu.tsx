@@ -52,7 +52,7 @@ export const Menu = () => {
               </div>
 
               <Link to={`/announcement/${post.Activity_ID}`}>
-                <button className='w-max py-3 px-6 rounded-lg text-base font-bold border-2 border-red-600 bg-[#f5f7f8] text-red-500 transition-[.3s] ease-in-out hover:bg-[#ffe57b]'>Read More</button>
+                <button className='px-5 py-2 rounded-lg bg-[#f5f7f8] border-2 border-red-500 text-red-500 transition-[.3s] ease-in-out hover:border-[#f5f7f8] hover:bg-red-500 hover:text-[#f5f7f8]'>Read More</button>
               </Link>
             </div>
           </div>
