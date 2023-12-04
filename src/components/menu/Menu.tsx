@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
 import { Link } from "react-router-dom";
 import { Announcement } from "../../pages/announcementpage/Announcement";
 import axios from "axios";
@@ -22,59 +21,26 @@ export const Menu = () => {
     getAnnouncements();
   }, []) 
 
-  // const posts = [
-  //   {
-  //     id: 121,
-  //     title: "Hackathon Winner Announced!",
-  //     date: "updated on Nov 12 2023",
-  //     author: "posted by bob for coding club",
-  //     desc: "Hacktahon that took place over the reading week winner announced",
-  //     img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  //   },
-  //   {
-  //     id: 113,
-  //     title: "New halloween event",
-  //     date: "updated on Nov 12 2023",
-  //     author: "posted by bob for coding club",
-  //     desc: "join.",
-  //     img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  //   },
-  //   {
-  //     id: 452,
-  //     title: "Clash of Clans Clan War",
-  //     date: "updated on Nov 12 2023",
-  //     author: "posted by bob for coding club",
-  //     desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct. The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-  //     img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  //   },
-  //   {
-  //     id: 1312,
-  //     title: "Plant Club welcomes new executive",
-  //     date: "updated on Nov 12 2023",
-  //     author: "posted by bob for coding club",
-  //     desc: "The BGC aims to provide regular, weekly events for members to meet and experience the warmth and interpersonal connections fostered by board gaming. Board games offer a unique experience distinct.",
-  //     img: "https://img.freepik.com/free-vector/board-game-collection_52683-47936.jpg?size=626&ext=jpg",
-  //   },
-  // ];
+
   return (
-    <div className="postsContainer">
+    <div className='flex flex-col m-8 items-center'>
       {/* Header of menu */}
-      <h1 className="postH1">Other posts by club</h1>
-      <div className="menuPosts">
+      <h1 className='text-2xl font-bold text-center py-2'>More Announcements</h1>
+      <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-16 justify-center align-center'>
         {/* Mapping through the posts array and rendering individual post components */}
         {posts.map((post) => (
-          <div className="post" key={post.Activity_ID}>
-            <div className="postImg">
-              <img src={post.Img_file_path}></img>
+          <div className='flex-1 h-[420px] p-5 rounded-md border-red-500 border-4 overflow-hidden flex flex-col justify-between transition-[.3s] ease-in-out' key={post.Activity_ID}>
+            <div className='max-h-[300px] relative overflow-hidden'>
+              <img src={post.Img_file_path} className='w-full max-h-full object-cover'/>
             </div>
-            <div className="postContent">
-              <div className="about">
-                <Link className="link" to={`/announcement/${post.Activity_ID}`}>
-                  <h2 className="postH1">{post.Title}</h2>
+            <div className='flex-[2] flex flex-col justify-between'>
+              <div>
+                <Link to={`/announcement/${post.Activity_ID}`}>
+                  <h2 className='text-red-500 my-2 text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1 font-bold'>{post.Title}</h2>
                 </Link>
-                <div className="postP">
-                  <div className="announcementInfo">
-                    <p className="userAuthor">{post.Author}</p>
+                <div className='text-sm whitespace-normal overflow-hidden text-ellipsis line-clamp-3'>
+                  <div className='flex flex-col'>
+                    <p className='text-lg font-bold'>{post.Author}</p>
                     <span>{post.Date ? new Intl.DateTimeFormat('en-CA', {
                     dateStyle: 'long',
                     timeStyle: 'short',
@@ -85,8 +51,8 @@ export const Menu = () => {
                 </div>
               </div>
 
-              <Link className="link" to={`/announcement/${post.Activity_ID}`}>
-                <button className="postsButton">Read More</button>
+              <Link to={`/announcement/${post.Activity_ID}`}>
+                <button className='w-max py-3 px-6 rounded-lg text-base font-bold border-2 border-red-600 bg-[#f5f7f8] text-red-500 transition-[.3s] ease-in-out hover:bg-[#ffe57b]'>Read More</button>
               </Link>
             </div>
           </div>
