@@ -168,61 +168,61 @@ const CreatePage = () => {
         );
     } else {
         return (
-            <div className='create'>
-                <h1 className="bigHeader">Create new Extracurricular!</h1>
+            <div className='min-h-[60vh]'>
+                <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Create new Extracurricular!</h1>
                 <form onSubmit={handleSubmit} method='post'>
-                    <div className='createBody'>
-                        <select value={activityType} onChange={e => {setActivityType(e.target.value)}} className='dropdown' id='activityType'>
+                    <div className='flex flex-col items-center gap-6'>
+                        <select value={activityType} onChange={e => {setActivityType(e.target.value)}} className={inputCSS} id='activityType'>
                             <option value='choose'>Choose an Extracurricular Type...</option>
                             <option value='club'>Club</option>
                             <option value='program'>Program</option>
                             <option value='event'>Event</option>
                             <option value='volunteer'>Volunteering</option>
                         </select>
-                        <input type='text' placeholder='Name' id='name' required/>
-                        <textarea placeholder='Description...' id='description' rows={6} />
-                        <input type='text' placeholder='Perks' id='perks' required />
-                        <input type='text' placeholder='Icon image link' id='img' required/>
+                        <input type='text' placeholder='Name' id='name' className={inputCSS} required/>
+                        <textarea placeholder='Description...' id='description' rows={6} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
+                        <input type='text' placeholder='Perks' id='perks' className={inputCSS} required />
+                        <input type='text' placeholder='Icon image link' id='img' className={inputCSS} required/>
                         {
                             activityType === 'club' ?
                             <>
-                                <input type='number' placeholder='Fee' id='fee' />
-                                <input type='text' placeholder='Schedule' id='schedule' />
-                                <input type='text' placeholder='Interview Required?' id='interview' />
-                                <input type='text' placeholder='Application Required?' id='application' />
-                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
-                                <input type='text' placeholder='Discord' id='discord' />
-                                <input type='text' placeholder='Instagram' id='instagram' />
+                                <input type='number' placeholder='Fee' id='fee' className={inputCSS} />
+                                <input type='text' placeholder='Schedule' id='schedule' className={inputCSS} />
+                                <input type='text' placeholder='Interview Required?' id='interview' className={inputCSS} />
+                                <input type='text' placeholder='Application Required?' id='application' className={inputCSS} />
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' className={inputCSS} />
+                                <input type='text' placeholder='Discord' id='discord' className={inputCSS} />
+                                <input type='text' placeholder='Instagram' id='instagram' className={inputCSS} />
                             </> :
                             activityType === 'program' ?
                             <>
-                                <input type='number' placeholder='Fee' id='fee' />
-                                <input type='text' placeholder='Schedule' id='schedule' />
-                                <input type='text' placeholder='Interview Required?' id='interview' />
-                                <input type='text' placeholder='Application Required?' id='application' />
-                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
-                                <input type='text' placeholder='Website' id='website' />
+                                <input type='number' placeholder='Fee' id='fee' className={inputCSS}/>
+                                <input type='text' placeholder='Schedule' id='schedule' className={inputCSS} />
+                                <input type='text' placeholder='Interview Required?' id='interview' className={inputCSS}/>
+                                <input type='text' placeholder='Application Required?' id='application' className={inputCSS}/>
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' className={inputCSS}/>
+                                <input type='text' placeholder='Website' id='website' className={inputCSS}/>
                             </> :
                             activityType === 'event' ?
                             <>
-                                <input type='number' placeholder='Fee' id='fee' />
-                                <input type='text' placeholder='Location' id='location' required/>
-                                <input type='text' placeholder='Online or In Person?' id='onlineInPerson' />
-                                <input type='text' placeholder='Sign up info' id='signUpInfo' />
-                                <input type='text' placeholder='Eligibility' id='eligibility' />
-                                <input type='datetime-local' placeholder='Date and time' id='dateTime' required/>
+                                <input type='number' placeholder='Fee' id='fee' className={inputCSS}/>
+                                <input type='text' placeholder='Location' id='location' className={inputCSS} required/>
+                                <input type='text' placeholder='Online or In Person?' id='onlineInPerson' className={inputCSS}/>
+                                <input type='text' placeholder='Sign up info' id='signUpInfo' className={inputCSS}/>
+                                <input type='text' placeholder='Eligibility' id='eligibility' className={inputCSS}/>
+                                <input type='datetime-local' placeholder='Date and time' id='dateTime' className={inputCSS} required/>
                             </> :
                             activityType === 'volunteer' ?
                             <>
-                                <input type='number' placeholder='Fee' id='fee' />
-                                <input type='text' placeholder='Schedule' id='schedule' />
-                                <input type='text' placeholder='Interview Required?' id='interview' />
-                                <input type='text' placeholder='Application Required?' id='application' />
-                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' />
-                                <input type='text' placeholder='Location' id='location' />
+                                <input type='number' placeholder='Fee' id='fee' className={inputCSS}/>
+                                <input type='text' placeholder='Schedule' id='schedule' className={inputCSS}/>
+                                <input type='text' placeholder='Interview Required?' id='interview' className={inputCSS}/>
+                                <input type='text' placeholder='Application Required?' id='application' className={inputCSS}/>
+                                <input type='number' placeholder='Weekly hour commitment' id='weekHours' className={inputCSS}/>
+                                <input type='text' placeholder='Location' id='location' className={inputCSS}/>
                             </> : <></>
                         }
-                        <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='dropdown' id='facultyType'>
+                        <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className={inputCSS} id='facultyType'>
                             <option value='Administration'>Choose a faculty...</option>
                             <option value='Science'>Science</option>
                             <option value='Arts'>Arts</option>
@@ -231,7 +231,7 @@ const CreatePage = () => {
                             <option value='Education'>Education</option>
                             <option value='Administration'>Administration</option>
                         </select>
-                        <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' required >
+                        <select value={tags} onChange={e => {setTags(e.target.value)}} className={inputCSS} id='tags' required>
                             <option value=''>Choose a tag...</option>
                             <option value='000000001'>Academic</option>
                             <option value='000000002'>Arts</option>
@@ -250,7 +250,7 @@ const CreatePage = () => {
                             <option value='000000019'>Leadership</option>
                             <option value='000000020'>Gaming</option>
                         </select>
-                        <button type='submit'>Create</button>
+                        <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Create</button>
                         { warning ? <p className='warningText'>Please choose an extracurricular type!</p> : <></> }
                     </div>
                 </form>
@@ -258,5 +258,7 @@ const CreatePage = () => {
           )
     }
 }
+
+const inputCSS = 'w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
 
 export default CreatePage;
