@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./style.css";
 import discordLogo from "./discord-logo.jpg";
 import instagramLogo from "./instagram-logo.png";
 import axios from "axios";
