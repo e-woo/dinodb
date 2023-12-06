@@ -1,5 +1,4 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import './style.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import axios from 'axios';

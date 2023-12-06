@@ -1,5 +1,4 @@
 import React, { FormEvent, useContext, useState } from 'react'
-import './style.css'
 import { AuthContext } from '../../context/authContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -251,7 +250,7 @@ const CreatePage = () => {
                             <option value='000000020'>Gaming</option>
                         </select>
                         <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Create</button>
-                        { warning ? <p className='warningText'>Please choose an extracurricular type!</p> : <></> }
+                        { warning ? <p className='text-red-500 font-semibold'>Please choose an extracurricular type!</p> : <></> }
                     </div>
                 </form>
             </div>
