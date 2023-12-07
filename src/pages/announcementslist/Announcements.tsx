@@ -6,12 +6,12 @@ import { Announcement } from "../announcementpage/Announcement";
 
 const Announcements = () => {
   const [posts, setPosts] = useState<Array<Announcement>>([]);
-  useEffect(() => { 
+  useEffect(() => {
     async function getAnnouncements() {
-      setPosts((await axios.post('/announcement/getAnnouncements')).data);
+      setPosts((await axios.post("/announcement/getAnnouncements")).data);
     }
     getAnnouncements();
-  }, []) 
+  }, []);
   return (
     <div className="announcements">
       <div className="bigHeader"> Announcements</div>
@@ -28,11 +28,13 @@ const Announcements = () => {
                 </Link>
                 <div className="announcementInfo">
                   <p className="userAuthor">{post.Author}</p>
-                  <span>{new Intl.DateTimeFormat('en-CA', {
-                    dateStyle: 'long',
-                    timeStyle: 'short',
-                    hour12: true
-                  }).format(new Date(post.Date))}</span>
+                  <span>
+                    {new Intl.DateTimeFormat("en-CA", {
+                      dateStyle: "long",
+                      timeStyle: "short",
+                      hour12: true,
+                    }).format(new Date(post.Date))}
+                  </span>
                 </div>
               </div>
 
@@ -49,7 +51,5 @@ const Announcements = () => {
     </div>
   );
 };
-
-
 
 export default Announcements;
