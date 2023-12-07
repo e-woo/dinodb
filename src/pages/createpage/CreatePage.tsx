@@ -41,6 +41,7 @@ const CreatePage = () => {
 
   const supervisorAccount = currentUser?.Supervisor_ID;
 
+  const [id, setID] = useState();
   const navigate = useNavigate();
 
   const [organization, setOrganization] = useState<string>("");
@@ -84,7 +85,8 @@ const CreatePage = () => {
       };
     else if (activity === "program")
       formData = {
-        ucid: accountUCID,
+        accountID: supervisorAccount ? supervisorAccount : accountUCID,
+        isSupervisor: supervisorAccount,
         activityType: elements.activityType.value,
         name: elements.name.value,
         description: elements.description.value,
@@ -103,7 +105,8 @@ const CreatePage = () => {
       };
     else if (activity === "event")
       formData = {
-        ucid: accountUCID,
+        accountID: supervisorAccount ? supervisorAccount : accountUCID,
+        isSupervisor: supervisorAccount,
         activityType: elements.activityType.value,
         name: elements.name.value,
         description: elements.description.value,
@@ -279,8 +282,7 @@ const CreatePage = () => {
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                 />
-                <input type="text" placeholder="Website" id="website"
-                />
+                <input type="text" placeholder="Website" id="website" />
                 <select
                   value={organization}
                   onChange={(e) => {
@@ -354,8 +356,7 @@ const CreatePage = () => {
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                 />
-                <input type="text" placeholder="Location" id="location"
-                />
+                <input type="text" placeholder="Location" id="location" />
                 <select
                   value={organization}
                   onChange={(e) => {

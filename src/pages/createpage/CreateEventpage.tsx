@@ -29,6 +29,8 @@ const CreateEventPage = () => {
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
 
+  const supervisorAccount = currentUser?.Supervisor_ID;
+
   const navigate = useNavigate();
 
   const [editable, setEditable] = useState(false);
@@ -36,10 +38,22 @@ const CreateEventPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const execRes = await axios.post("/club/getExecs", { Activity_ID: id });
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        const execRes = await axios.post("/program/getExecs", {
+          Activity_ID: id,
+          isSupervisor: supervisorAccount,
+        });
 
-        if (execUCIDs.includes(accountUCID)) {
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
       } catch (error) {

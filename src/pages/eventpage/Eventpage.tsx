@@ -13,6 +13,8 @@ const Eventpage = () => {
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
 
+  const supervisorAccount = currentUser?.Supervisor_ID;
+
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
   const [event, setEvent] = useState({
@@ -54,11 +56,20 @@ const Eventpage = () => {
 
         const execRes = await axios.post("/event/getExecs", {
           Activity_ID: res.data.Activity_ID,
+          isSupervisor: supervisorAccount,
         });
-        console.log("name :" + id + " activity id " + res.data.Activity_ID);
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
-        console.log(execUCIDs);
-        if (execUCIDs.includes(accountUCID)) {
+
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
 
@@ -96,7 +107,10 @@ const Eventpage = () => {
           console.log("lol2");
           const idRes = await axios.post("/event/getID", { Name: id });
           await axios.delete(`/event/delete`, {
-            data: { Activity_ID: idRes.data.Activity_ID },
+            data: {
+              Activity_ID: idRes.data.Activity_ID,
+              isSupervisor: supervisorAccount,
+            },
           });
           navigate(`../search`);
           alert("Event deleted successfully");
@@ -158,7 +172,7 @@ const Eventpage = () => {
         </div>
       </div>
       <div className="button-row">
-        {currentUser ? (
+        {currentUser && !supervisorAccount ? (
           joined ? (
             <button className="delete-button" onClick={handleLeave}>
               Leave

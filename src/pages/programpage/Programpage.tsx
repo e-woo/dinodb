@@ -13,10 +13,11 @@ const Programpage = () => {
   const { currentUser } = useContext(AuthContext);
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
-  const [organization, setOrganization] = useState('');
+  const [organization, setOrganization] = useState("");
   const [program, setProgram] = useState({
     Activity_ID: id,
     Name: "",
@@ -34,8 +35,11 @@ const Programpage = () => {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this program?")) {
+      console.log(id + "supervisor " + supervisorAccount);
       try {
-        await axios.delete(`/program/delete`, { data: { Activity_ID: id } });
+        await axios.delete(`/program/delete`, {
+          data: { Activity_ID: id },
+        });
         navigate(`../search`);
         alert("Program deleted successfully");
       } catch (error) {
@@ -92,17 +96,27 @@ const Programpage = () => {
           Perk: res.data.Perk,
         });
 
-        const orgRes = await axios.post(`/program/getOrganization`, { Activity_ID: id });
+        const orgRes = await axios.post(`/program/getOrganization`, {
+          Activity_ID: id,
+        });
         setOrganization(orgRes.data.Org_Name);
 
         const execRes = await axios.post("/program/getExecs", {
-          Activity_ID: id,
+          Activity_ID: res.data.Activity_ID,
+          isSupervisor: supervisorAccount,
         });
-        console.log(execRes);
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
-        console.log(execUCIDs);
 
-        if (execUCIDs.includes(accountUCID)) {
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
 
@@ -136,17 +150,17 @@ const Programpage = () => {
         </div>
       </div>
       <div className="button-row">
-      {currentUser ? (
-            joined ? (
-              <button className="delete-button" onClick={handleLeave}>
-                Leave
-              </button>
-            ) : (
-              <button className="edit-button" onClick={handleJoin}>
-                Join
-              </button>
-            )
-          ) : null}
+        {currentUser && !supervisorAccount ? (
+          joined ? (
+            <button className="delete-button" onClick={handleLeave}>
+              Leave
+            </button>
+          ) : (
+            <button className="edit-button" onClick={handleJoin}>
+              Join
+            </button>
+          )
+        ) : null}
         {editable && (
           <>
             <a href={`/event/${id}/create`}>

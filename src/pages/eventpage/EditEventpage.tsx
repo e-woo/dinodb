@@ -30,6 +30,7 @@ const EditEventPage = () => {
   const { currentUser } = useContext(AuthContext);
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   const [editable, setEditable] = useState(false);
 
@@ -72,11 +73,20 @@ const EditEventPage = () => {
 
         const execRes = await axios.post("/event/getExecs", {
           Activity_ID: res.data.Activity_ID,
+          isSupervisor: supervisorAccount,
         });
-        console.log("activity_Id :" + idRes.data.Activity_ID);
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
 
-        if (execUCIDs.includes(accountUCID)) {
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
       } catch (error) {

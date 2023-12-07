@@ -23,11 +23,11 @@ const ReactTabs = () => {
   const [execPrograms, setExecPrograms] = useState([]);
   const [execEvents, setExecEvents] = useState([]);
 
-  const [value, setValue] = React.useState(0);
   const { currentUser } = useContext(AuthContext);
   const Member_UCID = currentUser?.UCID;
   const accountType = currentUser?.AccountType;
   const supervisorAccount = currentUser?.Supervisor_ID;
+  const [value, setValue] = React.useState(supervisorAccount ? 2 : 0);
 
   const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
   const type = ["club", "volunteer", "program", "event"];
@@ -238,7 +238,10 @@ const ReactTabs = () => {
       });
 
     axios
-      .post("/program/execPrograms", { UCID: Member_UCID })
+      .post("/program/execPrograms", {
+        accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+        isSupervisor: supervisorAccount,
+      })
       .then((res) => {
         setExecPrograms(res.data);
       })
@@ -256,7 +259,10 @@ const ReactTabs = () => {
       });
 
     axios
-      .post("/event/execEvents", { UCID: Member_UCID })
+      .post("/event/execEvents", {
+        accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+        isSupervisor: supervisorAccount,
+      })
       .then((res) => {
         setExecEvents(res.data);
       })
@@ -264,6 +270,10 @@ const ReactTabs = () => {
         console.error("Error fetching data: ", error);
       });
   }, [Member_UCID]);
+
+  const isSupervisor = () => {
+    return accountType === null || supervisorAccount != null;
+  };
 
   return (
     <div className="activityInfo">
@@ -280,21 +290,23 @@ const ReactTabs = () => {
           <Tab label="Programs" />
           <Tab label="Event History" />
         </Tabs>
-        <ActivityList
-          membertypes={membertypes[0]}
-          excurtype={excurtypes[value]}
-          type={type[value]}
-          posts={allPosts[value]}
-          handleDeleteClub={handleDeleteClub}
-          handleLeaveClub={handleLeaveClub}
-          handleDeleteVolunteer={handleDeleteVolunteer}
-          handleLeaveVolunteer={handleLeaveVolunteer}
-          handleDeleteProgram={handleDeleteProgram}
-          handleLeaveProgram={handleLeaveProgram}
-          handleDeleteEvent={handleDeleteEvent}
-          handleLeaveEvent={handleLeaveEvent}
-        />
-        {accountType === "EXECUTIVE" ? (
+        {!isSupervisor() ? (
+          <ActivityList
+            membertypes={membertypes[0]}
+            excurtype={excurtypes[value]}
+            type={type[value]}
+            posts={allPosts[value]}
+            handleDeleteClub={handleDeleteClub}
+            handleLeaveClub={handleLeaveClub}
+            handleDeleteVolunteer={handleDeleteVolunteer}
+            handleLeaveVolunteer={handleLeaveVolunteer}
+            handleDeleteProgram={handleDeleteProgram}
+            handleLeaveProgram={handleLeaveProgram}
+            handleDeleteEvent={handleDeleteEvent}
+            handleLeaveEvent={handleLeaveEvent}
+          />
+        ) : null}
+        {accountType === "EXECUTIVE" || isSupervisor() ? (
           <ActivityList
             membertypes={membertypes[1]}
             excurtype={excurtypes[value]}

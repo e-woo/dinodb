@@ -22,8 +22,8 @@ export const getOrganization = (req, res) => {
     if (err) return res.json(err);
 
     return res.status(200).json(data[0]);
-  })
-}
+  });
+};
 
 export const get4Programs = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
@@ -35,78 +35,6 @@ export const get4Programs = (req, res) => {
 
     return res.status(200).json(data);
   });
-};
-
-export const createProgram = async (req, res) => {
-  const {
-    ucid,
-    activityType,
-    name,
-    description,
-    schedule,
-    img,
-    interview,
-    application,
-    weekHours,
-    tags,
-    facultyType,
-    fee,
-    website,
-    perks,
-    organization,
-  } = req.body;
-
-  try {
-    const q1 = `INSERT INTO EXTRACURRICULAR_ACTIVITY (Name, Type, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-    const result = await db
-      .promise()
-      .query(q1, [
-        name,
-        activityType,
-        description ?? "",
-        fee === "" ? null : fee,
-        schedule ?? "",
-        interview ?? "",
-        application ?? "",
-        weekHours === "" ? null : weekHours,
-        facultyType ?? "",
-        img,
-      ]);
-    const activityId = result[0].insertId;
-    console.log(activityId);
-
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
-
-    if (perks !== "") {
-      const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q3, [activityId, perks]);
-    }
-
-    if (organization !== '') {
-      const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
-                  VALUES (?, ?)`
-      await db.promise().query(q6, [activityId, organization]);
-    }
-
-    const q4 = `INSERT INTO PROGRAM (Activity_ID, Website) 
-                    VALUES (?, ?)`;
-    await db.promise().query(q4, [activityId, website]);
-
-    const q5 = `INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
-        VALUES (?, ?, ?)`;
-    await db.promise().query(q5, [ucid, "Program Manager", activityId]);
-
-    return res.status(201).json({ activityId: activityId });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
 };
 
 export const editProgram = async (req, res) => {
@@ -175,48 +103,6 @@ export const editProgram = async (req, res) => {
   }
 };
 
-export const getExecs = async (req, res) => {
-  const { Activity_ID } = req.body;
-
-  try {
-    const q = `SELECT UCID
-                    FROM ACTIVITY_EXEC
-                    WHERE Activity_ID = ?`;
-
-    db.query(q, [Activity_ID], (err, data) => {
-      if (err) return res.json(err);
-
-      return res.status(200).json(data);
-    });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-};
-
-export const deleteProgram = async (req, res) => {
-  const { Activity_ID } = req.body;
-
-  try {
-    await db
-      .promise()
-      .query(`DELETE FROM ACTIVITY_EXEC WHERE Activity_ID = ?`, [Activity_ID]);
-
-    await db
-      .promise()
-      .query(`DELETE FROM PROGRAM WHERE Activity_ID = ?`, [Activity_ID]);
-
-    await db
-      .promise()
-      .query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [
-        Activity_ID,
-      ]);
-
-    return res.status(200).json({ message: "Program successfully deleted" });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-};
-
 export const getMembers = async (req, res) => {
   const { Activity_ID } = req.body;
 
@@ -280,18 +166,147 @@ export const joinedPrograms = async (req, res) => {
   }
 };
 
-export const execPrograms = async (req, res) => {
-  const { UCID } = req.body;
+export const deleteProgram = async (req, res) => {
+  const { Activity_ID } = req.body;
+  try {
+    await db
+      .promise()
+      .query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [
+        Activity_ID,
+      ]);
 
-  const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+    return res.status(200).json({ message: "Program successfully deleted" });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const getExecs = async (req, res) => {
+  const { Activity_ID, isSupervisor } = req.body;
+  let q;
+
+  try {
+    if (isSupervisor) {
+      q = `SELECT Supervisor_ID
+                    FROM SUPERVISED_BY
+                    WHERE Activity_ID = ?`;
+    } else {
+      q = `SELECT UCID
+                    FROM ACTIVITY_EXEC
+                    WHERE Activity_ID = ?`;
+    }
+
+    db.query(q, [Activity_ID], (err, data) => {
+      if (err) return res.json(err);
+
+      return res.status(200).json(data);
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const execPrograms = async (req, res) => {
+  const { accountID, isSupervisor } = req.body;
+  let q;
+
+  if (isSupervisor) {
+    q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
+    FROM SUPERVISED_BY AS E 
+    JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
+    JOIN PROGRAM AS C ON E.Activity_ID = C.Activity_ID
+    WHERE E.Supervisor_ID = ?`;
+  } else {
+    q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
     FROM ACTIVITY_EXEC AS E 
     JOIN EXTRACURRICULAR_ACTIVITY AS EA ON E.Activity_ID = EA.Activity_ID
     JOIN PROGRAM AS C ON E.Activity_ID = C.Activity_ID
     WHERE E.UCID = ?`;
+  }
 
   try {
-    const [data] = await db.promise().query(q, [UCID]);
+    const [data] = await db.promise().query(q, [accountID]);
     return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const createProgram = async (req, res) => {
+  const {
+    accountID,
+    isSupervisor,
+    activityType,
+    name,
+    description,
+    schedule,
+    img,
+    interview,
+    application,
+    weekHours,
+    tags,
+    facultyType,
+    fee,
+    website,
+    perks,
+    organization,
+  } = req.body;
+
+  try {
+    const q1 = `INSERT INTO EXTRACURRICULAR_ACTIVITY (Name, Type, Description, Fee, Schedule, InterviewRequired, ApplicationRequired, WeekCommitmentHour, Faculty_Name, Img_file_path) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const result = await db
+      .promise()
+      .query(q1, [
+        name,
+        activityType,
+        description ?? "",
+        fee === "" ? null : fee,
+        schedule ?? "",
+        interview ?? "",
+        application ?? "",
+        weekHours === "" ? null : weekHours,
+        facultyType ?? "",
+        img,
+      ]);
+    const activityId = result[0].insertId;
+    console.log(activityId);
+
+    if (tags !== "") {
+      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
+                        VALUES (?, ?)`;
+      await db.promise().query(q2, [activityId, tags]);
+    }
+
+    if (perks !== "") {
+      const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
+                        VALUES (?, ?)`;
+      await db.promise().query(q3, [activityId, perks]);
+    }
+
+    if (organization !== "") {
+      const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
+                  VALUES (?, ?)`;
+      await db.promise().query(q6, [activityId, organization]);
+    }
+
+    const q4 = `INSERT INTO PROGRAM (Activity_ID, Website) 
+                    VALUES (?, ?)`;
+    await db.promise().query(q4, [activityId, website]);
+    if (isSupervisor) {
+      const qSupervisor = `INSERT INTO SUPERVISED_BY (Activity_ID, Supervisor_ID)
+        VALUES (?, ?)`;
+      await db.promise().query(qSupervisor, [activityId, accountID]);
+    } else {
+      const qExec = `INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
+        VALUES (?, ?, ?)`;
+      await db
+        .promise()
+        .query(qExec, [accountID, "Program Manager", activityId]);
+    }
+
+    return res.status(201).json({ activityId: activityId });
   } catch (err) {
     return res.status(500).json(err);
   }
