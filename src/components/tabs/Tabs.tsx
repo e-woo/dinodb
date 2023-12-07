@@ -27,7 +27,8 @@ const ReactTabs = () => {
   const Member_UCID = currentUser?.UCID;
   const accountType = currentUser?.AccountType;
   const supervisorAccount = currentUser?.Supervisor_ID;
-  const [value, setValue] = React.useState(supervisorAccount ? 2 : 0);
+  const [value, setValue] = React.useState(0);
+  const [infoValue, setInfoValue] = React.useState(supervisorAccount ? 2 : 0);
 
   const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
   const type = ["club", "volunteer", "program", "event"];
@@ -283,19 +284,20 @@ const ReactTabs = () => {
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
+            setInfoValue(isSupervisor() ? newValue + 2 : newValue);
           }}
         >
-          <Tab label="Clubs" />
-          <Tab label="Volunteer" />
+          {!isSupervisor() ? <Tab label="Clubs" /> : null}
+          {!isSupervisor() ? <Tab label="Volunteer" /> : null}
           <Tab label="Programs" />
           <Tab label="Event History" />
         </Tabs>
         {!isSupervisor() ? (
           <ActivityList
             membertypes={membertypes[0]}
-            excurtype={excurtypes[value]}
-            type={type[value]}
-            posts={allPosts[value]}
+            excurtype={excurtypes[infoValue]}
+            type={type[infoValue]}
+            posts={allPosts[infoValue]}
             handleDeleteClub={handleDeleteClub}
             handleLeaveClub={handleLeaveClub}
             handleDeleteVolunteer={handleDeleteVolunteer}
@@ -309,9 +311,9 @@ const ReactTabs = () => {
         {accountType === "EXECUTIVE" || isSupervisor() ? (
           <ActivityList
             membertypes={membertypes[1]}
-            excurtype={excurtypes[value]}
-            type={type[value]}
-            posts={allExecPosts[value]}
+            excurtype={excurtypes[infoValue]}
+            type={type[infoValue]}
+            posts={allExecPosts[infoValue]}
             handleDeleteClub={handleDeleteClub}
             handleLeaveClub={handleLeaveClub}
             handleDeleteVolunteer={handleDeleteVolunteer}
