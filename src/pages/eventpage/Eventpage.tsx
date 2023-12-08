@@ -147,23 +147,23 @@ const Eventpage = () => {
   // send a request here to see if the current user should have permissions to edit the activity
 
   return (
-    <div className="event-page">
-      <div className="title-and-img">
-        <div className="img-container">
-          <img src={event.Img_file_path}></img>
+    <div className='mx-12 md:mx-24 lg:mx-48 flex flex-col justify-center items-center'>
+      <div className='flex flex-nowrap flex-col md:flex-row py-12 gap-12'>
+        <div className='flex justify-center align-center h-32'>
+          <img src={event.Img_file_path} className='h-full rounded-xl object-cover'/>
         </div>
-        <div className="title-container">
-          <h1>{event.Name}</h1>
+        <div className='flex justify-center items-center'>
+          <h1 className='text-4xl lg:text-5xl xl:text-6xl font-bold text-center md:text-left'>{event.Name}</h1>
         </div>
       </div>
-      <div className="button-row">
+      <div className='flex flex-row flex-wrap gap-2 py-4 justify-center items-center'>
       {currentUser ? (
             joined ? (
-              <button className="delete-button" onClick={handleLeave}>
+              <button className='h-16 px-8 border-2 border-red-500 bg-red-500 rounded-xl justify-center text-base font-semibold text-white transition-[.3s] ease-in-out hover:bg-red-500 hover:text-black' onClick={handleLeave}>
                 Leave
               </button>
             ) : (
-              <button className="edit-button" onClick={handleJoin}>
+              <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white' onClick={handleJoin}>
                 Join
               </button>
             )
@@ -171,49 +171,51 @@ const Eventpage = () => {
           {editable && (
             <>
               <a href={`/event/${id}/edit`}>
-                <button className="edit-button">Edit</button>
+                <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>
+                  Edit
+                </button>
               </a>
-              <button className="delete-button" onClick={handleDelete}>
+              <button className='h-16 px-8 border-2 border-red-500 bg-red-500 rounded-xl justify-center text-base font-semibold text-white transition-[.3s] ease-in-out hover:bg-red-500 hover:text-black' onClick={handleDelete}>
                 Delete
               </button>
             </>
           )}
       </div>
-      <div className="desc">{event.Description}</div>
-      <div className="more-info">
-        <div className="info-row">
-          <div className="info">
-            <h2>Location:</h2>
+      <div className='flex justify-center items-center bg-[#E1E5E6] rounded-xl p-12 w-full'>{event.Description}</div>
+      <div className='flex flex-col justify-center items-center p-2 w-full text-sm md:text-base lg:text-lg'>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Location:</h2>
             <p>{event.Location}</p>
           </div>
-          <div className="info">
-            <h2>Date and Time:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Date and Time:</h2>
             <p>{event.DateTime}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Perks:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Perks:</h2>
             <p>{event.Perks}</p>
           </div>
-          <div className="info">
-            <h2>Sign-Up Info:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Sign-Up Info:</h2>
             <p>{event.SignUpInfo}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Online or In Person:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Online or In Person:</h2>
             <p>{event.OnlineInPerson}</p>
           </div>
-          <div className="info">
-            <h2>Fee:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Fee:</h2>
             <p>{event.Fee}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Eligibility:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Eligibility:</h2>
             <p>{event.Eligibility}</p>
           </div>
         </div>
