@@ -38,9 +38,9 @@ export const Menu = () => {
             </div>
             <div className="postContent">
               <div className="about">
-                <div className="link" onClick={() => handleNavigate(post.Title)}>
-                  <h2 className="postH1">{post.Title}</h2>
-                </div>
+                <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
+                  <h1 className="postH1">{post.Title}</h1>
+                </Link>
                 <div className="postP">
                   <div className="announcementInfo">
                     <p className="userAuthor">{post.Author}</p>
@@ -58,9 +58,9 @@ export const Menu = () => {
                 </div>
               </div>
 
-              <div className="link" onClick={() => handleNavigate(post.Title)}>
+              <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
                 <button className="postsButton">Read More</button>
-              </div>
+              </Link>
             </div>
           </div>
         ))}
