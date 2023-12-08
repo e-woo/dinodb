@@ -213,14 +213,6 @@ export const deleteClub = async (req, res) => {
   try {
     await db
       .promise()
-      .query(`DELETE FROM ACTIVITY_EXEC WHERE Activity_ID = ?`, [Activity_ID]);
-
-    await db
-      .promise()
-      .query(`DELETE FROM CLUB WHERE Activity_ID = ?`, [Activity_ID]);
-
-    await db
-      .promise()
       .query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [
         Activity_ID,
       ]);

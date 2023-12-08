@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Announcement } from "../../pages/announcementpage/Announcement";
 import axios from "axios";
 
 export const Menu = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Announcement[]>([]);
 
   useEffect(() => {
@@ -20,6 +21,10 @@ export const Menu = () => {
     getAnnouncements();
   }, []);
 
+  const handleNavigate = (postTitle: any) => {
+    navigate(`/announcement/${postTitle}`);
+  };
+
   return (
     <div className="postsContainer">
       {/* Header of menu */}
@@ -33,9 +38,9 @@ export const Menu = () => {
             </div>
             <div className="postContent">
               <div className="about">
-                <Link className="link" to={`/announcement/${post.Title}`}>
+                <div className="link" onClick={() => handleNavigate(post.Title)}>
                   <h2 className="postH1">{post.Title}</h2>
-                </Link>
+                </div>
                 <div className="postP">
                   <div className="announcementInfo">
                     <p className="userAuthor">{post.Author}</p>
@@ -53,9 +58,9 @@ export const Menu = () => {
                 </div>
               </div>
 
-              <Link className="link" to={`/announcement/${post.Title}`}>
+              <div className="link" onClick={() => handleNavigate(post.Title)}>
                 <button className="postsButton">Read More</button>
-              </Link>
+              </div>
             </div>
           </div>
         ))}

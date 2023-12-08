@@ -35,9 +35,11 @@ const ReactTabs = () => {
   const membertypes = ["Member", "Executive"];
   const allPosts = [clubs, volunteers, programs, events];
   const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
+
   const handleDeleteClub = async (Activity_ID: number) => {
     if (window.confirm("Are you sure you want to delete this club?")) {
       try {
+        console.log(Activity_ID);
         await axios.delete(`/club/delete`, {
           data: { Activity_ID: Activity_ID.toString() },
         });
