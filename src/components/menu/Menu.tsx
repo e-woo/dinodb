@@ -3,6 +3,7 @@ import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Announcement } from "../../pages/announcementpage/Announcement";
 import axios from "axios";
+import { handleImgErr } from "../../context/utils";
 
 export const Menu = () => {
   const navigate = useNavigate();
@@ -34,11 +35,17 @@ export const Menu = () => {
         {posts.map((post) => (
           <div className="post" key={post.Activity_ID}>
             <div className="postImg">
-              <img src={post.Img_file_path}></img>
+              <img src={post.Img_file_path} onError={handleImgErr()}></img>
             </div>
             <div className="postContent">
               <div className="about">
-                <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
+                <Link
+                  to={`/announcement/${post.Title}`}
+                  onClick={async () => {
+                    await new Promise((r) => setTimeout(r, 20));
+                    window.location.reload();
+                  }}
+                >
                   <h1 className="postH1">{post.Title}</h1>
                 </Link>
                 <div className="postP">
@@ -58,7 +65,13 @@ export const Menu = () => {
                 </div>
               </div>
 
-              <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
+              <Link
+                to={`/announcement/${post.Title}`}
+                onClick={async () => {
+                  await new Promise((r) => setTimeout(r, 20));
+                  window.location.reload();
+                }}
+              >
                 <button className="postsButton">Read More</button>
               </Link>
             </div>

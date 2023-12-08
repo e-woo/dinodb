@@ -4,6 +4,7 @@ import websiteLogo from "./website-logo.png";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Programpage = () => {
   const { id } = useParams();
@@ -143,7 +144,11 @@ const Programpage = () => {
     <div className="program-page">
       <div className="title-and-img">
         <div className="img-container">
-          <img src={program.Img_file_path} alt="Program Logo"></img>
+          <img
+            src={program.Img_file_path}
+            alt="Program Logo"
+            onError={handleImgErr()}
+          ></img>
         </div>
         <div className="title-container">
           <h1>{program.Name}</h1>
@@ -224,7 +229,11 @@ const Programpage = () => {
         </div>
         <div className="social-row">
           <div className="social website">
-            <img src={websiteLogo} alt="WWW Website Logo"></img>
+            <img
+              src={websiteLogo}
+              alt="WWW Website Logo"
+              onError={handleImgErr()}
+            ></img>
             <a href={program.Website} target="_blank" rel="noreferrer">
               Website
             </a>

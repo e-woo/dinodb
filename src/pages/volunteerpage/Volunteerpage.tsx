@@ -3,6 +3,7 @@ import "./style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Volunteerpage = () => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const Volunteerpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
-  const [organization, setOrganization] = useState('');
+  const [organization, setOrganization] = useState("");
   const [volunteer, setVolunteer] = useState({
     Activity_ID: id,
     Name: "",
@@ -97,7 +98,9 @@ const Volunteerpage = () => {
           Perk: res.data.Perk,
         });
 
-        const orgRes = await axios.post(`/volunteer/getOrganization`, { Activity_ID: id });
+        const orgRes = await axios.post(`/volunteer/getOrganization`, {
+          Activity_ID: id,
+        });
         setOrganization(orgRes.data.Org_Name);
 
         const execRes = await axios.post("/volunteer/getExecs", {
@@ -132,24 +135,28 @@ const Volunteerpage = () => {
     <div className="volunteer-page">
       <div className="title-and-img">
         <div className="img-container">
-          <img src={volunteer.Img_file_path} alt="Volunteer Logo"></img>
+          <img
+            src={volunteer.Img_file_path}
+            alt="Volunteer Logo"
+            onError={handleImgErr()}
+          ></img>
         </div>
         <div className="title-container">
           <h1>{volunteer.Name}</h1>
         </div>
       </div>
       <div className="button-row">
-      {currentUser ? (
-            joined ? (
-              <button className="delete-button" onClick={handleLeave}>
-                Leave
-              </button>
-            ) : (
-              <button className="edit-button" onClick={handleJoin}>
-                Join
-              </button>
-            )
-          ) : null}
+        {currentUser ? (
+          joined ? (
+            <button className="delete-button" onClick={handleLeave}>
+              Leave
+            </button>
+          ) : (
+            <button className="edit-button" onClick={handleJoin}>
+              Join
+            </button>
+          )
+        ) : null}
         {editable && (
           <>
             <a href={`/event/${id}/create`}>

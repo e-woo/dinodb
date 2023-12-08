@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
 import { Announcement } from "../announcementpage/Announcement";
+import { handleImgErr } from "../../context/utils";
 
 const Announcements = () => {
   const [posts, setPosts] = useState<Array<Announcement>>([]);
@@ -19,7 +20,11 @@ const Announcements = () => {
         {posts.map((post) => (
           <div className="gridPost" key={post.Activity_ID}>
             <div className="gridImg">
-              <img src={post.Img_file_path} alt="" />
+              <img
+                src={post.Img_file_path}
+                alt="announcement logo"
+                onError={handleImgErr()}
+              />
             </div>
             <div className="gridContent">
               <div className="about">

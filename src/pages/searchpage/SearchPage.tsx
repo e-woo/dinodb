@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -142,8 +143,9 @@ const PostsRow = ({ posts }: { posts: Array<Post> }) => {
           <div className="post" key={post.Activity_ID}>
             <div className="postImg">
               <img
-                src={post.Img_file_path || "default-image-url.jpg"}
+                src={post.Img_file_path}
                 alt={post.Name}
+                onError={handleImgErr()}
               />
             </div>
             <div className="postContent">

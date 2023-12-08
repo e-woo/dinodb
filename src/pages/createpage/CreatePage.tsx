@@ -43,6 +43,8 @@ const CreatePage = () => {
 
   const [id, setID] = useState();
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState("");
+  const [isImageValid, setIsImageValid] = useState(true);
 
   const [organization, setOrganization] = useState<string>("");
   const [activityType, setActivityType] = useState<string>("");
@@ -50,10 +52,21 @@ const CreatePage = () => {
   const [tags, setTags] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
 
+  const isValidImageUrl = (filename: string) => {
+    return /\.(jpg|jpeg|png|gif)$/i.test(filename);
+  };
+
+  const handleImageUrlChange = (event: any) => {
+    const newUrl = event.target.value;
+    setImageUrl(newUrl);
+    setIsImageValid(isValidImageUrl(newUrl));
+  };
+
   const handleSubmit = async (e: FormEvent<CreateForm>) => {
     e.preventDefault();
     const elements = e.currentTarget.elements;
     const activity = e.currentTarget.elements.activityType.value;
+
     let formData;
     let url = "";
 
@@ -209,8 +222,14 @@ const CreatePage = () => {
               type="text"
               placeholder="Icon image link"
               id="img"
-              required
+              onChange={handleImageUrlChange}
             />
+            {!isImageValid && (
+              <span>
+                Please enter a valid image URL. Or it will use the default image
+                instead.
+              </span>
+            )}
             {activityType === "club" ? (
               <>
                 <input type="number" placeholder="Fee" id="fee" />

@@ -4,6 +4,7 @@ import "./style.css";
 import Menu from "../../components/menu/Menu";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Announcement = () => {
   const { title } = useParams();
@@ -101,9 +102,14 @@ const Announcement = () => {
         <img
           className="announcementImg"
           src={announcement ? announcement.Img_file_path : ""}
+          onError={handleImgErr()}
         ></img>
         <div className="user">
-          <img className="userImg" src={announcement.Img_file_path}></img>
+          <img
+            className="userImg"
+            src={announcement.Img_file_path}
+            onError={handleImgErr()}
+          ></img>
           <div className="announcementInfo">
             <span className="userAuthor">{announcement.Author}</span>
             <p>

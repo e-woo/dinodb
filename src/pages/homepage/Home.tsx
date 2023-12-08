@@ -5,6 +5,7 @@ import logo from "./uofc-logo.png";
 import axios from "axios";
 
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Home = () => {
   const [clubs, setClubs] = useState([]);
@@ -208,45 +209,34 @@ const ClubsSlider = ({
   return (
     <div className="postsContainer">
       <div className="postTop">
-        <div className="postsHeader"> {header}</div>
+        <div className="postsHeader">{header}</div>
         <div className="postsDesc">{desc}</div>
       </div>
       <div className="posts">
-        {posts.map((post) => (
-          <div>
-            {type === "event" ? (
-              <div className="post" key={post.Name}>
-                <div className="postImg">
-                  <img src={post.Img_file_path} alt="" />
-                </div>
-                <div className="postContent">
-                  <Link className="link" to={`/${type}/${post.Name}`}>
-                    <h1 className="postH1">{post.Name}</h1>
-                  </Link>
-                  <p className="postP">{post.Description}</p>
-                  <Link className="link" to={`/${type}/${post.Name}`}>
-                    <button className="postsButton">Learn More</button>
-                  </Link>
-                </div>
+        {posts.map((post) => {
+          const key = type === "event" ? post.Name : post.Activity_ID;
+
+          return (
+            <div key={key} className="post">
+              <div className="postImg">
+                <img
+                  src={post.Img_file_path}
+                  alt={post.Name}
+                  onError={handleImgErr()}
+                />
               </div>
-            ) : (
-              <div className="post" key={post.Activity_ID}>
-                <div className="postImg">
-                  <img src={post.Img_file_path} alt="" />
-                </div>
-                <div className="postContent">
-                  <Link className="link" to={`/${type}/${post.Activity_ID}`}>
-                    <h1 className="postH1">{post.Name}</h1>
-                  </Link>
-                  <p className="postP">{post.Description}</p>
-                  <Link className="link" to={`/${type}/${post.Activity_ID}`}>
-                    <button className="postsButton">Learn More</button>
-                  </Link>
-                </div>
+              <div className="postContent">
+                <Link className="link" to={`/${type}/${key}`}>
+                  <h1 className="postH1">{post.Name}</h1>
+                </Link>
+                <p className="postP">{post.Description}</p>
+                <Link className="link" to={`/${type}/${key}`}>
+                  <button className="postsButton">Learn More</button>
+                </Link>
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

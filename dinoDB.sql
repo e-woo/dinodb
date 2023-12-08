@@ -34,7 +34,7 @@ CREATE TABLE EXTRACURRICULAR_ACTIVITY
 	ApplicationRequired		VARCHAR(15)		DEFAULT 'No',
 	WeekCommitmentHour	    INT				DEFAULT 0,
 	Faculty_Name			VARCHAR(15),
-	Img_file_path			VARCHAR(3000)	NOT NULL,
+	Img_file_path			VARCHAR(3000)	DEFAULT 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/University_of_Calgary_Logo.svg/220px-University_of_Calgary_Logo.svg.png',
 	PRIMARY KEY(Activity_ID),
 	FOREIGN KEY(Faculty_Name) REFERENCES FACULTY(Name) ON DELETE SET NULL ON UPDATE CASCADE);
 

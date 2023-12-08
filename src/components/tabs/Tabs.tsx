@@ -8,6 +8,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { exec } from "child_process";
+import { handleImgErr } from "../../context/utils";
 
 const ReactTabs = () => {
   const navigate = useNavigate();
@@ -385,7 +386,11 @@ const ActivityList = ({
           {posts.map((post) => (
             <div className="gridPost" key={post.Activity_ID}>
               <div className="gridImg">
-                <img src={post.Img_file_path} alt="" />
+                <img
+                  src={post.Img_file_path}
+                  alt="Image of post"
+                  onError={handleImgErr()}
+                />
               </div>
               <div className="gridContent">
                 <h1 className="postH1">{post.Name}</h1>

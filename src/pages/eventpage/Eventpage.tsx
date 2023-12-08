@@ -3,6 +3,7 @@ import "./style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Eventpage = () => {
   const { id } = useParams();
@@ -165,7 +166,11 @@ const Eventpage = () => {
     <div className="event-page">
       <div className="title-and-img">
         <div className="img-container">
-          <img src={event.Img_file_path}></img>
+          <img
+            src={event.Img_file_path}
+            alt="event image logo"
+            onError={handleImgErr()}
+          ></img>
         </div>
         <div className="title-container">
           <h1>{event.Name}</h1>
