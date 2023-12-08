@@ -33,16 +33,12 @@ const SearchPage = () => {
 
   const handleFilterChange = (e: any) => {
     const filter = e.target.name;
-
-    console.log("filter " + filter);
     if (selectedFilters.has(filter)) {
       selectedFilters.delete(filter);
     } else {
       selectedFilters.add(filter);
     }
     setSelectedFilters(new Set(selectedFilters));
-
-    console.log("selectedFilters " + Array.from(selectedFilters));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -56,12 +52,15 @@ const SearchPage = () => {
         searchFilters: filtersArray,
       });
       setPostsData(res.data);
+
+      console.log("resdata " + res.data);
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
   };
 
   const performSearch = async () => {
+    setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
     try {
       const res = await axios.post("/explore/search", {
