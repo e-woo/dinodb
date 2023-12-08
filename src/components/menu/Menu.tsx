@@ -35,7 +35,7 @@ export const Menu = () => {
             </div>
             <div className='flex-[2] flex flex-col justify-between'>
               <div>
-                <Link to={`/announcement/${post.Activity_ID}`}>
+              <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
                   <h2 className='text-red-500 my-2 text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1 font-bold'>{post.Title}</h2>
                 </Link>
                 <div className='text-sm whitespace-normal overflow-hidden text-ellipsis line-clamp-3'>
@@ -51,7 +51,7 @@ export const Menu = () => {
                 </div>
               </div>
 
-              <Link to={`/announcement/${post.Activity_ID}`}>
+              <Link to={`/announcement/${post.Title}`} onClick={async () => {await new Promise(r => setTimeout(r, 20)); window.location.reload()}}>
                 <button className='px-5 py-2 rounded-lg bg-[#f5f7f8] border-2 border-red-500 text-red-500 transition-[.3s] ease-in-out hover:border-[#f5f7f8] hover:bg-red-500 hover:text-[#f5f7f8]'>Read More</button>
               </Link>
             </div>

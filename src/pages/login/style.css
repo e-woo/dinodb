@@ -2,7 +2,7 @@
   --border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-body .form {
+.rex-bg {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@ body .form {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("rex.png") no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: left;
 }
 
 .auth {
