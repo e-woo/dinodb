@@ -77,6 +77,7 @@ const Announcement = () => {
         title: title,
         announcement: body,
       });
+      window.location.reload();
       setIsEditing(false);
     } catch (err) {
       console.log(err);

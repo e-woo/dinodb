@@ -1,75 +1,79 @@
 import { db } from "../db.js";
 
 export const search = (req, res) => {
-    const { searchTerm, searchFilters } = req.body;
-    let combinedResults = [];
+  const { searchTerm, searchFilters } = req.body;
+  let combinedResults = [];
 
-    const executeQuery = (query, params, callback) => {
-        db.query(query, params, (err, result) => {
-            if (err) {
-                return callback(err, null);
-            }
-            callback(null, result);
-        });
-    };
+  const executeQuery = (query, params, callback) => {
+    db.query(query, params, (err, result) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, result);
+    });
+  };
 
-    const processFilter = (filterIndex) => {
-        if (filterIndex >= searchFilters.length) {
-            res.status(200).json(combinedResults);
-            return;
-        }
+  const processFilter = (filterIndex) => {
+    if (filterIndex >= searchFilters.length) {
+      res.status(200).json(combinedResults);
+      return;
+    }
 
-        let query;
-        switch (searchFilters[filterIndex]) {
-            case 'Club':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
+    let query;
+    switch (searchFilters[filterIndex]) {
+      case "Club":
+        query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
-                        LEFT JOIN CLUB AS C ON EA.Activity_ID = C.Activity_ID
+                        NATURAL JOIN CLUB
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                         LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
                         WHERE EA.Name LIKE ?
                         OR T.Tag_Name LIKE ?;`;
-                break;
-            case 'Volunteer':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
+        break;
+      case "Volunteer":
+        query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
                         NATURAL JOIN VOLUNTEERING_OPPORTUNITY
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                         LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
                         WHERE EA.Name LIKE ?
                         OR T.Tag_Name LIKE ?;`;
-                break;
-            case 'Program':
-                query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
+        break;
+      case "Program":
+        query = `SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                         FROM EXTRACURRICULAR_ACTIVITY AS EA 
                         NATURAL JOIN PROGRAM
                         LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                         LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
                         WHERE EA.Name LIKE ?
                         OR T.Tag_Name LIKE ?;`;
-                break;
-            case 'Event':
-                query = `SELECT DISTINCT E.Name, E.Description, E.Type, EA.Activity_ID, EA.Img_file_path
+        break;
+      case "Event":
+        query = `SELECT DISTINCT E.Name, E.Description, E.Type, EA.Activity_ID, EA.Img_file_path
                         FROM EVENT AS E, EXTRACURRICULAR_ACTIVITY AS EA
                         WHERE E.Name LIKE ?
                         AND E.Activity_ID = EA.Activity_ID;`;
-                        break;
-        }
+        break;
+    }
 
-        const params = ['%' + searchTerm + '%', '%' + searchTerm + '%'];
+    const params = ["%" + searchTerm + "%", "%" + searchTerm + "%"];
 
-        executeQuery(query, params, (err, results) => {
-            if (err) {
-                res.status(500).json(err);
-                return;
-            }
-            combinedResults = combinedResults.concat(results);
-            processFilter(filterIndex + 1);
-        });
-    };
+    executeQuery(query, params, (err, results) => {
+      if (err) {
+        res.status(500).json(err);
+        return;
+      }
+      combinedResults = combinedResults.concat(results);
+      processFilter(filterIndex + 1);
+    });
+  };
 
-    if (!Array.isArray(searchFilters) || searchFilters.length === 0 || searchFilters.length === 4) {
-        const defaultQuery = `(SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
+  if (
+    !Array.isArray(searchFilters) ||
+    searchFilters.length === 0 ||
+    searchFilters.length === 4
+  ) {
+    const defaultQuery = `(SELECT DISTINCT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path, EA.Type
                                 FROM EXTRACURRICULAR_ACTIVITY AS EA 
                                 LEFT JOIN CATEGORIZED_BY AS CB ON EA.Activity_ID = CB.Activity_ID
                                 LEFT JOIN TAG AS T ON CB.Tag_ID = T.Tag_ID
@@ -81,16 +85,20 @@ export const search = (req, res) => {
                                 WHERE E.Name LIKE ?
                                 AND E.Activity_ID = EA.Activity_ID);`;
 
-        const params = ['%' + searchTerm + '%', '%' + searchTerm + '%', '%' + searchTerm + '%'];
-        
-        executeQuery(defaultQuery, params, (err, results) => {
-            if (err) {
-                res.status(500).json(err);
-            } else {
-                res.status(200).json(results);
-            }
-        });
-    } else {
-        processFilter(0);
-    }
+    const params = [
+      "%" + searchTerm + "%",
+      "%" + searchTerm + "%",
+      "%" + searchTerm + "%",
+    ];
+
+    executeQuery(defaultQuery, params, (err, results) => {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        res.status(200).json(results);
+      }
+    });
+  } else {
+    processFilter(0);
+  }
 };

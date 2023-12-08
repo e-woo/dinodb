@@ -17,7 +17,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     performSearch();
-  }, []);
+  }, [selectedFilters]);
 
   const isSupervisor = () => {
     return accountType === null || supervisorAccount != null;
@@ -33,18 +33,23 @@ const SearchPage = () => {
 
   const handleFilterChange = (e: any) => {
     const filter = e.target.name;
+
+    console.log("filter " + filter);
     if (selectedFilters.has(filter)) {
       selectedFilters.delete(filter);
     } else {
       selectedFilters.add(filter);
     }
     setSelectedFilters(new Set(selectedFilters));
+
+    console.log("selectedFilters " + Array.from(selectedFilters));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
+    console.log("searchTerm " + searchTerm);
     try {
       const res = await axios.post("/explore/search", {
         searchTerm,
