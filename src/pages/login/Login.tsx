@@ -50,7 +50,7 @@ const Login = () => {
                         Login
                     </button>
                     <div className='flex justify-center items-center m-auto text-center'>
-                        {err && <p className='text-red font-bold flex justify-center items-center m-auto text-center pt-[1.25em]'>{err}</p>}
+                        {err && <p className='text-red-500 font-bold flex justify-center items-center m-auto text-center pt-[1.25em]'>{err}</p>}
                     </div>
                     <div className='text-sm text-center mt-5 mb-4'>
                         <p>Don't have an account? <a href='./register' className='text-white no-underline font-bold hover:underline'>Register</a></p>
