@@ -15,7 +15,6 @@ interface CreateElements extends HTMLFormControlsCollection   {
   application: HTMLInputElement;
   facultyType: HTMLInputElement;
   weekHours: HTMLInputElement;
-  tags: HTMLInputElement;
 
     location: HTMLInputElement;
 }
@@ -29,7 +28,6 @@ const EditVolunteerPage = () => {
 
     const navigate = useNavigate()
     const [facultyType, setFacultyType] = useState<string>('');
-    const [tags, setTags] = useState<string>('');
 
     const { currentUser } = useContext(AuthContext)
     const accountType = currentUser?.AccountType;
@@ -102,7 +100,6 @@ const EditVolunteerPage = () => {
           application: elements.application.value,
           facultyType: elements.facultyType.value,
           weekHours: elements.weekHours.value,
-          tags: elements.tags.value,
             
           location: elements.location.value,
         };
@@ -135,24 +132,6 @@ const EditVolunteerPage = () => {
                       <option value='Business'>Business</option>
                       <option value='Education'>Education</option>
                       <option value='Administration'>Administration</option>
-                    </select>
-                    <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' >
-                      <option value='000000001'>Academic</option>
-                      <option value='000000002'>Arts</option>
-                      <option value='000000003'>Recreation</option>
-                      <option value='000000004'>Technology</option>
-                      <option value='000000006'>Community</option>
-                      <option value='000000007'>STEM</option>
-                      <option value='000000008'>Cultural</option>
-                      <option value='000000009'>Career Development</option>
-                      <option value='000000012'>Coding</option>
-                      <option value='000000013'>Literacy</option>
-                      <option value='000000014'>Music and Performing Arts</option>
-                      <option value='000000015'>Health and Wellness</option>
-                      <option value='000000017'>Food and Cooking</option>
-                      <option value='000000018'>Advocacy and Social Issues</option>
-                      <option value='000000019'>Leadership</option>
-                      <option value='000000020'>Gaming</option>
                     </select>
                     <input type='number' placeholder='Fee' id='fee' defaultValue={volunteer.Fee || ''} />
                     <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={volunteer.WeekCommitmentHour || ''} />

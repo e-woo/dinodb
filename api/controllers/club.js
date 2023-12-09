@@ -118,7 +118,6 @@ export const editClub = async (req, res) => {
     interview,
     application,
     weekHours,
-    tags,
     facultyType,
     fee,
     discord,
@@ -145,13 +144,6 @@ export const editClub = async (req, res) => {
         img,
         id,
       ]);
-
-    if (tags !== "") {
-      const q2 = `UPDATE CATEGORIZED_BY
-                        SET Tag_ID = ?
-                        WHERE Activity_ID = ?`;
-      await db.promise().query(q2, [tags, id]);
-    }
 
     if (perks !== "") {
       const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS

@@ -331,7 +331,7 @@ VALUES
 	('000000008', 'Cultural'),
 	('000000009', 'Career Development'),
 	('000000012', 'Coding'),
-	('000000013', 'Literary'),
+	-- ('000000013', 'Literary'),
 	('000000014', 'Music and Performing Arts'),
 	('000000015', 'Health and Wellness'),
 	('000000017', 'Food and Cooking'),

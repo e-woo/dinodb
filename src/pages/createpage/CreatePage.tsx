@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import "./style.css";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
@@ -34,6 +34,11 @@ interface CreateForm extends HTMLFormElement {
   readonly elements: CreateElements;
 }
 
+interface Tag {
+  id: string;
+  name: string;
+}
+
 const CreatePage = () => {
   const { currentUser } = useContext(AuthContext);
   const accountType = currentUser?.AccountType;
@@ -49,8 +54,25 @@ const CreatePage = () => {
   const [organization, setOrganization] = useState<string>("");
   const [activityType, setActivityType] = useState<string>("");
   const [facultyType, setFacultyType] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
   const [warning, setWarning] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getAllTags = async () => {
+      try {
+        const tagRes = await axios.get('/tag/getAllTags');
+        const formattedTags = tagRes.data.map((tag: any) => ({
+          id: tag.Tag_ID,
+          name: tag.Tag_Name,
+        }));
+        setAllTags(formattedTags);
+      } catch (error) {
+        console.error('Error getting tag data: ', error)
+      }
+    }
+    getAllTags();
+  }, []);
 
   const isValidImageUrl = (filename: string) => {
     return /\.(jpg|jpeg|png|gif)$/i.test(filename);
@@ -64,6 +86,7 @@ const CreatePage = () => {
 
   const handleSubmit = async (e: FormEvent<CreateForm>) => {
     e.preventDefault();
+
     const elements = e.currentTarget.elements;
     const activity = e.currentTarget.elements.activityType.value;
 
@@ -174,10 +197,24 @@ const CreatePage = () => {
         return;
     }
 
-    if (formData && url) {
+    if (formData && url && tags) {
       try {
         const res = await axios.post(url + "/create", formData);
-        console.log(res.data.name);
+
+        const tagPromises = tags.map((tagID) => {
+          const tagFormData = {
+            Activity_ID: res.data.activityId,
+            Tag_ID: tagID,
+          };
+          return axios.post('/tag/setTag', tagFormData);
+        });
+
+        try {
+          await Promise.all(tagPromises);
+        } catch (error) {
+          console.error('Error submitting tags:', error);
+        }
+
         navigate(
           url + `/${url === "/event" ? res.data.name : res.data.activityId}`
         );
@@ -426,31 +463,19 @@ const CreatePage = () => {
               <option value="Education">Education</option>
               <option value="Administration">Administration</option>
             </select>
-            <select
+            <select multiple
               value={tags}
               onChange={(e) => {
-                setTags(e.target.value);
+                const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+                setTags(selectedTags);
               }}
               id="tags"
               required
             >
-              <option value="">Choose a tag...</option>
-              <option value="000000001">Academic</option>
-              <option value="000000002">Arts</option>
-              <option value="000000003">Recreation</option>
-              <option value="000000004">Technology</option>
-              <option value="000000006">Community</option>
-              <option value="000000007">STEM</option>
-              <option value="000000008">Cultural</option>
-              <option value="000000009">Career Development</option>
-              <option value="000000012">Coding</option>
-              <option value="000000013">Literacy</option>
-              <option value="000000014">Music and Performing Arts</option>
-              <option value="000000015">Health and Wellness</option>
-              <option value="000000017">Food and Cooking</option>
-              <option value="000000018">Advocacy and Social Issues</option>
-              <option value="000000019">Leadership</option>
-              <option value="000000020">Gaming</option>
+              <option value="" disabled>Choose a tag... (Hold CTRL to select multiple)</option>
+              {allTags.map((tag) => 
+                    <option key={tag.id} value={tag.id}>{tag.name}</option>
+              )}
             </select>
             <button type="submit">Create</button>
             {warning ? (
