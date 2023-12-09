@@ -245,11 +245,11 @@ VALUES
 
 INSERT INTO CLUB (Activity_ID, Discord, Instagram)
 VALUES 
-('1', 'https://discord.gg/chessclub', '@chessclub'),
-('2', 'https://discord.gg/roboticsclub', '@roboticsclub'),
-('3', 'https://discord.gg/hikingclub', '@hikingclub'),
-('4', 'https://discord.gg/debateteam', '@debateteam'),
-('5', 'https://discord.gg/startupclub', '@startupclub'),
+('1', 'https://discord.gg/RE86R9f', 'https://www.instagram.com/chess.ucalgary/'),
+('2', 'https://discord.gg/wJrHVb5T', 'https://www.instagram.com/cpcucalgary/'),
+('3', 'http://discord.gg/wVwv5Pw', 'https://www.instagram.com/infosecucalgary/?hl=en'),
+('4', 'https://discord.gg/qHFBQtmw7N', 'https://www.instagram.com/ucds.debate/'),
+('5', 'https://discord.gg/VRdDtQe4Pa', 'https://www.instagram.com/uofc_k_lit/'),
 ('6', 'https://discord.gg/QNtecrqNzv', 'https://www.instagram.com/ucboardgames/');
 
 INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
