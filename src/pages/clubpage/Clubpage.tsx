@@ -207,18 +207,22 @@ const Clubpage = () => {
         </div>
 
         <div className="social-row">
-          <div className="social discord">
-            <img src={discordLogo} alt="Discord Logo"></img>
-            <a href={club.Discord} target="_blank" rel="noreferrer">
-              Discord
-            </a>
-          </div>
-          <div className="social instagram">
-            <img src={instagramLogo} alt="Instagram Logo"></img>
-            <a href={club.Instagram} target="_blank" rel="noreferrer">
-              Instagram
-            </a>
-          </div>
+          { club.Discord !== '' ?
+            <div className="social discord">
+              <img src={discordLogo} alt="Discord Logo"></img>
+              <a href={club.Discord} target="_blank" rel="noreferrer">
+                Discord
+              </a>
+            </div> : null
+          }
+          { club.Instagram !== '' ? 
+            <div className="social instagram">
+              <img src={instagramLogo} alt="Instagram Logo"></img>
+              <a href={club.Instagram} target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            </div> : null
+          }
         </div>
       </div>
     </div>

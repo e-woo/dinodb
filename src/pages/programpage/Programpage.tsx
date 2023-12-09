@@ -227,18 +227,20 @@ const Programpage = () => {
             <p>{organization}</p>
           </div>
         </div>
-        <div className="social-row">
-          <div className="social website">
-            <img
-              src={websiteLogo}
-              alt="WWW Website Logo"
-              onError={handleImgErr()}
-            ></img>
-            <a href={program.Website} target="_blank" rel="noreferrer">
-              Website
-            </a>
-          </div>
-        </div>
+        { program.Website !== '' ?
+          <div className="social-row">
+            <div className="social website">
+              <img
+                src={websiteLogo}
+                alt="WWW Website Logo"
+                onError={handleImgErr()}
+              ></img>
+              <a href={program.Website} target="_blank" rel="noreferrer">
+                Website
+              </a>
+            </div>
+          </div> : null
+        }
       </div>
     </div>
   );
