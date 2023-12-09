@@ -92,13 +92,6 @@ CREATE TABLE EXTRACURRICULAR_ACTIVITY_PERKS
 	PRIMARY KEY (Activity_ID, Perk),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE BELONGS
-    (FacultyName			VARCHAR(15)		NOT NULL,
-	Student_UCID			CHAR(9)			NOT NULL,
-	PRIMARY KEY (FacultyName, Student_UCID),
-	FOREIGN KEY (FacultyName) REFERENCES FACULTY(Name) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Student_UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE);
-
 CREATE TABLE EVENT
     (Activity_ID			INT				NOT NULL,
 	Name					VARCHAR(50)		NOT NULL,
@@ -131,15 +124,6 @@ CREATE TABLE ATTENDS
 	PRIMARY KEY (Student_UCID, Event_Name),
 	FOREIGN KEY (Student_UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Activity_ID, Event_Name) REFERENCES EVENT(Activity_ID, Name) ON DELETE CASCADE ON UPDATE CASCADE);
-
-CREATE TABLE ANNOUNCED_BY
-    (Event_ID				INT				NOT NULL,
-    Announcement_ID			INT				NOT NULL,
-    Event_Name				VARCHAR(15)		NOT NULL,
-	Announcement_Title		VARCHAR(15)		NOT NULL,
-	PRIMARY KEY (Event_Name, Announcement_Title),
-    FOREIGN KEY (Event_ID, Event_Name) REFERENCES EVENT(Activity_ID, Name) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Announcement_ID, Announcement_Title) REFERENCES ANNOUNCEMENT(Activity_ID, Title) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE TAG
     (Tag_ID				    CHAR(9)			NOT NULL,
@@ -183,7 +167,6 @@ CREATE TABLE SUPERVISED_BY
 
 INSERT INTO STUDENT (UCID, Date_of_Birth, Bio, FName, LName, Email, Password, AccountType)
 VALUES 
-('301789411', '2000-01-01', 'mmmm subway', 'lol', 'lol', 'lol', '222', 'STUDENT'),
 ('123456789', '2000-01-01', 'Enthusiastic about technology', 'John', 'Doe', 'john.doe@ucalgary.ca', 'password123', 'STUDENT'),
 ('987654321', '1999-05-15', 'Loves outdoor activities', 'Jane', 'Smith', 'jane.smith@ucalgary.ca', 'password123', 'STUDENT'),
 ('456123789', '2002-03-22', 'Aspiring artist', 'Emily', 'Johnson', 'emily.johnson@ucalgary.ca', 'password123', 'STUDENT'),
@@ -313,14 +296,6 @@ VALUES
 ('14', 'Free LinkedIn training session!'),
 ('15', 'Free subscription to Kumon'),
 ('16', 'Invitation to our monthly pizza party!');
-
-INSERT INTO BELONGS (FacultyName, Student_UCID)
-VALUES 
-('Science', '123456789'),
-('Arts', '987654321'),
-('Engineering', '456123789'),
-('Business', '321654987'),
-('Education', '789456123');
 
 INSERT INTO TAG
 VALUES
