@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React, { useEffect, useState } from "react";
-import "./style.css";
 import ReactTabs from "../../components/tabs/Tabs";
 import { Link } from "react-router-dom";
 import axios from "axios";
