@@ -61,16 +61,16 @@ const CreatePage = () => {
   useEffect(() => {
     const getAllTags = async () => {
       try {
-        const tagRes = await axios.get('/tag/getAllTags');
+        const tagRes = await axios.get("/tag/getAllTags");
         const formattedTags = tagRes.data.map((tag: any) => ({
           id: tag.Tag_ID,
           name: tag.Tag_Name,
         }));
         setAllTags(formattedTags);
       } catch (error) {
-        console.error('Error getting tag data: ', error)
+        console.error("Error getting tag data: ", error);
       }
-    }
+    };
     getAllTags();
   }, []);
 
@@ -93,11 +93,16 @@ const CreatePage = () => {
     let formData;
     let url = "";
 
+    const defaultImg =
+      "https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/University_of_Calgary_Logo.svg/220px-University_of_Calgary_Logo.svg.png";
+
     if (activity === "choose") {
       setWarning(true);
       return;
     }
     setWarning(false);
+
+    const imgURL = isImageValid ? elements.img.value : defaultImg;
 
     if (activity === "club")
       formData = {
@@ -106,7 +111,7 @@ const CreatePage = () => {
         name: elements.name.value,
         description: elements.description.value,
         schedule: elements.schedule.value,
-        img: elements.img.value,
+        img: imgURL,
         interview: elements.interview.value,
         application: elements.application.value,
         weekHours: elements.weekHours.value,
@@ -127,7 +132,7 @@ const CreatePage = () => {
         name: elements.name.value,
         description: elements.description.value,
         schedule: elements.schedule.value,
-        img: elements.img.value,
+        img: imgURL,
         interview: elements.interview.value,
         application: elements.application.value,
         weekHours: elements.weekHours.value,
@@ -146,7 +151,7 @@ const CreatePage = () => {
         activityType: elements.activityType.value,
         name: elements.name.value,
         description: elements.description.value,
-        img: elements.img.value,
+        img: imgURL,
         tags: elements.tags.value,
         facultyType: elements.facultyType.value,
         perks: elements.perks.value,
@@ -165,7 +170,7 @@ const CreatePage = () => {
         name: elements.name.value,
         description: elements.description.value,
         schedule: elements.schedule.value,
-        img: elements.img.value,
+        img: imgURL,
         interview: elements.interview.value,
         application: elements.application.value,
         weekHours: elements.weekHours.value,
@@ -204,15 +209,15 @@ const CreatePage = () => {
         const tagPromises = tags.map((tagID) => {
           const tagFormData = {
             Activity_ID: res.data.activityId,
-            Tag_ID: tagID,
+            Tag_ID: tagID.toString(),
           };
-          return axios.post('/tag/setTag', tagFormData);
+          return axios.post("/tag/setTag", tagFormData);
         });
 
         try {
           await Promise.all(tagPromises);
         } catch (error) {
-          console.error('Error submitting tags:', error);
+          console.error("Error submitting tags:", error);
         }
 
         navigate(
@@ -463,19 +468,27 @@ const CreatePage = () => {
               <option value="Education">Education</option>
               <option value="Administration">Administration</option>
             </select>
-            <select multiple
+            <select
+              multiple
               value={tags}
               onChange={(e) => {
-                const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+                const selectedTags = Array.from(
+                  e.target.selectedOptions,
+                  (option) => option.value
+                );
                 setTags(selectedTags);
               }}
               id="tags"
               required
             >
-              <option value="" disabled>Choose a tag... (Hold CTRL to select multiple)</option>
-              {allTags.map((tag) => 
-                    <option key={tag.id} value={tag.id}>{tag.name}</option>
-              )}
+              <option value="" disabled>
+                Choose a tag... (Hold CTRL to select multiple)
+              </option>
+              {allTags.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
+                </option>
+              ))}
             </select>
             <button type="submit">Create</button>
             {warning ? (

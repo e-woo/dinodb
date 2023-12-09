@@ -141,18 +141,6 @@ export const getClubID = async (req, res) => {
   }
 };
 
-export const deleteEvent2 = async (req, res) => {
-  const { Name } = req.body;
-
-  try {
-    await db.promise().query(`DELETE FROM EVENT WHERE Name = ?`, [Name]);
-
-    return res.status(200).json({ message: "Event successfully deleted" });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-};
-
 export const getMembers = async (req, res) => {
   const { Event_Name, Activity_ID } = req.body;
 
@@ -279,11 +267,12 @@ export const createEvent = async (req, res) => {
       ]);
     const activityId = result[0].insertId;
 
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // NOT NEEDED
+    // if (tags !== "") {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
@@ -358,6 +347,18 @@ export const deleteEvent = async (req, res) => {
       .query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [
         Activity_ID,
       ]);
+
+    return res.status(200).json({ message: "Event successfully deleted" });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const deleteEvent2 = async (req, res) => {
+  const { Name } = req.body;
+
+  try {
+    await db.promise().query(`DELETE FROM EVENT WHERE Name = ?`, [Name]);
 
     return res.status(200).json({ message: "Event successfully deleted" });
   } catch (err) {

@@ -74,16 +74,17 @@ export const editProgram = async (req, res) => {
         id,
       ]);
 
-    if (tags !== "") {
-      const q2 = `UPDATE CATEGORIZED_BY
-                        SET Tag_ID = ?
-                        WHERE Activity_ID = ?`;
-      await db.promise().query(q2, [tags, id]);
-    } else {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // NOT NEEDED
+    // if (tags !== "") {
+    //   const q2 = `UPDATE CATEGORIZED_BY
+    //                     SET Tag_ID = ?
+    //                     WHERE Activity_ID = ?`;
+    //   await db.promise().query(q2, [tags, id]);
+    // } else {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS
@@ -271,13 +272,14 @@ export const createProgram = async (req, res) => {
         img,
       ]);
     const activityId = result[0].insertId;
-    console.log(activityId);
 
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // not needed
+
+    // if (tags !== "") {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 

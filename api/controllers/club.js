@@ -21,8 +21,8 @@ export const getOrganization = (req, res) => {
     if (err) return res.json(err);
 
     return res.status(200).json(data[0]);
-  })
-}
+  });
+};
 
 export const get4Clubs = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
@@ -76,11 +76,12 @@ export const createClub = async (req, res) => {
       ]);
     const activityId = result[0].insertId;
 
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // NOT NEEDED
+    // if (tags !== "") {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
@@ -88,9 +89,9 @@ export const createClub = async (req, res) => {
       await db.promise().query(q3, [activityId, perks]);
     }
 
-    if (organization !== '') {
+    if (organization !== "") {
       const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
-                  VALUES (?, ?)`
+                  VALUES (?, ?)`;
       await db.promise().query(q6, [activityId, organization]);
     }
 

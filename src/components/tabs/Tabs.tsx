@@ -31,249 +31,112 @@ const ReactTabs = () => {
   const [value, setValue] = React.useState(0);
   const [infoValue, setInfoValue] = React.useState(supervisorAccount ? 2 : 0);
 
-  const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
   const type = ["club", "volunteer", "program", "event"];
   const membertypes = ["Member", "Executive"];
   const allPosts = [clubs, volunteers, programs, events];
   const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
 
-  const handleDeleteClub = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this club?")) {
+  interface DataPayload {
+    Activity_ID?: string;
+    UCID?: string;
+    Name?: string;
+  }
+
+  const handleButtons = async (
+    Activity_ID: string,
+    type: string,
+    execute: string
+  ) => {
+    if (window.confirm(`Are you sure you want to ${execute} this ${type}?`)) {
       try {
-        console.log(Activity_ID);
-        await axios.delete(`/club/delete`, {
-          data: { Activity_ID: Activity_ID.toString() },
-        });
-
-        navigate(`../profile`);
-        alert("Club deleted successfully");
-      } catch (error) {
-        console.error("Error deleting club", error);
-        alert("Failed to delete club");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleLeaveClub = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this club?")) {
-      try {
-        await axios.delete(`/club/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID.toString(),
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving club", error);
-        alert("Failed to leave club");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteVolunteer = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this volunteer?")) {
-      try {
-        await axios.delete(`/volunteer/delete`, {
-          data: { Activity_ID: Activity_ID.toString() },
-        });
-        navigate(`../profile`);
-        alert("Volunteer deleted successfully");
-      } catch (error) {
-        console.error("Error deleting volunteer", error);
-        alert("Failed to delete volunteer");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleLeaveVolunteer = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this volunteer?")) {
-      try {
-        await axios.delete(`/volunteer/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID.toString(),
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving volunteer", error);
-        alert("Failed to leave volunteer");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteProgram = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this program?")) {
-      try {
-        await axios.delete(`/program/delete`, {
-          data: { Activity_ID: Activity_ID.toString() },
-        });
-        navigate(`../profile`);
-        alert("Program deleted successfully");
-      } catch (error) {
-        console.error("Error deleting program", error);
-        alert("Failed to delete program");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleLeaveProgram = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this program?")) {
-      try {
-        await axios.delete(`/program/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID.toString(),
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving program", error);
-        alert("Failed to leave program");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteEvent = async (Name: string) => {
-    const res = await axios.post("/event/show", { Activity_ID: Name });
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      try {
-        const clubIDRes = await axios.post("/event/getClubID", {
-          Name: res.data.Name,
-        });
-
-        if (clubIDRes.data) {
-          console.log("lol");
-          await axios.delete(`/event/delete2`, {
-            data: { Name: res.data.Name },
-          });
-          navigate(`../profile`);
-          alert("Event deleted successfully");
-        } else {
-          console.log("lol2");
-          const idRes = await axios.post("/event/getID", {
-            Name: res.data.Name,
-          });
-          await axios.delete(`/event/delete`, {
-            data: { Activity_ID: res.data.Activity_ID },
-          });
-          navigate(`../profile`);
-          alert("Event deleted successfully");
+        let dataPayload: DataPayload = {};
+        if (execute === "leave") {
+          dataPayload.UCID = Member_UCID;
         }
-      } catch (error) {
-        console.error("Error deleting event", error);
-        alert("Failed to delete event");
-      }
-    }
-    window.location.reload();
-  };
 
-  const handleLeaveEvent = async (Name: string) => {
-    const res = await axios.post("/event/show", { Activity_ID: Name });
-    if (window.confirm("Are you sure you want to leave this event?")) {
-      try {
-        await axios.delete(`/event/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: res.data.Activity_ID,
-            Name: res.data.Name,
-          },
-        });
-        setJoined(false);
+        if (type === "event") {
+          const res = await axios.post("/event/show", {
+            Activity_ID: Activity_ID,
+          });
+          dataPayload.Name = res.data.Name;
+          dataPayload.Activity_ID = res.data.Activity_ID;
+        } else {
+          dataPayload.Activity_ID = Activity_ID;
+        }
+
+        await axios.delete(`${type}/${execute}`, { data: dataPayload });
+
+        if (execute === "leave") {
+          setJoined(false);
+        }
+        navigate(`../profile`);
+        alert(
+          `${
+            type.charAt(0).toUpperCase() + type.slice(1)
+          } ${execute}d successfully`
+        );
       } catch (error) {
-        console.log("Error leaving event", error);
-        alert("Failed to leave event");
+        console.error(`Error ${execute} ${type}`, error);
+        alert(`Failed to ${execute} ${type}`);
       }
     }
     window.location.reload();
   };
 
   useEffect(() => {
-    axios
-      .post("/club/joinedClubs", { UCID: Member_UCID })
-      .then((res) => {
-        setClubs(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+    const fetchData = async () => {
+      try {
+        const clubJoined = axios.post("/club/joinedClubs", {
+          UCID: Member_UCID,
+        });
+        const clubExec = axios.post("/club/execClubs", { UCID: Member_UCID });
+        const volunteerJoined = axios.post("/volunteer/joinedVolunteer", {
+          UCID: Member_UCID,
+        });
+        const volunteerExec = axios.post("/volunteer/execVolunteer", {
+          UCID: Member_UCID,
+        });
+        const programJoined = axios.post("/program/joinedPrograms", {
+          UCID: Member_UCID,
+        });
+        const programExec = axios.post("/program/execPrograms", {
+          accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+          isSupervisor: supervisorAccount,
+        });
+        const eventJoined = axios.post("/event/joinedEvents", {
+          UCID: Member_UCID,
+        });
+        const eventExec = axios.post("/event/execEvents", {
+          accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+          isSupervisor: supervisorAccount,
+        });
 
-    axios
-      .post("/club/execClubs", { UCID: Member_UCID })
-      .then((res) => {
-        setExecClubs(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+        const results = await Promise.all([
+          clubJoined,
+          clubExec,
+          volunteerJoined,
+          volunteerExec,
+          programJoined,
+          programExec,
+          eventJoined,
+          eventExec,
+        ]);
 
-    axios
-      .post("/volunteer/joinedVolunteer", { UCID: Member_UCID })
-      .then((res) => {
-        setVolunteers(res.data);
-      })
-      .catch((error) => {
+        setClubs(results[0].data);
+        setExecClubs(results[1].data);
+        setVolunteers(results[2].data);
+        setExecVolunteer(results[3].data);
+        setPrograms(results[4].data);
+        setExecPrograms(results[5].data);
+        setEvents(results[6].data);
+        setExecEvents(results[7].data);
+      } catch (error) {
         console.error("Error fetching data: ", error);
-      });
+      }
+    };
 
-    axios
-      .post("/volunteer/execVolunteer", { UCID: Member_UCID })
-      .then((res) => {
-        setExecVolunteer(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/program/joinedPrograms", { UCID: Member_UCID })
-      .then((res) => {
-        setPrograms(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/program/execPrograms", {
-        accountID: supervisorAccount ? supervisorAccount : Member_UCID,
-        isSupervisor: supervisorAccount,
-      })
-      .then((res) => {
-        setExecPrograms(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/event/joinedEvents", { UCID: Member_UCID })
-      .then((res) => {
-        setEvents(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/event/execEvents", {
-        accountID: supervisorAccount ? supervisorAccount : Member_UCID,
-        isSupervisor: supervisorAccount,
-      })
-      .then((res) => {
-        setExecEvents(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, [Member_UCID]);
+    fetchData();
+  }, [Member_UCID, supervisorAccount]); // Added supervisorAccount as a dependency if it's used in the effect
 
   const isSupervisor = () => {
     return accountType === null || supervisorAccount != null;
@@ -298,33 +161,17 @@ const ReactTabs = () => {
         {!isSupervisor() ? (
           <ActivityList
             membertypes={membertypes[0]}
-            excurtype={excurtypes[infoValue]}
             type={type[infoValue]}
             posts={allPosts[infoValue]}
-            handleDeleteClub={handleDeleteClub}
-            handleLeaveClub={handleLeaveClub}
-            handleDeleteVolunteer={handleDeleteVolunteer}
-            handleLeaveVolunteer={handleLeaveVolunteer}
-            handleDeleteProgram={handleDeleteProgram}
-            handleLeaveProgram={handleLeaveProgram}
-            handleDeleteEvent={handleDeleteEvent}
-            handleLeaveEvent={handleLeaveEvent}
+            handleButtons={handleButtons}
           />
         ) : null}
         {accountType === "EXECUTIVE" || isSupervisor() ? (
           <ActivityList
             membertypes={membertypes[1]}
-            excurtype={excurtypes[infoValue]}
             type={type[infoValue]}
             posts={allExecPosts[infoValue]}
-            handleDeleteClub={handleDeleteClub}
-            handleLeaveClub={handleLeaveClub}
-            handleDeleteVolunteer={handleDeleteVolunteer}
-            handleLeaveVolunteer={handleLeaveVolunteer}
-            handleDeleteProgram={handleDeleteProgram}
-            handleLeaveProgram={handleLeaveProgram}
-            handleDeleteEvent={handleDeleteEvent}
-            handleLeaveEvent={handleLeaveEvent}
+            handleButtons={handleButtons}
           />
         ) : null}
       </Paper>
@@ -334,108 +181,70 @@ const ReactTabs = () => {
 
 const ActivityList = ({
   membertypes,
-  excurtype,
   type,
   posts,
-  handleDeleteClub,
-  handleLeaveClub,
-  handleDeleteVolunteer,
-  handleLeaveVolunteer,
-  handleDeleteProgram,
-  handleLeaveProgram,
-  handleDeleteEvent,
-  handleLeaveEvent,
+  handleButtons,
 }: {
   membertypes: string;
-  excurtype: string;
   type: string;
   posts: Array<{
-    Activity_ID: number;
+    Activity_ID: string;
     Name: string;
     Description: string;
     Img_file_path: string;
   }>;
-  handleDeleteClub: (Activity_ID: number) => Promise<void>;
-  handleLeaveClub: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteVolunteer: (Activity_ID: number) => Promise<void>;
-  handleLeaveVolunteer: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteProgram: (Activity_ID: number) => Promise<void>;
-  handleLeaveProgram: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteEvent: (Name: string) => Promise<void>;
-  handleLeaveEvent: (Name: string) => Promise<void>;
+  handleButtons: (
+    Activity_ID: string,
+    type: string,
+    execute: string
+  ) => Promise<void>;
 }) => {
   const hasNoPosts = posts.length === 0;
   const noPostsMessage =
     membertypes === "Member"
-      ? `Join a ${type} to populate this list!`
+      ? `Join ${type} to populate this list!`
       : `Become an executive for ${type} to populate this list!`;
-
   return (
     <div className="tabSections">
       <h1>
-        {membertypes} {excurtype}
+        {membertypes} {type.charAt(0).toUpperCase() + type.slice(1)}s
       </h1>
       {hasNoPosts ? (
-        // Render this if there are no posts
         <div className="postP">{noPostsMessage}</div>
       ) : (
         <div className="tabPosts">
-          {posts.map((post) => (
-            <div className="gridPost" key={post.Activity_ID}>
-              <div className="gridImg">
-                <img
-                  src={post.Img_file_path}
-                  alt="Image of post"
-                  onError={handleImgErr()}
-                />
-              </div>
-              <div className="gridContent">
-                <h1 className="postH1">{post.Name}</h1>
-                <p className="postP">{post.Description}</p>
-                <div className="buttons">
-                  {excurtype === "Events" ? (
-                    <Link to={`/${type}/${post.Name}`}>
-                      <button className="postsButton createButton">View</button>
-                    </Link>
-                  ) : (
-                    <Link to={`/${type}/${post.Activity_ID}`}>
-                      <button className="postsButton createButton">View</button>
-                    </Link>
-                  )}
+          {posts.map((post) => {
+            const key = type === "event" ? post.Name : post.Activity_ID;
 
-                  {excurtype === "Clubs" ? (
-                    membertypes === "Executive" ? (
-                      <div>
-                        <button
-                          className="delete-button"
-                          onClick={() => handleDeleteClub(post.Activity_ID)}
-                        >
-                          Delete
-                        </button>
-                        <a href={`/${type}/${post.Activity_ID}/edit`}>
-                          <button className="edit-button">Edit</button>
-                        </a>
-                      </div>
-                    ) : membertypes === "Member" ? (
-                      <button
-                        className="postsButton deleteButton"
-                        onClick={() => handleLeaveClub(post.Activity_ID)}
-                      >
-                        Leave
-                      </button>
-                    ) : null
-                  ) : null}
+            return (
+              <div key={key} className="gridPost">
+                <div className="gridImg">
+                  <img
+                    src={post.Img_file_path}
+                    alt={post.Name}
+                    onError={handleImgErr()}
+                  />
+                </div>
+                <div className="postContent">
+                  <Link className="link" to={`/${type}/${key}`}>
+                    <h1 className="postH1">{post.Name}</h1>
+                  </Link>
+                  <p className="postP">{post.Description}</p>
+                  <div className="buttons">
+                    <Link className="link" to={`/${type}/${key}`}>
+                      <button className="postsButton">View</button>
+                    </Link>
 
-                  {excurtype === "Volunteer" ? (
-                    membertypes === "Executive" ? (
+                    {membertypes === "Executive" ? (
                       <div>
                         <button
                           className="delete-button"
                           onClick={() =>
-                            handleDeleteVolunteer(post.Activity_ID)
+                            handleButtons(
+                              type === "event" ? post.Name : post.Activity_ID,
+                              type,
+                              "delete"
+                            )
                           }
                         >
                           Delete
@@ -447,66 +256,25 @@ const ActivityList = ({
                     ) : membertypes === "Member" ? (
                       <button
                         className="postsButton deleteButton"
-                        onClick={() => handleLeaveVolunteer(post.Activity_ID)}
+                        onClick={() =>
+                          handleButtons(
+                            type === "event" ? post.Name : post.Activity_ID,
+                            type,
+                            "leave"
+                          )
+                        }
                       >
                         Leave
                       </button>
-                    ) : null
-                  ) : null}
-
-                  {excurtype === "Programs" ? (
-                    membertypes === "Executive" ? (
-                      <div>
-                        <button
-                          className="delete-button"
-                          onClick={() => handleDeleteProgram(post.Activity_ID)}
-                        >
-                          Delete
-                        </button>
-                        <a href={`/${type}/${post.Activity_ID}/edit`}>
-                          <button className="edit-button">Edit</button>
-                        </a>
-                      </div>
-                    ) : membertypes === "Member" ? (
-                      <button
-                        className="postsButton deleteButton"
-                        onClick={() => handleLeaveProgram(post.Activity_ID)}
-                      >
-                        Leave
-                      </button>
-                    ) : null
-                  ) : null}
-
-                  {excurtype === "Events" ? (
-                    membertypes === "Executive" ? (
-                      <div>
-                        <button
-                          className="delete-button"
-                          onClick={() => handleDeleteEvent(post.Name)}
-                        >
-                          Delete
-                        </button>
-                        <a href={`/${type}/${post.Name}/edit`}>
-                          <button className="edit-button">Edit</button>
-                        </a>
-                      </div>
-                    ) : membertypes === "Member" ? (
-                      <button
-                        className="postsButton deleteButton"
-                        onClick={() => handleLeaveEvent(post.Name)}
-                      >
-                        Leave
-                      </button>
-                    ) : null
-                  ) : null}
+                    ) : null}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
   );
 };
-
 export default ReactTabs;

@@ -137,37 +137,31 @@ interface Post {
 
 const PostsRow = ({ posts }: { posts: Array<Post> }) => {
   return (
-    <div className="postsRowContainer">
+    <div className="postsContainer">
       <div className="posts">
-        {posts.map((post) => (
-          <div className="post" key={post.Activity_ID}>
-            <div className="postImg">
-              <img
-                src={post.Img_file_path}
-                alt={post.Name}
-                onError={handleImgErr()}
-              />
+        {posts.map((post) => {
+          const key = post.Type === "event" ? post.Name : post.Activity_ID;
+          return (
+            <div className="post" key={key}>
+              <div className="postImg">
+                <img
+                  src={post.Img_file_path}
+                  alt={post.Name}
+                  onError={handleImgErr()}
+                />
+              </div>
+              <div className="postContent">
+                <Link className="link" to={`/${post.Type}/${key}`}>
+                  <h1 className="postH1">{post.Name}</h1>
+                </Link>
+                <p className="postP">{post.Description}</p>
+                <Link className="link" to={`/${post.Type}/${key}`}>
+                  <button className="postsButton">Learn More</button>
+                </Link>
+              </div>
             </div>
-            <div className="postContent">
-              <Link
-                className="link"
-                to={`/${post.Type}/${
-                  post.Type === "event" ? post.Name : post.Activity_ID
-                }`}
-              >
-                <h1 className="postH1">{post.Name}</h1>
-              </Link>
-              <p className="postP">{post.Description}</p>
-              <form
-                action={`./${post.Type}/${
-                  post.Type === "event" ? post.Name : post.Activity_ID
-                }`}
-              >
-                <button className="postsButton">Learn More</button>
-              </form>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
