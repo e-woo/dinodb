@@ -13,7 +13,6 @@ interface CreateElements extends HTMLFormControlsCollection   {
     fee: HTMLInputElement;
     interview: HTMLInputElement;
     application: HTMLInputElement;
-    facultyType: HTMLInputElement;
     weekHours: HTMLInputElement;
 
     discord: HTMLInputElement;
@@ -35,7 +34,6 @@ const EditClubPage = () => {
   
     const [editable, setEditable] = useState(false);
 
-    const [facultyType, setFacultyType] = useState<string>('');
     const [club, setClub] = useState({
         Activity_ID: id,
         Name: '',
@@ -45,7 +43,6 @@ const EditClubPage = () => {
         InterviewRequired: '',
         ApplicationRequired: '',
         WeekCommitmentHour: '',
-        Faculty: '',
         Img_file_path: '',
         Discord: '',
         Instagram: '',
@@ -65,7 +62,6 @@ const EditClubPage = () => {
               InterviewRequired: res.data.InterviewRequired,
               ApplicationRequired: res.data.ApplicationRequired,
               WeekCommitmentHour: res.data.WeekCommitmentHour,
-              Faculty: res.data.Faculty_Name,
               Img_file_path: res.data.Img_file_path,
               Discord: res.data.Discord,
               Instagram: res.data.Instagram,
@@ -101,7 +97,6 @@ const EditClubPage = () => {
             img: elements.img.value,
             interview: elements.interview.value,
             application: elements.application.value,
-            facultyType: elements.facultyType.value,
             weekHours: elements.weekHours.value,
             
             discord: elements.discord.value,
@@ -125,14 +120,6 @@ const EditClubPage = () => {
                 <div className='createBody'>
                     <input type='text' placeholder='Name' id='name' defaultValue={club.Name || ''} required/>
                     <textarea placeholder='Description...' id='description' rows={6} defaultValue={club.Description || ''} />
-                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='dropdown' id='facultyType'>
-                      <option value='Science'>Science</option>
-                      <option value='Arts'>Arts</option>
-                      <option value='Engineering'>Engineering</option>
-                      <option value='Business'>Business</option>
-                      <option value='Education'>Education</option>
-                      <option value='Administration'>Administration</option>
-                    </select>
                     <input type='number' placeholder='Fee' id='fee' defaultValue={club.Fee || ''} />
                     <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={club.WeekCommitmentHour || ''} />
                     <input type='text' placeholder='Perks' id='perks' defaultValue={club.Perk || ''} />

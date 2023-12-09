@@ -39,6 +39,15 @@ interface Tag {
   name: string;
 }
 
+interface Organization {
+  id: string;
+  name: string;
+}
+
+interface Faculty {
+  name: string;
+}
+
 const CreatePage = () => {
   const { currentUser } = useContext(AuthContext);
   const accountType = currentUser?.AccountType;
@@ -56,6 +65,8 @@ const CreatePage = () => {
   const [facultyType, setFacultyType] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [allFaculties, setAllFaculties] = useState<Faculty[]>([]);
+  const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
   const [warning, setWarning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -71,7 +82,33 @@ const CreatePage = () => {
         console.error('Error getting tag data: ', error)
       }
     }
+
+    const getAllFaculties = async () => {
+      try {
+        const facRes = await axios.get('/faculty/getFaculties');
+        const formattedFaculties = facRes.data.map((faculty: any) => ({name: faculty.Name}))
+        setAllFaculties(formattedFaculties);
+      } catch (error) {
+        console.error('Error getting faculties:', error);
+      }
+    }
+
+    const getAllOrganizations = async () => {
+      try {
+        const orgRes = await axios.get('/organization/getOrganizations');
+        const formattedOrgs = orgRes.data.map((organization: any) => ({
+          name: organization.Org_Name,
+          id: organization.Org_ID,
+        }))
+        setAllOrganizations(formattedOrgs);
+      } catch (error) {
+        console.error('Error getting organizations:', error);
+      }
+    }
+
+    getAllOrganizations();
     getAllTags();
+    getAllFaculties();
   }, []);
 
   const isValidImageUrl = (filename: string) => {
@@ -295,28 +332,10 @@ const CreatePage = () => {
                   }}
                   id="organization"
                 >
-                  <option value="">Choose an organization...</option>
-                  <option value="000000001">Google</option>
-                  <option value="000000002">Canadian Global Care</option>
-                  <option value="000000003">The Mustard Seed</option>
-                  <option value="000000004">Calgary Humane Society</option>
-                  <option value="000000005">JUMP Math</option>
-                  <option value="000000006">Calgary Food Bank</option>
-                  <option value="000000007">Meta</option>
-                  <option value="000000008">Air Canada</option>
-                  <option value="000000021">West Jet</option>
-                  <option value="000000009">Netflix</option>
-                  <option value="000000010">Amazon</option>
-                  <option value="000000011">Chick-fil-A</option>
-                  <option value="000000012">NASA</option>
-                  <option value="000000013">Canadian Armed Forces</option>
-                  <option value="000000014">Canadian Police Services</option>
-                  <option value="000000015">YMCA</option>
-                  <option value="000000016">Red Cross</option>
-                  <option value="000000017">Safe Spaces</option>
-                  <option value="000000018">The Salvation Army</option>
-                  <option value="000000019">Heritage Park</option>
-                  <option value="000000020">Doctors Without Borders</option>
+                  <option value="" disabled>Choose an organization...</option>
+                  {allOrganizations.map((organization) => 
+                    <option key={organization.id} value={organization.id}>{organization.name}</option>
+                  )}
                 </select>
               </>
             ) : activityType === "program" ? (
@@ -346,28 +365,10 @@ const CreatePage = () => {
                   }}
                   id="organization"
                 >
-                  <option value="">Choose an organization...</option>
-                  <option value="000000001">Google</option>
-                  <option value="000000002">Canadian Global Care</option>
-                  <option value="000000003">The Mustard Seed</option>
-                  <option value="000000004">Calgary Humane Society</option>
-                  <option value="000000005">JUMP Math</option>
-                  <option value="000000006">Calgary Food Bank</option>
-                  <option value="000000007">Meta</option>
-                  <option value="000000008">Air Canada</option>
-                  <option value="000000021">West Jet</option>
-                  <option value="000000009">Netflix</option>
-                  <option value="000000010">Amazon</option>
-                  <option value="000000011">Chick-fil-A</option>
-                  <option value="000000012">NASA</option>
-                  <option value="000000013">Canadian Armed Forces</option>
-                  <option value="000000014">Canadian Police Services</option>
-                  <option value="000000015">YMCA</option>
-                  <option value="000000016">Red Cross</option>
-                  <option value="000000017">Safe Spaces</option>
-                  <option value="000000018">The Salvation Army</option>
-                  <option value="000000019">Heritage Park</option>
-                  <option value="000000020">Doctors Without Borders</option>
+                  <option value="" disabled>Choose an organization...</option>
+                  {allOrganizations.map((organization) => 
+                    <option key={organization.id} value={organization.id}>{organization.name}</option>
+                  )}
                 </select>
               </>
             ) : activityType === "event" ? (
@@ -420,28 +421,10 @@ const CreatePage = () => {
                   }}
                   id="organization"
                 >
-                  <option value="">Choose an organization...</option>
-                  <option value="000000001">Google</option>
-                  <option value="000000002">Canadian Global Care</option>
-                  <option value="000000003">The Mustard Seed</option>
-                  <option value="000000004">Calgary Humane Society</option>
-                  <option value="000000005">JUMP Math</option>
-                  <option value="000000006">Calgary Food Bank</option>
-                  <option value="000000007">Meta</option>
-                  <option value="000000008">Air Canada</option>
-                  <option value="000000021">West Jet</option>
-                  <option value="000000009">Netflix</option>
-                  <option value="000000010">Amazon</option>
-                  <option value="000000011">Chick-fil-A</option>
-                  <option value="000000012">NASA</option>
-                  <option value="000000013">Canadian Armed Forces</option>
-                  <option value="000000014">Canadian Police Services</option>
-                  <option value="000000015">YMCA</option>
-                  <option value="000000016">Red Cross</option>
-                  <option value="000000017">Safe Spaces</option>
-                  <option value="000000018">The Salvation Army</option>
-                  <option value="000000019">Heritage Park</option>
-                  <option value="000000020">Doctors Without Borders</option>
+                  <option value="" disabled>Choose an organization...</option>
+                  {allOrganizations.map((organization) => 
+                    <option key={organization.id} value={organization.id}>{organization.name}</option>
+                  )}
                 </select>
               </>
             ) : (
@@ -454,14 +437,12 @@ const CreatePage = () => {
               }}
               className="dropdown"
               id="facultyType"
+              required
             >
-              <option value="Administration">Choose a faculty...</option>
-              <option value="Science">Science</option>
-              <option value="Arts">Arts</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Business">Business</option>
-              <option value="Education">Education</option>
-              <option value="Administration">Administration</option>
+              <option value="" disabled>Choose a faculty...</option>
+              {allFaculties.map((faculty) => 
+                <option key={faculty.name} value={faculty.name}>{faculty.name}</option>
+              )}
             </select>
             <select multiple
               value={tags}

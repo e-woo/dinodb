@@ -13,7 +13,6 @@ interface CreateElements extends HTMLFormControlsCollection {
   fee: HTMLInputElement;
   interview: HTMLInputElement;
   application: HTMLInputElement;
-  facultyType: HTMLInputElement;
   weekHours: HTMLInputElement;
 
   website: HTMLInputElement;
@@ -35,8 +34,6 @@ const EditProgramPage = () => {
 
   const navigate = useNavigate();
 
-  const [facultyType, setFacultyType] = useState<string>("");
-
   const [program, setProgram] = useState({
     Activity_ID: id,
     Name: "",
@@ -46,7 +43,6 @@ const EditProgramPage = () => {
     InterviewRequired: "",
     ApplicationRequired: "",
     WeekCommitmentHour: "",
-    Faculty: "",
     Img_file_path: "",
     Website: "",
     Perk: "",
@@ -65,7 +61,6 @@ const EditProgramPage = () => {
           InterviewRequired: res.data.InterviewRequired,
           ApplicationRequired: res.data.ApplicationRequired,
           WeekCommitmentHour: res.data.WeekCommitmentHour,
-          Faculty: res.data.Faculty_Name,
           Img_file_path: res.data.Img_file_path,
           Website: res.data.Website,
           Perk: res.data.Perk,
@@ -110,7 +105,6 @@ const EditProgramPage = () => {
       img: elements.img.value,
       interview: elements.interview.value,
       application: elements.application.value,
-      facultyType: elements.facultyType.value,
       weekHours: elements.weekHours.value,
 
       website: elements.website.value,
@@ -144,21 +138,6 @@ const EditProgramPage = () => {
                 rows={6}
                 defaultValue={program.Description || ""}
               />
-              <select
-                value={facultyType}
-                onChange={(e) => {
-                  setFacultyType(e.target.value);
-                }}
-                className="dropdown"
-                id="facultyType"
-              >
-                <option value="Science">Science</option>
-                <option value="Arts">Arts</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Business">Business</option>
-                <option value="Education">Education</option>
-                <option value="Administration">Administration</option>
-              </select>
               <input
                 type="number"
                 placeholder="Fee"
