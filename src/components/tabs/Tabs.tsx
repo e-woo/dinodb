@@ -3,11 +3,9 @@ import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { Link } from "react-router-dom";
-import "./style.css";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { exec } from "child_process";
 
 const ReactTabs = () => {
   const navigate = useNavigate();
@@ -263,11 +261,14 @@ const ReactTabs = () => {
   }, [Member_UCID]);
 
   return (
-    <div className="activityInfo">
-      <Paper className="tabContainer" square>
+    <div className='flex flex-row flex-[3] mx-12'>
+      <Paper className='rounded-md border border-red-500 max-w-[90vw]' square>
         <Tabs
-          className="tab"
-          value={value}
+          className='flex justify-around'
+          value={value} 
+          variant='scrollable'
+          scrollButtons='auto'
+          allowScrollButtonsMobile
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
@@ -346,42 +347,44 @@ const ActivityList = ({
   handleLeaveEvent: (Activity_ID: number) => Promise<void>;
 }) => {
   return (
-    <div className="tabSections">
-      <h1>
+    <div className='text-red-500 no-underline p-6 md:p-12'>
+      <h1 className='text-lg md:text-xl font-bold'>
         {membertypes} {excurtype}
       </h1>
-      <div className="tabPosts">
+      <div className='grid grid-flow-row grid-cols-1 grid-rows-1 gap-8 my-8'>
         {posts.map((post) => (
-          <div className="gridPost" key={post.Activity_ID}>
-            <div className="gridImg">
-              <img src={post.Img_file_path} alt="" />
+          <div className='flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out' key={post.Activity_ID}>
+            <div className='flex-1 max-h-[200px] w-24 m-5 mr-0'>
+              <img src={post.Img_file_path} alt="" className='w-full max-h-full object-cover'/>
             </div>
-            <div className="gridContent">
-              <Link className="link" to={`/${type}/${post.Activity_ID}`}>
-                <h1 className="postH1">{post.Name}</h1>
+            <div className='flex-[3] flex flex-col justify-between m-2 md:m-5'>
+              <Link className='no-underline text-red-500 mt-2 w-fit h-fit' to={`/${type}/${post.Activity_ID}`}>
+                <h1 className='text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1'>{post.Name}</h1>
               </Link>
-              <p className="postP">{post.Description}</p>
-              <div className="buttons">
+              <p className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
+              <div className='flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap'>
                 <Link to={`/${type}/${post.Activity_ID}`}>
-                  <button className="postsButton createButton">View</button>
+                  <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">
+                    View
+                  </button>
                 </Link>
 
                 {excurtype === "Clubs" ? (
                   membertypes === "Executive" ? (
-                    <div>
+                    <>
                       <button
-                        className="delete-button"
+                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                         onClick={() => handleDeleteClub(post.Activity_ID)}
                       >
                         Delete
                       </button>
                       <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
+                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
                       </a>
-                    </div>
+                    </>
                   ) : membertypes === "Member" ? (
                     <button
-                      className="postsButton deleteButton"
+                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                       onClick={() => handleLeaveClub(post.Activity_ID)}
                     >
                       Leave
@@ -393,18 +396,18 @@ const ActivityList = ({
                   membertypes === "Executive" ? (
                     <div>
                       <button
-                        className="delete-button"
+                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                         onClick={() => handleDeleteVolunteer(post.Activity_ID)}
                       >
                         Delete
                       </button>
                       <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
+                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
                       </a>
                     </div>
                   ) : membertypes === "Member" ? (
                     <button
-                      className="postsButton deleteButton"
+                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                       onClick={() => handleLeaveVolunteer(post.Activity_ID)}
                     >
                       Leave
@@ -416,18 +419,18 @@ const ActivityList = ({
                   membertypes === "Executive" ? (
                     <div>
                       <button
-                        className="delete-button"
+                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                         onClick={() => handleDeleteProgram(post.Activity_ID)}
                       >
                         Delete
                       </button>
                       <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
+                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
                       </a>
                     </div>
                   ) : membertypes === "Member" ? (
                     <button
-                      className="postsButton deleteButton"
+                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                       onClick={() => handleLeaveProgram(post.Activity_ID)}
                     >
                       Leave
@@ -439,18 +442,18 @@ const ActivityList = ({
                   membertypes === "Executive" ? (
                     <div>
                       <button
-                        className="delete-button"
+                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                         onClick={() => handleDeleteEvent(post.Activity_ID)}
                       >
                         Delete
                       </button>
                       <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="edit-button">Edit</button>
+                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
                       </a>
                     </div>
                   ) : membertypes === "Member" ? (
                     <button
-                      className="postsButton deleteButton"
+                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                       onClick={() => handleLeaveEvent(post.Activity_ID)}
                     >
                       Leave
