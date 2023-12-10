@@ -50,6 +50,7 @@ const ReactTabs = () => {
     if (window.confirm(`Are you sure you want to ${execute} this ${type}?`)) {
       try {
         let dataPayload: DataPayload = {};
+        let shouldDelete = true;
         if (execute === "leave") {
           dataPayload.UCID = Member_UCID;
         }
@@ -60,11 +61,23 @@ const ReactTabs = () => {
           });
           dataPayload.Name = res.data.Name;
           dataPayload.Activity_ID = res.data.Activity_ID;
+          const clubIDRes = await axios.post("/event/getClubID", {
+            Name: res.data.Name,
+          });
+
+          if (clubIDRes.data && execute === "delete") {
+            await axios.delete(`/event/delete2`, {
+              data: { Name: res.data.Name },
+            });
+            shouldDelete = false;
+          }
         } else {
           dataPayload.Activity_ID = Activity_ID;
         }
 
-        await axios.delete(`${type}/${execute}`, { data: dataPayload });
+        if (shouldDelete) {
+          await axios.delete(`${type}/${execute}`, { data: dataPayload });
+        }
 
         if (execute === "leave") {
           setJoined(false);
@@ -249,7 +262,11 @@ const ActivityList = ({
                         >
                           Delete
                         </button>
-                        <a href={`/${type}/${post.Activity_ID}/edit`}>
+                        <a
+                          href={`/${type}/${
+                            type === "event" ? post.Name : post.Activity_ID
+                          }/edit`}
+                        >
                           <button className="edit-button">Edit</button>
                         </a>
                       </div>
