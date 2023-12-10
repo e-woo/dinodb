@@ -1,5 +1,4 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import './style.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../context/authContext';
@@ -119,14 +118,14 @@ const EditProgramPage = () => {
     };
 
     return (
-    <div className='create'> 
+    <div> 
         {editable ? <>
-            <h1 className="bigHeader">Edit Program</h1>
+            <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Edit Program</h1>
             <form onSubmit={handleSubmit} method='post'>
-                <div className='createBody'>
-                    <input type='text' placeholder='Name' id='name' defaultValue={program.Name || ''} required/>
-                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={program.Description || ''} />
-                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='dropdown' id='facultyType'>
+                <div className='flex flex-col items-center gap-6'>
+                    <input type='text' placeholder='Name' id='name' defaultValue={program.Name || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
+                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={program.Description || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
+                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='facultyType'>
                       <option value='Science'>Science</option>
                       <option value='Arts'>Arts</option>
                       <option value='Engineering'>Engineering</option>
@@ -134,7 +133,7 @@ const EditProgramPage = () => {
                       <option value='Education'>Education</option>
                       <option value='Administration'>Administration</option>
                     </select>
-                    <select value={tags} onChange={e => {setTags(e.target.value)}}  id='tags' >
+                    <select value={tags} onChange={e => {setTags(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='tags' >
                       <option value='000000001'>Academic</option>
                       <option value='000000002'>Arts</option>
                       <option value='000000003'>Recreation</option>
@@ -152,18 +151,18 @@ const EditProgramPage = () => {
                       <option value='000000019'>Leadership</option>
                       <option value='000000020'>Gaming</option>
                     </select>
-                    <input type='number' placeholder='Fee' id='fee' defaultValue={program.Fee || ''} />
-                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={program.WeekCommitmentHour || ''} />
-                    <input type='text' placeholder='Perks' id='perks' defaultValue={program.Perk || ''} />
-                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={program.Schedule || ''} />
-                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={program.InterviewRequired || ''} />
-                    <input type='text' placeholder='Application Required?' id='application' defaultValue={program.ApplicationRequired || ''} />
-                    <input type='text' placeholder='Website' id='website' defaultValue={program.Website || ''} />
-                    <input type='text' placeholder='Image link' id='img' defaultValue={program.Img_file_path || ''} required/>
-                    <button type='submit'>Confirm</button>
+                    <input type='number' placeholder='Fee' id='fee' defaultValue={program.Fee || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={program.WeekCommitmentHour || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Perks' id='perks' defaultValue={program.Perk || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={program.Schedule || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={program.InterviewRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Application Required?' id='application' defaultValue={program.ApplicationRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Website' id='website' defaultValue={program.Website || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Image link' id='img' defaultValue={program.Img_file_path || ''} required className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Confirm</button>
                 </div>
             </form>
-        </> : <h1 className="bigHeader">You do not have permission to access this.</h1>
+        </> : <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>You do not have permission to access this.</h1>
         }
     </div>
   )
