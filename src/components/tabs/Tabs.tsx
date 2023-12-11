@@ -247,12 +247,12 @@ const ActivityList = ({
                   </Link>
                   <p className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
                   <div className='flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap'>
-                    <Link className="link" to={`/${type}/${key}`}>
+                    <Link to={`/${type}/${key}`}>
                       <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">View</button>
                     </Link>
 
                     {membertypes === "Executive" ? (
-                      <div>
+                      <>
                         <button
                           className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
                           onClick={() =>
@@ -272,7 +272,7 @@ const ActivityList = ({
                         >
                           <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
                         </a>
-                      </div>
+                      </>
                     ) : membertypes === "Member" ? (
                       <button
                         className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"

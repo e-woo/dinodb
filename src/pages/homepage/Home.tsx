@@ -186,6 +186,8 @@ const ClubsSlider = ({
     Img_file_path: string;
   }>;
 }) => {
+  console.log(posts)
+  if (posts.length === 0) return null;
   return (
     <div className='flex flex-col px-24 py-12 no-underline items-center'>
       <div className='flex flex-col justify-center items-center w-full h-64 pb-2 text-[#333]'>
