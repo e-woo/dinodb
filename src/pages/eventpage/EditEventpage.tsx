@@ -1,7 +1,7 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { AuthContext } from '../../context/authContext';
+import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 
 interface CreateElements extends HTMLFormControlsCollection {
   name: HTMLInputElement;
@@ -118,30 +118,100 @@ const EditEventPage = () => {
     }
   };
 
-    // send a get request here to get existing information on the activity, then populate the input placeholders with that info
-    return (
-        <div> 
-        {editable ? <>
-            <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Edit Event: {event.Name}</h1>
-            <form onSubmit={handleSubmit} method='post'>
-                <div className='flex flex-col items-center gap-6'>
-                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={event.Description || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
-                    <input type='number' placeholder='Fee' id='fee' defaultValue={event.Fee || ''} className={inputCSS}/>
-                    <input type='text' placeholder='Perks' id='perks' defaultValue={event.Perks || ''} className={inputCSS}/>
-                    <input type='text' placeholder='Location' id='location' defaultValue={event.Location || ''} className={inputCSS}/>
-                    <input type='text' placeholder='Online or In Person?' id='onlineInPerson' defaultValue={event.OnlineInPerson || ''} className={inputCSS}/>
-                    <input type='text' placeholder='Sign up info' id='signUpInfo' defaultValue={event.SignUpInfo || ''} className={inputCSS}/>
-                    <input type='text' placeholder='Eligibility' id='eligibility' defaultValue={event.Eligibility || ''} className={inputCSS}/>
-                    <input type='datetime-local' placeholder='Date and time' id='dateTime' required defaultValue={event.DateTime || ''} className={inputCSS}/>
-                    <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Confirm</button>
-                </div>
-            </form>
-        </> : <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>You do not have permission to access this.</h1>
-        }
+  // send a get request here to get existing information on the activity, then populate the input placeholders with that info
+  return (
+    <div>
+      {editable ? (
+        <>
+          <h1 className="pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center">
+            Edit Event: {event.Name}
+          </h1>
+          <form onSubmit={handleSubmit} method="post">
+            <div className="flex flex-col items-center gap-6">
+              <span>Description</span>
+              <textarea
+                placeholder="Description..."
+                id="description"
+                rows={6}
+                defaultValue={event.Description || ""}
+                className="w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none"
+              />
+              <span>Fee</span>
+              <input
+                type="number"
+                placeholder="Fee"
+                id="fee"
+                defaultValue={event.Fee || ""}
+                className={inputCSS}
+              />
+              <span>Perks</span>
+              <input
+                type="text"
+                placeholder="Perks"
+                id="perks"
+                defaultValue={event.Perks || ""}
+                className={inputCSS}
+              />
+              <span>Location</span>
+              <input
+                type="text"
+                placeholder="Location"
+                id="location"
+                defaultValue={event.Location || ""}
+                className={inputCSS}
+              />
+              <span>Online or In Person?</span>
+              <input
+                type="text"
+                placeholder="Online or In Person?"
+                id="onlineInPerson"
+                defaultValue={event.OnlineInPerson || ""}
+                className={inputCSS}
+              />
+              <span>Sign up info</span>
+              <input
+                type="text"
+                placeholder="Sign up info"
+                id="signUpInfo"
+                defaultValue={event.SignUpInfo || ""}
+                className={inputCSS}
+              />
+              <span>Eligibility</span>
+              <input
+                type="text"
+                placeholder="Eligibility"
+                id="eligibility"
+                defaultValue={event.Eligibility || ""}
+                className={inputCSS}
+              />
+              <span>Date and time</span>
+              <input
+                type="datetime-local"
+                placeholder="Date and time"
+                id="dateTime"
+                required
+                defaultValue={event.DateTime || ""}
+                className={inputCSS}
+              />
+              <button
+                type="submit"
+                className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white"
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
+        </>
+      ) : (
+        <h1 className="pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center">
+          You do not have permission to access this.
+        </h1>
+      )}
     </div>
-  )
-}
+  );
+};
 
-const inputCSS = 'w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
+const inputCSS =
+  "w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm";
 
 export default EditEventPage;
