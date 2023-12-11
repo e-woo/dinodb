@@ -160,9 +160,6 @@ const Home = () => {
               <li>Organize your club events and calendars effortlessly.</li>
             </ul>
           </div>
-          <Link className="link" to={`/login`}>
-            <button className="postsButton findButton">Sign In Now</button>
-          </Link>
         </div>
         <Link to={`/login`}>
           <button className="w-max my-4 py-3 px-6 rounded-3xl text-base font-bold border-4 border-red-600 bg-[#f5f7f8] text-red-500 transition-[.3s] ease-in-out hover:bg-[#ffe57b]">
