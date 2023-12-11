@@ -46,15 +46,12 @@ const SearchPage = () => {
     e.preventDefault();
     setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
-    console.log("searchTerm " + searchTerm);
     try {
       const res = await axios.post("/explore/search", {
         searchTerm,
         searchFilters: filtersArray,
       });
       setPostsData(res.data);
-
-      console.log("resdata " + res.data);
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
@@ -85,44 +82,44 @@ const SearchPage = () => {
 
   return (
     <div className="search">
+      <h1 className="bigHeader">Find An Extracurricular!</h1>
       <form className="search" onSubmit={handleSubmit}>
-        <h1 className="bigHeader">Find An Extracurricular!</h1>
         <input
           type="text"
           placeholder="Search..."
           className="searchBar"
           value={searchTerm}
           onChange={handleSearchChange}
-        />
-        <div className="searchBody">
-          <div className="filters">
-            <ul>
-              <li>
-                <div className="filtersHeader">
-                  <h3 className="filterHeader">Filters</h3>
-                </div>
+        />{" "}
+      </form>
+      <div className="searchBody">
+        <div className="filters">
+          <ul>
+            <li>
+              <div className="filtersHeader">
+                <h3 className="filterHeader">Filters</h3>
+              </div>
+            </li>
+            {filters.map((filter, index) => (
+              <li key={index} className="filter">
+                <input
+                  type="checkbox"
+                  className="filterCheckbox"
+                  id={filter}
+                  name={filter}
+                  onChange={handleFilterChange}
+                />
+                <label htmlFor={filter}>{filter}</label>
               </li>
-              {filters.map((filter, index) => (
-                <li key={index} className="filter">
-                  <input
-                    type="checkbox"
-                    className="filterCheckbox"
-                    id={filter}
-                    name={filter}
-                    onChange={handleFilterChange}
-                  />
-                  <label htmlFor={filter}>{filter}</label>
-                </li>
-              ))}
-            </ul>
-          </div>
+            ))}
+          </ul>
+        </div>
+        <div className="searchContent">
           <div className="searchContent">
-            <div className="searchContent">
-              <PostsRow posts={getFilteredPosts()} />
-            </div>
+            <PostsRow posts={getFilteredPosts()} />
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
@@ -155,9 +152,9 @@ const PostsRow = ({ posts }: { posts: Array<Post> }) => {
                   <h1 className="postH1">{post.Name}</h1>
                 </Link>
                 <p className="postP">{post.Description}</p>
-                <Link className="link" to={`/${post.Type}/${key}`}>
+                <form action={`/${post.Type}/${key}`}>
                   <button className="postsButton">Learn More</button>
-                </Link>
+                </form>
               </div>
             </div>
           );
