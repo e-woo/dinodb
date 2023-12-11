@@ -1,62 +1,73 @@
 import React from "react";
-import "./style.css";
 import { Link } from "react-router-dom";
 
 // Footer component represents the page footer containing various sections.
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="containerF">
-        <div className="row">
-          <div className="footerCol">
+    <footer className='sticky bottom-0 left-0 w-full py-16 sm:py-20 px-12 sm:px-24 md:px-48 bg-red-500 mt-20'>
+        <div className='flex flex-wrap gap-24'>
+          <div className='w-1/4'>
             {/* Opportunities column */}
-            <h4>Opportunities</h4>
+            <h4 className='text-2xl text-[#ffcd00] mb-9 font-semibold relative before:content-[""] before:absolute before:left-0 before:bottom-[-10px] before:bg-red-400 before:h-[2px] before:box-border before:w-12'>
+              Opportunities
+            </h4>
             <ul>
               {/* Opportunities links */}
-              <li>
-                <Link to={"./clubs"} className="link">
-                  Club
+              {opportunities.map((item, index) => <li key={index}>
+                <Link to={item.link} className='text-lg no-underline font-normal text-[#f5f7f8] block pb-3 transition-[.3s] ease-in-out hover:text-[#ffe57b] hover:pl-2'>
+                  {item.name}
                 </Link>
               </li>
-              <li>
-                <Link to={"./volunteer"} className="link">
-                  Volunteer
-                </Link>
-              </li>
-              <li>
-                <Link to={"./programs"} className="link">
-                  Programs
-                </Link>
-              </li>
+              )}
             </ul>
           </div>
-          <div className="footerCol">
+          <div className='w-1/4'>
             {/* Announcements column */}
-            <h4>Announcements</h4>
+            <h4 className='text-2xl text-[#ffcd00] mb-9 font-semibold relative before:content-[""] before:absolute before:left-0 before:bottom-[-10px] before:bg-red-400 before:h-[2px] before:box-border before:w-12'>Announcements</h4>
             <ul>
               {/* Announcements links */}
-              <li>
-                <Link to={"./news"} className="link">
-                  News
+              {announcements.map((item, index) => <li key={index}>
+                <Link to={item.link} className='text-lg no-underline font-normal text-[#f5f7f8] block pb-3 transition-[.3s] ease-in-out hover:text-[#ffe57b] hover:pl-2'>
+                  {item.name}
                 </Link>
               </li>
-              <li>
-                <Link to={"./events"} className="link">
-                  Events
-                </Link>
-              </li>
-              <li>
-                <Link to={"./calendar"} className="link">
-                  Calendar
-                </Link>
-              </li>
+              )}
             </ul>
           </div>
         </div>
-      </div>
     </footer>
   );
 };
+
+const opportunities = [
+  {
+    link: './clubs',
+    name: 'Clubs'
+  },
+  {
+    link: './volunteer',
+    name: 'Volunteer'
+  },
+  {
+    link: './programs',
+    name: 'Programs'
+  },
+];
+
+const announcements = [
+  {
+    link: './news',
+    name: 'News'
+  },
+  {
+    link: './events',
+    name: 'Events'
+  },
+  {
+    link: './calendar',
+    name: 'Calendar'
+  }
+]
 
 // Exporting Footer component for use in App.tsx
 export default Footer;

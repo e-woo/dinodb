@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
@@ -132,89 +131,86 @@ const Volunteerpage = () => {
 
   // send a request here to see if the current user should have permissions to edit the activity
   return (
-    <div className="volunteer-page">
-      <div className="title-and-img">
-        <div className="img-container">
-          <img
-            src={volunteer.Img_file_path}
-            alt="Volunteer Logo"
-            onError={handleImgErr()}
-          ></img>
+    <div className='mx-12 md:mx-24 lg:mx-48 flex flex-col justify-center items-center'>
+      <div className='flex flex-nowrap flex-col md:flex-row py-12 gap-12'>
+        <div className='flex justify-center align-center h-32'>
+          <img src={volunteer.Img_file_path} alt="Volunteer Logo" className='h-full rounded-xl object-cover'
+            onError={handleImgErr()}/>
         </div>
-        <div className="title-container">
-          <h1>{volunteer.Name}</h1>
+        <div className='flex justify-center items-center'>
+          <h1 className='text-4xl lg:text-5xl xl:text-6xl font-bold text-center md:text-left'>{volunteer.Name}</h1>
         </div>
       </div>
-      <div className="button-row">
-        {currentUser ? (
-          joined ? (
-            <button className="delete-button" onClick={handleLeave}>
-              Leave
-            </button>
-          ) : (
-            <button className="edit-button" onClick={handleJoin}>
-              Join
-            </button>
-          )
-        ) : null}
+      <div className='flex flex-row flex-wrap gap-2 py-4 justify-center items-center'>
+      {currentUser ? (
+            joined ? (
+              <button className='h-16 px-8 border-2 border-red-500 bg-red-500 rounded-xl justify-center text-base font-semibold text-white transition-[.3s] ease-in-out hover:bg-red-500 hover:text-black' onClick={handleLeave}>
+                Leave
+              </button>
+            ) : (
+              <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white' onClick={handleJoin}>
+                Join
+              </button>
+            )
+          ) : null}
         {editable && (
           <>
             <a href={`/event/${id}/create`}>
-              <button className="edit-button">Create Event</button>
+              <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Create Event</button>
             </a>
             <a href={`/volunteer/${id}/edit`}>
-              <button className="edit-button">Edit</button>
+              <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Edit</button>
             </a>
             <a href={`/program/${id}/announcement`}>
-              <button className="edit-button announcement-button">
+              <button className='h-16 px-8 border-2 border-red-500 bg-white rounded-xl justify-center text-base font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>
                 Post Announcement
               </button>
             </a>
-            <button className="delete-button" onClick={handleDelete}>
+            <button className='h-16 px-8 border-2 border-red-500 bg-red-500 rounded-xl justify-center text-base font-semibold text-white transition-[.3s] ease-in-out hover:bg-red-500 hover:text-black' onClick={handleDelete}>
               Delete
             </button>
           </>
         )}
       </div>
-      <div className="desc">{volunteer.Description}</div>
-      <div className="more-info">
-        <div className="info-row">
-          <div className="info">
-            <h2>Fee:</h2>
+      <div className='flex justify-center items-center bg-[#E1E5E6] rounded-xl p-12 w-full'>{volunteer.Description}</div>
+      <div className='flex flex-col justify-center items-center p-2 w-full text-sm md:text-base lg:text-lg'>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Fee:</h2>
             <p>${volunteer.Fee}</p>
           </div>
-          <div className="info">
-            <h2>From Faculty:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>From Faculty:</h2>
             <p>{volunteer.Faculty}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Interview Required:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Interview Required:</h2>
             <p>{volunteer.InterviewRequired}</p>
           </div>
-          <div className="info">
-            <h2>Application Required:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Application Required:</h2>
             <p>{volunteer.ApplicationRequired}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Schedule:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Schedule:</h2>
             <p>{volunteer.Schedule}</p>
           </div>
-          <div className="info">
-            <h2>Commitment Hours per Week</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Commitment Hours per Week</h2>
             <p>{volunteer.WeekCommitmentHour}</p>
           </div>
         </div>
-        <div className="info-row">
-          <div className="info">
-            <h2>Location:</h2>
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Location:</h2>
             <p>{volunteer.Location}</p>
           </div>
-          <div className="info">
-            <h2>Perks:</h2>
+          <div className='flex-1'>
+            <h2 className='font-bold'>Perks:</h2>
             <p>{volunteer.Perk}</p>
           </div>
         </div>

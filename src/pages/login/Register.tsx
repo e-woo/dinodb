@@ -63,17 +63,17 @@ const Register = () => {
   };
 
   return (
-    <div className="form">
-      <div className="auth">
+    <div className='flex justify-center items-center min-h-[100vh] rex-bg'>
+      <div className='w-[340px] md:w-[420px] bg-transparent border-2 border-white border-opacity-20 backdrop-blur-[3px] shadow-[0_0_10px_rgba(0,_0,_0,_0.2)] text-white rounded-xl py-7 px-10'>
         <link
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
           rel="stylesheet"
         />
-        <h1>Register</h1>
+        <h1 className='text-4xl text-center font-bold'>Register</h1>
         <form>
-          <div className="text-field">
-            <div className="name-field">
-              <span>
+          <div className='relative w-full h-12 my-8'>
+            <div className='h-12 my-7 mx-auto flex flex-row justify-between'>
+              <span className='w-[47%]'>
                 <input
                   name="FName"
                   id="first-name-field"
@@ -81,9 +81,10 @@ const Register = () => {
                   placeholder="First Name"
                   required
                   onChange={handleChange}
+                  className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-sm md:text-base text-white py-5 px-5 placeholder:text-white'
                 />
               </span>
-              <span>
+              <span className='w-[47%]'>
                 <input
                   name="LName"
                   id="last-name-field"
@@ -91,15 +92,15 @@ const Register = () => {
                   placeholder="Last Name"
                   required
                   onChange={handleChange}
+                  className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-sm md:text-base text-white py-5 px-5 placeholder:text-white'
                 />
               </span>
             </div>
           </div>
-          <div className="box-field">
-            <div className="name-field">
-              <label htmlFor="isExecutive">Register as Club Executive</label>
+          <div className='flex justify-center items-center w-full h-12 my-8'>
+              <div className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 px-8 placeholder:text-white flex flex-row items-center justify-between'>
+              <label htmlFor="isExecutive" className='text-sm md:text-base'>Register as Club Executive</label>
               <input
-                className="executive-checkbox"
                 type="checkbox"
                 id="isExecutive"
                 checked={isExecutive}
@@ -107,11 +108,10 @@ const Register = () => {
               />
             </div>
           </div>
-          <div className="box-field2">
-            <div className="name-field">
-              <label htmlFor="isSupervisor">Register as Supervisor</label>
+          <div className='flex justify-center items-center w-full h-12 my-8'>
+            <div className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 px-8 placeholder:text-white flex flex-row items-center justify-between'>
+              <label htmlFor="isSupervisor" className='text-sm md:text-base'>Register as Supervisor</label>
               <input
-                className="executive-checkbox"
                 type="checkbox"
                 id="isSupervisor"
                 checked={isSupervisor}
@@ -119,64 +119,68 @@ const Register = () => {
               />
             </div>
           </div>
-          <div className="text-field">
+          <div className='relative w-full h-12 my-8'>
             <input
               name="Email"
               type="email"
               placeholder="Email"
               required
               onChange={handleChange}
+              className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
             />
-            <i className="bx bxs-envelope"></i>
+            <i className='bx bxs-envelope absolute right-5 top-1/2 -translate-y-1/2 text-xl' />
           </div>
-          {!isSupervisor ? (
-            <>
-              <div className="text-field">
-                <input
-                  name="UCID"
-                  type="text"
-                  placeholder="UCID"
-                  pattern="[0-9]{8}"
-                  required
-                  onChange={handleChange}
-                />
-                <i className="bx bxs-id-card"></i>
-              </div>
-              <div className="text-field">
-                <input
-                  name="DOB"
-                  type="text"
-                  placeholder="Date of Birth"
-                  onFocus={(e) => (e.target.type = "date")}
-                  onBlur={DateOnBlur}
-                  required
-                  onChange={handleChange}
-                />
-                <i className="bx bxs-calendar"></i>
-              </div>
-            </>
-          ) : null}
-          <div className="text-field">
+          {!isSupervisor ? 
+          <>
+            <div className='relative w-full h-12 my-8'>
+              <input
+                name="UCID"
+                type="text"
+                placeholder="UCID"
+                pattern="[0-9]{8}"
+                required
+                onChange={handleChange}
+                className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
+              />
+              <i className='bx bxs-id-card absolute right-5 top-1/2 -translate-y-1/2 text-xl'/>
+            </div>
+            <div className='relative w-full h-12 my-8'>
+              <input
+                name="DOB"
+                type="text"
+                placeholder="Date of Birth"
+                onFocus={(e) => (e.target.type = "date")}
+                onBlur={DateOnBlur}
+                required
+                onChange={handleChange}
+                className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
+              />
+              <i className='bx bxs-calendar absolute right-5 top-1/2 -translate-y-1/2 text-xl'></i>
+            </div>
+          </> : null
+          }
+          <div className='relative w-full h-12 my-8'>
             <input
               name="Password"
               type="password"
               placeholder="Password"
               required
               onChange={handleChange}
+              className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
             />
-            <i className="bx bxs-lock-alt"></i>
+            <i className='bx bxs-lock-alt absolute right-5 top-1/2 -translate-y-1/2 text-xl'/>
           </div>
           {/* <div className='text-field'>
                         <input type='password' placeholder='Confirm Password' required />
                         <i className='bx bxs-lock-alt' ></i>
                     </div> */}
-          <button onClick={handleSubmit} className="btn">
+          <button onClick={handleSubmit} className='w-full h-11 border-none bg-white outline-none rounded-[40px] shadow-[0_0_10px_rgba(0,_0,_0,_0.2)] text-lg text-black font-semibold'>
             Register
           </button>
-          {err && <p className="error-text">{err}</p>}
-          <div className="register">
+          {err && <p className='text-red-500 font-bold flex justify-center items-center m-auto text-center pt-[1.25em]'>{err}</p>}
+          <div className='text-sm text-center mt-5 mb-4'>
             <p>
-              Have an account? <a href="./login">Login</a>
+              Have an account? <a href="./login" className='text-white no-underline font-bold hover:underline'>Login</a>
             </p>
           </div>
         </form>

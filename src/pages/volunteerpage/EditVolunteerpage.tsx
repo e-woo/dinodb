@@ -1,5 +1,4 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import './style.css'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
@@ -113,25 +112,25 @@ const EditVolunteerPage = () => {
 
     // send a get request here to get existing information on the activity, then populate the input placeholders with that info
     return (
-    <div className='create'> 
+    <div> 
         {editable ? <>
-            <h1 className="bigHeader">Edit Volunteering Opportunity</h1>
+            <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Edit Volunteering Opportunity</h1>
             <form onSubmit={handleSubmit} method='post'>
-                <div className='createBody'>
-                <input type='text' placeholder='Name' id='name' defaultValue={volunteer.Name || ''} required/>
-                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={volunteer.Description || ''} />
-                    <input type='number' placeholder='Fee' id='fee' defaultValue={volunteer.Fee || ''} />
-                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={volunteer.WeekCommitmentHour || ''} />
-                    <input type='text' placeholder='Perks' id='perks' defaultValue={volunteer.Perk || ''} />
-                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={volunteer.Schedule || ''} />
-                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={volunteer.InterviewRequired || ''} />
-                    <input type='text' placeholder='Application Required?' id='application' defaultValue={volunteer.ApplicationRequired || ''} />
-                    <input type='text' placeholder='Location' id='location' defaultValue={volunteer.Location || ''} />
-                    <input type='text' placeholder='Image link' id='img' defaultValue={volunteer.Img_file_path || ''} required/>
-                    <button type='submit'>Confirm</button>
+                <div className='flex flex-col items-center gap-6'>
+                <input type='text' placeholder='Name' id='name' defaultValue={volunteer.Name || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
+                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={volunteer.Description || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
+                    <input type='number' placeholder='Fee' id='fee' defaultValue={volunteer.Fee || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={volunteer.WeekCommitmentHour || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Perks' id='perks' defaultValue={volunteer.Perk || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={volunteer.Schedule || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={volunteer.InterviewRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Application Required?' id='application' defaultValue={volunteer.ApplicationRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Location' id='location' defaultValue={volunteer.Location || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
+                    <input type='text' placeholder='Image link' id='img' defaultValue={volunteer.Img_file_path || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
+                    <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Confirm</button>
                 </div>
             </form>
-        </> : <h1 className="bigHeader">You do not have permission to access this.</h1>
+        </> : <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>You do not have permission to access this.</h1>
         }
     </div>
   )

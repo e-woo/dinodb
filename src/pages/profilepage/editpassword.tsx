@@ -35,7 +35,6 @@ const EditPassword = () => {
       setWarning(true);
       return;
     }
-
     try {
       const endpoint = supervisorAccount
         ? "/student/passwordSup"
@@ -47,47 +46,33 @@ const EditPassword = () => {
     }
   };
 
-  return (
-    <>
-      {" "}
-      {id !== -1 ? (
-        <div className="create">
-          <h1 className="bigHeader">Edit Password</h1>
-          <form onSubmit={handleSubmit} method="post">
-            <div className="createBody">
-              <div className="inputSection">
-                <h4>New Password</h4>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="New Password"
-                  required
-                />
-              </div>
-              <div className="inputSection">
-                <h4>Password</h4>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Confirm Password"
-                  required
-                />
-              </div>
-              <button type="submit">Confirm</button>
-              {warning ? (
-                <h4 className="warning">Passwords do not match!</h4>
-              ) : (
-                <></>
-              )}
-            </div>
-          </form>
-        </div>
-      ) : (
-        <h1 className="bigHeader">You are not logged in!</h1>
-      )}
-    </>
-  );
-};
+	return (<> {
+			user ?
+				<div> 
+					<h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Edit Password</h1>
+					<form onSubmit={handleSubmit} method='post'>
+						<div className='flex flex-col items-center gap-6 md:px-[200px] lg:px-[300px]'>
+							<div className='w-[47%]'>
+								<h4>New Password</h4>
+								<input type='password' id='password' placeholder='New Password'
+								className={inputCSS} required/>
+							</div>
+							<div className='w-[47%]'>
+								<h4>Password</h4>
+								<input type='password' id='confirmPassword' placeholder='Confirm Password'
+								className={inputCSS} required/>
+							</div>
+							<button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Confirm</button>
+							{warning ? <h4 className='text-red-500'>Passwords do not match!</h4> : <></>}
+						</div>
+					</form>
+				</div> : <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>You are not logged in!</h1>
+			}
+		</>
+	)
+}
+const inputCSS = 'w-full border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
+
 
 interface CreateElements extends HTMLFormControlsCollection {
   password: HTMLInputElement;

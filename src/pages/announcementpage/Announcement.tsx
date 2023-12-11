@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "./style.css";
 import Menu from "../../components/menu/Menu";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
@@ -83,7 +82,8 @@ const Announcement = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+    window.location.reload();
+  }
 
   const handleDelete = async () => {
     try {
@@ -97,78 +97,50 @@ const Announcement = () => {
   };
 
   return (
-    <div className="announcementContainer">
-      <div className="announcementContent">
+    <div className='flex flex-col xl:grid xl:grid-cols-4 gap-12'>
+      <div className='xl:col-span-3 flex-[5] flex flex-col gap-8 m-16 md:m-24 lg:m-32 mt-12'>
         <img
-          className="announcementImg"
-          src={announcement ? announcement.Img_file_path : ""}
-          onError={handleImgErr()}
-        ></img>
-        <div className="user">
-          <img
-            className="userImg"
-            src={announcement.Img_file_path}
-            onError={handleImgErr()}
-          ></img>
-          <div className="announcementInfo">
-            <span className="userAuthor">{announcement.Author}</span>
-            <p>
-              Posted on{" "}
-              {announcement.Date
-                ? new Intl.DateTimeFormat("en-CA", {
-                    dateStyle: "long",
-                    timeStyle: "short",
-                    hour12: true,
-                  }).format(new Date(announcement.Date))
-                : ""}
-            </p>
+          className='max-h-[400px] w-[60%] object-cover place-self-center xl:place-self-start'
+          src={announcement ? announcement.Img_file_path : ''}
+        />
+        <div className='flex flex-col xl:items-start items-center gap-4'>
+          <div className='flex flex-row gap-4'>
+            <img
+              className='border-2 rounded-full h-14 border-black'
+              src={announcement.Img_file_path}
+            />
+            <div>
+              <span className='text-xl font-bold'>{announcement.Author}</span>
+              <p>Posted on {announcement.Date ? new Intl.DateTimeFormat('en-CA', {
+                      dateStyle: 'long',
+                      timeStyle: 'short',
+                      hour12: true
+                    }).format(new Date(announcement.Date)) : ''}</p>
+            </div>
           </div>
-          {editable ? (
+          {editable ?
             <>
-              {isEditing ? (
-                <div className="editForm">
-                  <textarea
-                    placeholder="Body..."
-                    id="editBody"
-                    rows={6}
-                    required
-                  ></textarea>
-                  <div className="editButtons">
-                    <button className="confirmButton" onClick={handleEdit}>
-                      Confirm
-                    </button>
-                    <button
-                      className="cancelButton"
-                      onClick={() => setIsEditing(false)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+              {isEditing ? 
+              <div className='w-72 lg:w-96'>
+                <textarea className='border-gray-400 border rounded-lg resize-none p-4 w-full' placeholder='Body...' id='editBody' rows={6} required/>
+                <div className='flex flex-row gap-4 justify-center lg:justify-start'>
+                  <button className='bg-blue-500 py-2 px-4 rounded-xl text-white hover:bg-blue-600' onClick={handleEdit}>Confirm</button>
+                  <button className='bg-red-500 py-2 px-4 rounded-xl text-white hover:bg-red-600' onClick={() => setIsEditing(false)}>Cancel</button>
                 </div>
-              ) : (
-                <>
-                  <button
-                    className="postsButton editButton"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="postsButton deleteButton"
-                    onClick={() => handleDelete()}
-                  >
-                    Delete
-                  </button>
-                </>
-              )}
-            </>
-          ) : (
-            <></>
-          )}
+              </div>
+              : 
+              <div className='flex flex-row gap-4 justify-center lg:justify-start'>
+                <button className='bg-blue-500 py-2 px-4 rounded-xl text-white hover:bg-blue-600' onClick={() => setIsEditing(true)}>Edit</button>
+                <button className='bg-red-500 py-2 px-4 rounded-xl text-white hover:bg-red-600' onClick={() => handleDelete()}>Delete</button>
+              </div>
+              }
+
+            </>: <></>}
+
         </div>
 
-        <h1 className="announcementHeader">{announcement.Title}</h1>
-        <p className="announcementP">{announcement.Announcement}</p>
+        <h1 className='text-4xl lg:text-6xl font-extrabold text-center text-[#333] xl:text-left'>{announcement.Title}</h1>
+        <p className='text-justify leading-8'>{announcement.Announcement}</p>
       </div>
       <Menu />
     </div>

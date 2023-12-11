@@ -138,10 +138,8 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="app">
-      <div className="container">
-        <RouterProvider router={router} />
-      </div>
+    <div className='overflow-hidden'>
+      <RouterProvider router={router} />
     </div>
   );
 }

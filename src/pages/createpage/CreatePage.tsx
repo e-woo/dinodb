@@ -1,8 +1,7 @@
-import React, { FormEvent, useContext, useEffect, useState } from "react";
-import "./style.css";
-import { AuthContext } from "../../context/authContext";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../../context/authContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface CreateElements extends HTMLFormControlsCollection {
   activityType: HTMLInputElement;
@@ -270,22 +269,22 @@ const CreatePage = () => {
 
   if (accountType !== "EXECUTIVE" && !supervisorAccount) {
     return (
-      <div className="access-message">
+      <div className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>
         <h1>You do not have permission to access this.</h1>
       </div>
     );
   } else {
     return (
-      <div className="create">
-        <h1 className="bigHeader">Create new Extracurricular!</h1>
+      <div className='min-h-[60vh]'>
+        <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Create new Extracurricular!</h1>
         <form onSubmit={handleSubmit} method="post">
-          <div className="createBody">
+          <div className='flex flex-col items-center gap-6'>
             <select
               value={activityType}
               onChange={(e) => {
                 setActivityType(e.target.value);
               }}
-              className="dropdown"
+              className={inputCSS}
               id="activityType"
             >
               <option value="choose">Choose an Extracurricular Type...</option>
@@ -296,14 +295,15 @@ const CreatePage = () => {
               <option value="program">Program</option>
               <option value="event">Event</option>
             </select>
-            <input type="text" placeholder="Name" id="name" required />
-            <textarea placeholder="Description..." id="description" rows={6} />
-            <input type="text" placeholder="Perks" id="perks" required />
+            <input type="text" placeholder="Name" id="name" className={inputCSS} required />
+            <textarea placeholder="Description..." id="description" className={inputCSS} rows={6} />
+            <input type="text" placeholder="Perks" id="perks" className={inputCSS} required />
             <input
               type="text"
               placeholder="Icon image link"
               id="img"
               onChange={handleImageUrlChange}
+              className={inputCSS}
             />
             {!isImageValid && (
               <span>
@@ -313,31 +313,35 @@ const CreatePage = () => {
             )}
             {activityType === "club" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" />
-                <input type="text" placeholder="Schedule" id="schedule" />
+                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
+                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
+                  className={inputCSS}
                 />
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
+                  className={inputCSS}
                 />
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
+                  className={inputCSS}
                 />
-                <input type="text" placeholder="Discord" id="discord" />
-                <input type="text" placeholder="Instagram" id="instagram" />
+                <input type="text" placeholder="Discord" id="discord" className={inputCSS}/>
+                <input type="text" placeholder="Instagram" id="instagram" className={inputCSS}/>
                 <select
                   value={organization}
                   onChange={(e) => {
                     setOrganization(e.target.value);
                   }}
                   id="organization"
+                  className={inputCSS}
                 >
                   <option value="" disabled>
                     Choose an organization...
@@ -351,30 +355,34 @@ const CreatePage = () => {
               </>
             ) : activityType === "program" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" />
-                <input type="text" placeholder="Schedule" id="schedule" />
+                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
+                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
+                  className={inputCSS}
                 />
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
+                  className={inputCSS}
                 />
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
+                  className={inputCSS}
                 />
-                <input type="text" placeholder="Website" id="website" />
+                <input type="text" placeholder="Website" id="website" className={inputCSS}/>
                 <select
                   value={organization}
                   onChange={(e) => {
                     setOrganization(e.target.value);
                   }}
                   id="organization"
+                  className={inputCSS}
                 >
                   <option value="" disabled>
                     Choose an organization...
@@ -388,53 +396,60 @@ const CreatePage = () => {
               </>
             ) : activityType === "event" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" />
+                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
                 <input
                   type="text"
                   placeholder="Location"
                   id="location"
                   required
+                  className={inputCSS}
                 />
                 <input
                   type="text"
                   placeholder="Online or In Person?"
                   id="onlineInPerson"
+                  className={inputCSS}
                 />
-                <input type="text" placeholder="Sign up info" id="signUpInfo" />
-                <input type="text" placeholder="Eligibility" id="eligibility" />
+                <input type="text" placeholder="Sign up info" id="signUpInfo" className={inputCSS}/>
+                <input type="text" placeholder="Eligibility" id="eligibility" className={inputCSS}/>
                 <input
                   type="datetime-local"
                   placeholder="Date and time"
                   id="dateTime"
                   required
+                  className={inputCSS}
                 />
               </>
             ) : activityType === "volunteer" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" />
-                <input type="text" placeholder="Schedule" id="schedule" />
+                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
+                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
+                  className={inputCSS}
                 />
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
+                  className={inputCSS}
                 />
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
+                  className={inputCSS}
                 />
-                <input type="text" placeholder="Location" id="location" />
+                <input type="text" placeholder="Location" id="location" className={inputCSS}/>
                 <select
                   value={organization}
                   onChange={(e) => {
                     setOrganization(e.target.value);
                   }}
                   id="organization"
+                  className={inputCSS}
                 >
                   <option value="" disabled>
                     Choose an organization...
@@ -454,7 +469,7 @@ const CreatePage = () => {
               onChange={(e) => {
                 setFacultyType(e.target.value);
               }}
-              className="dropdown"
+              className={inputCSS}
               id="facultyType"
               required
             >
@@ -479,6 +494,7 @@ const CreatePage = () => {
               }}
               id="tags"
               required
+              className={inputCSS}
             >
               <option value="" disabled>
                 Choose a tag... (Hold CTRL to select multiple)
@@ -489,9 +505,9 @@ const CreatePage = () => {
                 </option>
               ))}
             </select>
-            <button type="submit">Create</button>
+            <button className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Create</button>
             {warning ? (
-              <p className="warningText">
+              <p className='text-red-500 font-semibold'>
                 Please choose an extracurricular type!
               </p>
             ) : (
@@ -503,5 +519,6 @@ const CreatePage = () => {
     );
   }
 };
+const inputCSS = 'w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
 
 export default CreatePage;
