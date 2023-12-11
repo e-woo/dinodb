@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "./uofc-logo.png";
 import axios from "axios";
+
+import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Home = () => {
   const [clubs, setClubs] = useState([]);
@@ -9,39 +12,53 @@ const Home = () => {
   const [programs, setPrograms] = useState([]);
   const [events, setEvents] = useState([]);
 
+  const { currentUser } = useContext(AuthContext);
+  const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
+
+  const supervisorAccount = currentUser?.Supervisor_ID;
+
   useEffect(() => {
-    axios.get('/club/get4Clubs')
+    axios
+      .get("/club/get4Clubs")
       .then((res) => {
         setClubs(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-    axios.get('/volunteer/get4Volunteer')
+    axios
+      .get("/volunteer/get4Volunteer")
       .then((res) => {
         setVolunteering(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-      axios.get('/program/get4Programs')
+    axios
+      .get("/program/get4Programs")
       .then((res) => {
         setPrograms(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
 
-      axios.get('/event/get4Events')
+    axios
+      .get("/event/get4Events")
       .then((res) => {
         setEvents(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       });
   }, []);
+
+  const isSupervisor = () => {
+    return accountType === null || supervisorAccount != null;
+  };
 
   return (
     <div className=''>
@@ -135,6 +152,9 @@ const Home = () => {
               <li>Organize your club events and calendars effortlessly.</li>
             </ul>
           </div>
+          <Link className="link" to={`/login`}>
+            <button className="postsButton findButton">Sign In Now</button>
+          </Link>
         </div>
         <Link to={`/login`}>
           <button className='w-max my-4 py-3 px-6 rounded-3xl text-base font-bold border-4 border-red-600 bg-[#f5f7f8] text-red-500 transition-[.3s] ease-in-out hover:bg-[#ffe57b]'>Sign In Now</button>
@@ -159,7 +179,12 @@ const ClubsSlider = ({
   header: string;
   desc: string;
   type: string;
-  posts: Array<{ Activity_ID: number; Name: string; Description: string; Img_file_path: string }>;
+  posts: Array<{
+    Activity_ID: number;
+    Name: string;
+    Description: string;
+    Img_file_path: string;
+  }>;
 }) => {
   return (
     <div className='flex flex-col px-24 py-12 no-underline items-center'>

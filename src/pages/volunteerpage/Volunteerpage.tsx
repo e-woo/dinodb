@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Volunteerpage = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const Volunteerpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState("");
   const [volunteer, setVolunteer] = useState({
     Activity_ID: id,
     Name: "",
@@ -95,6 +97,11 @@ const Volunteerpage = () => {
           Perk: res.data.Perk,
         });
 
+        const orgRes = await axios.post(`/volunteer/getOrganization`, {
+          Activity_ID: id,
+        });
+        setOrganization(orgRes.data.Org_Name);
+
         const execRes = await axios.post("/volunteer/getExecs", {
           Activity_ID: id,
         });
@@ -127,7 +134,8 @@ const Volunteerpage = () => {
     <div className='mx-12 md:mx-24 lg:mx-48 flex flex-col justify-center items-center'>
       <div className='flex flex-nowrap flex-col md:flex-row py-12 gap-12'>
         <div className='flex justify-center align-center h-32'>
-          <img src={volunteer.Img_file_path} alt="Volunteer Logo" className='h-full rounded-xl object-cover'/>
+          <img src={volunteer.Img_file_path} alt="Volunteer Logo" className='h-full rounded-xl object-cover'
+            onError={handleImgErr()}/>
         </div>
         <div className='flex justify-center items-center'>
           <h1 className='text-4xl lg:text-5xl xl:text-6xl font-bold text-center md:text-left'>{volunteer.Name}</h1>
@@ -204,6 +212,12 @@ const Volunteerpage = () => {
           <div className='flex-1'>
             <h2 className='font-bold'>Perks:</h2>
             <p>{volunteer.Perk}</p>
+          </div>
+        </div>
+        <div className="info-row">
+          <div className="info">
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
           </div>
         </div>
       </div>

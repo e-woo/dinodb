@@ -1,41 +1,50 @@
-import axios from 'axios';
-import React, { FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/authContext";
 
 const EditPassword = () => {
-	const [warning, setWarning] = useState(false);
-    const navigate = useNavigate()
+  const [warning, setWarning] = useState(false);
+  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+  const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
 
-	const user = localStorage.getItem("user");
-	let ucid = -1;
-	if (user) {
-		ucid = JSON.parse(user).UCID;
-	}
-	else {
-		console.log("User data not found in localStorage");
-	}
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
-	const handleSubmit = async (e: FormEvent<CreateForm>) => {
-		e.preventDefault();
-		setWarning(false);
-        const elements = e.currentTarget.elements;
-		const formData = {
-			ucid: ucid,
-			password: elements.password.value,
-			confirmPassword: elements.confirmPassword.value
-		}
-		if (formData.password !== formData.confirmPassword) {
-			setWarning(true);
-			return;
-		}
+  const user = localStorage.getItem("user");
+  let id = -1;
+  if (user) {
+    const parsedUser = JSON.parse(user);
+    id = parsedUser.UCID || parsedUser.Supervisor_ID;
+  } else {
+    console.log("User data not found in localStorage");
+  }
 
-		try {
-			await axios.post('/student/password', formData);
-			navigate('../profile');
-		} catch (err) {
-			console.log(err);
-		}
-	}
+  const handleSubmit = async (e: FormEvent<CreateForm>) => {
+    e.preventDefault();
+    setWarning(false);
+    const elements = e.currentTarget.elements;
+    const formData = {
+      id: id,
+      password: elements.password.value,
+      confirmPassword: elements.confirmPassword.value,
+    };
+    if (formData.password !== formData.confirmPassword) {
+      setWarning(true);
+      return;
+    }
+    try {
+      const endpoint = supervisorAccount
+        ? "/student/passwordSup"
+        : "/student/password";
+      await axios.post(endpoint, formData);
+      navigate("../profile");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 	return (<> {
 			user ?
@@ -66,12 +75,12 @@ const inputCSS = 'w-full border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text
 
 
 interface CreateElements extends HTMLFormControlsCollection {
-	password: HTMLInputElement;
-	confirmPassword: HTMLInputElement;
+  password: HTMLInputElement;
+  confirmPassword: HTMLInputElement;
 }
-	 
+
 interface CreateForm extends HTMLFormElement {
-	readonly elements: CreateElements;
+  readonly elements: CreateElements;
 }
 
 export default EditPassword;

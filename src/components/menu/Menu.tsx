@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Announcement } from "../../pages/announcementpage/Announcement";
 import axios from "axios";
+import { handleImgErr } from "../../context/utils";
 
 export const Menu = () => {
-
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Announcement[]>([]);
 
-  useEffect(() => { 
+  useEffect(() => {
     async function getAnnouncements() {
-      const res = await axios.post('/announcement/getAnnouncements');
+      const res = await axios.post("/announcement/getAnnouncements");
       const p = [];
       for (let i = 0; i < 4; i++) {
-        if (i >= (res.data as Announcement[]).length)
-          break;
+        if (i >= (res.data as Announcement[]).length) break;
         p.push(res.data[i]);
       }
       setPosts(p);
     }
     getAnnouncements();
-  }, []) 
+  }, []);
 
+  const handleNavigate = (postTitle: any) => {
+    navigate(`/announcement/${postTitle}`);
+  };
 
   return (
     <div className='flex flex-col m-8 items-center'>

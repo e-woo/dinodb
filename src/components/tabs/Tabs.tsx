@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { exec } from "child_process";
+import { handleImgErr } from "../../context/utils";
 
 const ReactTabs = () => {
   const navigate = useNavigate();
@@ -21,244 +23,136 @@ const ReactTabs = () => {
   const [execPrograms, setExecPrograms] = useState([]);
   const [execEvents, setExecEvents] = useState([]);
 
-  const [value, setValue] = React.useState(0);
   const { currentUser } = useContext(AuthContext);
   const Member_UCID = currentUser?.UCID;
-  const excurtypes = ["Clubs", "Volunteer", "Programs", "Events"];
+  const accountType = currentUser?.AccountType;
+  const supervisorAccount = currentUser?.Supervisor_ID;
+  const [value, setValue] = React.useState(0);
+  const [infoValue, setInfoValue] = React.useState(supervisorAccount ? 2 : 0);
+
   const type = ["club", "volunteer", "program", "event"];
   const membertypes = ["Member", "Executive"];
   const allPosts = [clubs, volunteers, programs, events];
   const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
 
-  const handleDeleteClub = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this club?")) {
-      try {
-        await axios.delete(`/club/delete`, {
-          data: { Activity_ID: Activity_ID },
-        });
-        navigate(`../search`);
-        alert("Club deleted successfully");
-      } catch (error) {
-        console.error("Error deleting club", error);
-        alert("Failed to delete club");
-      }
-    }
-    window.location.reload();
-  };
+  interface DataPayload {
+    Activity_ID?: string;
+    UCID?: string;
+    Name?: string;
+  }
 
-  const handleLeaveClub = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this club?")) {
+  const handleButtons = async (
+    Activity_ID: string,
+    type: string,
+    execute: string
+  ) => {
+    if (window.confirm(`Are you sure you want to ${execute} this ${type}?`)) {
       try {
-        await axios.delete(`/club/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID,
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving club", error);
-        alert("Failed to leave club");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteVolunteer = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this volunteer?")) {
-      try {
-        await axios.delete(`/volunteer/delete`, {
-          data: { Activity_ID: Activity_ID },
-        });
-        navigate(`../search`);
-        alert("Volunteer deleted successfully");
-      } catch (error) {
-        console.error("Error deleting volunteer", error);
-        alert("Failed to delete volunteer");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleLeaveVolunteer = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this volunteer?")) {
-      try {
-        await axios.delete(`/volunteer/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID,
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving volunteer", error);
-        alert("Failed to leave volunteer");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteProgram = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to delete this program?")) {
-      try {
-        await axios.delete(`/program/delete`, {
-          data: { Activity_ID: Activity_ID },
-        });
-        navigate(`../search`);
-        alert("Program deleted successfully");
-      } catch (error) {
-        console.error("Error deleting program", error);
-        alert("Failed to delete program");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleLeaveProgram = async (Activity_ID: number) => {
-    if (window.confirm("Are you sure you want to leave this program?")) {
-      try {
-        await axios.delete(`/program/leave`, {
-          data: {
-            UCID: Member_UCID,
-            Activity_ID: Activity_ID,
-          },
-        });
-        setJoined(false);
-      } catch (error) {
-        console.log("Error leaving program", error);
-        alert("Failed to leave program");
-      }
-    }
-    window.location.reload();
-  };
-
-  const handleDeleteEvent = async (Activity_ID: number) => {
-    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      try {
-        const clubIDRes = await axios.post("/event/getClubID", {
-          Name: res.data.Name,
-        });
-
-        if (clubIDRes.data) {
-          console.log("lol");
-          await axios.delete(`/event/delete2`, {
-            data: { Name: res.data.Name },
-          });
-          navigate(`../search`);
-          alert("Event deleted successfully");
-        } else {
-          console.log("lol2");
-          const idRes = await axios.post("/event/getID", {
-            Name: res.data.Name,
-          });
-          await axios.delete(`/event/delete`, {
-            data: { Activity_ID: Activity_ID },
-          });
-          navigate(`../search`);
-          alert("Event deleted successfully");
+        let dataPayload: DataPayload = {};
+        let shouldDelete = true;
+        if (execute === "leave") {
+          dataPayload.UCID = Member_UCID;
         }
-      } catch (error) {
-        console.error("Error deleting event", error);
-        alert("Failed to delete event");
-      }
-    }
-    window.location.reload();
-  };
 
-  const handleLeaveEvent = async (Activity_ID: number) => {
-    const res = await axios.post("/event/show", { Activity_ID: Activity_ID });
-    if (window.confirm("Are you sure you want to leave this event?")) {
-      try {
-        await axios.delete(`/event/leave`, {
-          data: {
-            UCID: Member_UCID,
+        if (type === "event") {
+          const res = await axios.post("/event/show", {
             Activity_ID: Activity_ID,
+          });
+          dataPayload.Name = res.data.Name;
+          dataPayload.Activity_ID = res.data.Activity_ID;
+          const clubIDRes = await axios.post("/event/getClubID", {
             Name: res.data.Name,
-          },
-        });
-        setJoined(false);
+          });
+
+          if (clubIDRes.data && execute === "delete") {
+            await axios.delete(`/event/delete2`, {
+              data: { Name: res.data.Name },
+            });
+            shouldDelete = false;
+          }
+        } else {
+          dataPayload.Activity_ID = Activity_ID;
+        }
+
+        if (shouldDelete) {
+          await axios.delete(`${type}/${execute}`, { data: dataPayload });
+        }
+
+        if (execute === "leave") {
+          setJoined(false);
+        }
+        navigate(`../profile`);
+        alert(
+          `${
+            type.charAt(0).toUpperCase() + type.slice(1)
+          } ${execute}d successfully`
+        );
       } catch (error) {
-        console.log("Error leaving event", error);
-        alert("Failed to leave event");
+        console.error(`Error ${execute} ${type}`, error);
+        alert(`Failed to ${execute} ${type}`);
       }
     }
     window.location.reload();
   };
 
   useEffect(() => {
-    axios
-      .post("/club/joinedClubs", { UCID: Member_UCID })
-      .then((res) => {
-        setClubs(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+    const fetchData = async () => {
+      try {
+        const clubJoined = axios.post("/club/joinedClubs", {
+          UCID: Member_UCID,
+        });
+        const clubExec = axios.post("/club/execClubs", { UCID: Member_UCID });
+        const volunteerJoined = axios.post("/volunteer/joinedVolunteer", {
+          UCID: Member_UCID,
+        });
+        const volunteerExec = axios.post("/volunteer/execVolunteer", {
+          UCID: Member_UCID,
+        });
+        const programJoined = axios.post("/program/joinedPrograms", {
+          UCID: Member_UCID,
+        });
+        const programExec = axios.post("/program/execPrograms", {
+          accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+          isSupervisor: supervisorAccount,
+        });
+        const eventJoined = axios.post("/event/joinedEvents", {
+          UCID: Member_UCID,
+        });
+        const eventExec = axios.post("/event/execEvents", {
+          accountID: supervisorAccount ? supervisorAccount : Member_UCID,
+          isSupervisor: supervisorAccount,
+        });
 
-    axios
-      .post("/club/execClubs", { UCID: Member_UCID })
-      .then((res) => {
-        setExecClubs(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+        const results = await Promise.all([
+          clubJoined,
+          clubExec,
+          volunteerJoined,
+          volunteerExec,
+          programJoined,
+          programExec,
+          eventJoined,
+          eventExec,
+        ]);
 
-    axios
-      .post("/volunteer/joinedVolunteer", { UCID: Member_UCID })
-      .then((res) => {
-        setVolunteers(res.data);
-      })
-      .catch((error) => {
+        setClubs(results[0].data);
+        setExecClubs(results[1].data);
+        setVolunteers(results[2].data);
+        setExecVolunteer(results[3].data);
+        setPrograms(results[4].data);
+        setExecPrograms(results[5].data);
+        setEvents(results[6].data);
+        setExecEvents(results[7].data);
+      } catch (error) {
         console.error("Error fetching data: ", error);
-      });
+      }
+    };
 
-    axios
-      .post("/volunteer/execVolunteer", { UCID: Member_UCID })
-      .then((res) => {
-        setExecVolunteer(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+    fetchData();
+  }, [Member_UCID, supervisorAccount]); // Added supervisorAccount as a dependency if it's used in the effect
 
-    axios
-      .post("/program/joinedPrograms", { UCID: Member_UCID })
-      .then((res) => {
-        setPrograms(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/program/execPrograms", { UCID: Member_UCID })
-      .then((res) => {
-        setExecPrograms(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/event/joinedEvents", { UCID: Member_UCID })
-      .then((res) => {
-        setEvents(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-
-    axios
-      .post("/event/execEvents", { UCID: Member_UCID })
-      .then((res) => {
-        setExecEvents(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, [Member_UCID]);
+  const isSupervisor = () => {
+    return accountType === null || supervisorAccount != null;
+  };
 
   return (
     <div className='flex flex-row flex-[3] mx-12'>
@@ -271,41 +165,30 @@ const ReactTabs = () => {
           allowScrollButtonsMobile
           onChange={(event, newValue) => {
             setValue(newValue);
+            setInfoValue(isSupervisor() ? newValue + 2 : newValue);
           }}
         >
-          <Tab label="Clubs" />
-          <Tab label="Volunteer" />
+          {!isSupervisor() ? <Tab label="Clubs" /> : null}
+          {!isSupervisor() ? <Tab label="Volunteer" /> : null}
           <Tab label="Programs" />
           <Tab label="Event History" />
         </Tabs>
-        <ActivityList
-          membertypes={membertypes[0]}
-          excurtype={excurtypes[value]}
-          type={type[value]}
-          posts={allPosts[value]}
-          handleDeleteClub={handleDeleteClub}
-          handleLeaveClub={handleLeaveClub}
-          handleDeleteVolunteer={handleDeleteVolunteer}
-          handleLeaveVolunteer={handleLeaveVolunteer}
-          handleDeleteProgram={handleDeleteProgram}
-          handleLeaveProgram={handleLeaveProgram}
-          handleDeleteEvent={handleDeleteEvent}
-          handleLeaveEvent={handleLeaveEvent}
-        />
-        <ActivityList
-          membertypes={membertypes[1]}
-          excurtype={excurtypes[value]}
-          type={type[value]}
-          posts={allExecPosts[value]}
-          handleDeleteClub={handleDeleteClub}
-          handleLeaveClub={handleLeaveClub}
-          handleDeleteVolunteer={handleDeleteVolunteer}
-          handleLeaveVolunteer={handleLeaveVolunteer}
-          handleDeleteProgram={handleDeleteProgram}
-          handleLeaveProgram={handleLeaveProgram}
-          handleDeleteEvent={handleDeleteEvent}
-          handleLeaveEvent={handleLeaveEvent}
-        />
+        {!isSupervisor() ? (
+          <ActivityList
+            membertypes={membertypes[0]}
+            type={type[infoValue]}
+            posts={allPosts[infoValue]}
+            handleButtons={handleButtons}
+          />
+        ) : null}
+        {accountType === "EXECUTIVE" || isSupervisor() ? (
+          <ActivityList
+            membertypes={membertypes[1]}
+            type={type[infoValue]}
+            posts={allExecPosts[infoValue]}
+            handleButtons={handleButtons}
+          />
+        ) : null}
       </Paper>
     </div>
   );
@@ -313,160 +196,105 @@ const ReactTabs = () => {
 
 const ActivityList = ({
   membertypes,
-  excurtype,
   type,
   posts,
-  handleDeleteClub,
-  handleLeaveClub,
-  handleDeleteVolunteer,
-  handleLeaveVolunteer,
-  handleDeleteProgram,
-  handleLeaveProgram,
-  handleDeleteEvent,
-  handleLeaveEvent,
+  handleButtons,
 }: {
   membertypes: string;
-  excurtype: string;
   type: string;
   posts: Array<{
-    Activity_ID: number;
+    Activity_ID: string;
     Name: string;
     Description: string;
     Img_file_path: string;
   }>;
-  handleDeleteClub: (Activity_ID: number) => Promise<void>;
-  handleLeaveClub: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteVolunteer: (Activity_ID: number) => Promise<void>;
-  handleLeaveVolunteer: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteProgram: (Activity_ID: number) => Promise<void>;
-  handleLeaveProgram: (Activity_ID: number) => Promise<void>;
-
-  handleDeleteEvent: (Activity_ID: number) => Promise<void>;
-  handleLeaveEvent: (Activity_ID: number) => Promise<void>;
+  handleButtons: (
+    Activity_ID: string,
+    type: string,
+    execute: string
+  ) => Promise<void>;
 }) => {
+  const hasNoPosts = posts.length === 0;
+  const noPostsMessage =
+    membertypes === "Member"
+      ? `Join ${type} to populate this list!`
+      : `Become an executive for ${type} to populate this list!`;
   return (
     <div className='text-red-500 no-underline p-6 md:p-12'>
       <h1 className='text-lg md:text-xl font-bold'>
-        {membertypes} {excurtype}
+        {membertypes} {type.charAt(0).toUpperCase() + type.slice(1)}s
       </h1>
-      <div className='grid grid-flow-row grid-cols-1 grid-rows-1 gap-8 my-8'>
-        {posts.map((post) => (
-          <div className='flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out' key={post.Activity_ID}>
-            <div className='flex-1 max-h-[200px] w-24 m-5 mr-0'>
-              <img src={post.Img_file_path} alt="" className='w-full max-h-full object-cover'/>
-            </div>
-            <div className='flex-[3] flex flex-col justify-between m-2 md:m-5'>
-              <Link className='no-underline text-red-500 mt-2 w-fit h-fit' to={`/${type}/${post.Activity_ID}`}>
-                <h1 className='text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1'>{post.Name}</h1>
-              </Link>
-              <p className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
-              <div className='flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap'>
-                <Link to={`/${type}/${post.Activity_ID}`}>
-                  <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">
-                    View
-                  </button>
-                </Link>
+      {hasNoPosts ? (
+        <div className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{noPostsMessage}</div>
+      ) : (
+        <div className='grid grid-flow-row grid-cols-1 grid-rows-1 gap-8 my-8'>
+          {posts.map((post) => {
+            const key = type === "event" ? post.Name : post.Activity_ID;
 
-                {excurtype === "Clubs" ? (
-                  membertypes === "Executive" ? (
-                    <>
+            return (
+              <div key={key} className='flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out'>
+                <div className='flex-1 max-h-[200px] w-24 m-5 mr-0'>
+                  <img
+                    src={post.Img_file_path}
+                    alt={post.Name}
+                    onError={handleImgErr()}
+                    className='w-full max-h-full object-cover'
+                  />
+                </div>
+                <div className='flex-[3] flex flex-col justify-between m-2 md:m-5'>
+                  <Link className='no-underline text-red-500 mt-2 w-fit h-fit' to={`/${type}/${key}`}>
+                    <h1 className='text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1'>{post.Name}</h1>
+                  </Link>
+                  <p className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
+                  <div className='flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap'>
+                    <Link className="link" to={`/${type}/${key}`}>
+                      <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">View</button>
+                    </Link>
+
+                    {membertypes === "Executive" ? (
+                      <div>
+                        <button
+                          className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
+                          onClick={() =>
+                            handleButtons(
+                              type === "event" ? post.Name : post.Activity_ID,
+                              type,
+                              "delete"
+                            )
+                          }
+                        >
+                          Delete
+                        </button>
+                        <a
+                          href={`/${type}/${
+                            type === "event" ? post.Name : post.Activity_ID
+                          }/edit`}
+                        >
+                          <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
+                        </a>
+                      </div>
+                    ) : membertypes === "Member" ? (
                       <button
                         className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                        onClick={() => handleDeleteClub(post.Activity_ID)}
+                        onClick={() =>
+                          handleButtons(
+                            type === "event" ? post.Name : post.Activity_ID,
+                            type,
+                            "leave"
+                          )
+                        }
                       >
-                        Delete
+                        Leave
                       </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
-                      </a>
-                    </>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                      onClick={() => handleLeaveClub(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
-
-                {excurtype === "Volunteer" ? (
-                  membertypes === "Executive" ? (
-                    <div>
-                      <button
-                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                        onClick={() => handleDeleteVolunteer(post.Activity_ID)}
-                      >
-                        Delete
-                      </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                      onClick={() => handleLeaveVolunteer(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
-
-                {excurtype === "Programs" ? (
-                  membertypes === "Executive" ? (
-                    <div>
-                      <button
-                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                        onClick={() => handleDeleteProgram(post.Activity_ID)}
-                      >
-                        Delete
-                      </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                      onClick={() => handleLeaveProgram(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
-
-                {excurtype === "Events" ? (
-                  membertypes === "Executive" ? (
-                    <div>
-                      <button
-                        className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                        onClick={() => handleDeleteEvent(post.Activity_ID)}
-                      >
-                        Delete
-                      </button>
-                      <a href={`/${type}/${post.Activity_ID}/edit`}>
-                        <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
-                      </a>
-                    </div>
-                  ) : membertypes === "Member" ? (
-                    <button
-                      className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
-                      onClick={() => handleLeaveEvent(post.Activity_ID)}
-                    >
-                      Leave
-                    </button>
-                  ) : null
-                ) : null}
+                    ) : null}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
-
 export default ReactTabs;

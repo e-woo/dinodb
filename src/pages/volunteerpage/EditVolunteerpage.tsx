@@ -12,9 +12,7 @@ interface CreateElements extends HTMLFormControlsCollection   {
   fee: HTMLInputElement;
   interview: HTMLInputElement;
   application: HTMLInputElement;
-  facultyType: HTMLInputElement;
   weekHours: HTMLInputElement;
-  tags: HTMLInputElement;
 
     location: HTMLInputElement;
 }
@@ -27,8 +25,6 @@ const EditVolunteerPage = () => {
     const { id } = useParams();
 
     const navigate = useNavigate()
-    const [facultyType, setFacultyType] = useState<string>('');
-    const [tags, setTags] = useState<string>('');
 
     const { currentUser } = useContext(AuthContext)
     const accountType = currentUser?.AccountType;
@@ -45,7 +41,6 @@ const EditVolunteerPage = () => {
       InterviewRequired: '',
       ApplicationRequired: '',
       WeekCommitmentHour: '',
-      Faculty: '',
       Img_file_path: '',
       Location: '',
       Perk: '',
@@ -64,7 +59,6 @@ const EditVolunteerPage = () => {
             InterviewRequired: res.data.InterviewRequired,
             ApplicationRequired: res.data.ApplicationRequired,
             WeekCommitmentHour: res.data.WeekCommitmentHour,
-            Faculty: res.data.Faculty_Name,
             Img_file_path: res.data.Img_file_path,
             Location: res.data.Location,
             Perk: res.data.Perk
@@ -99,9 +93,7 @@ const EditVolunteerPage = () => {
           img: elements.img.value,
           interview: elements.interview.value,
           application: elements.application.value,
-          facultyType: elements.facultyType.value,
           weekHours: elements.weekHours.value,
-          tags: elements.tags.value,
             
           location: elements.location.value,
         };
@@ -127,32 +119,6 @@ const EditVolunteerPage = () => {
                 <div className='flex flex-col items-center gap-6'>
                 <input type='text' placeholder='Name' id='name' defaultValue={volunteer.Name || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
                     <textarea placeholder='Description...' id='description' rows={6} defaultValue={volunteer.Description || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
-                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='facultyType'>
-                      <option value='Science'>Science</option>
-                      <option value='Arts'>Arts</option>
-                      <option value='Engineering'>Engineering</option>
-                      <option value='Business'>Business</option>
-                      <option value='Education'>Education</option>
-                      <option value='Administration'>Administration</option>
-                    </select>
-                    <select value={tags} onChange={e => {setTags(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='tags' >
-                      <option value='000000001'>Academic</option>
-                      <option value='000000002'>Arts</option>
-                      <option value='000000003'>Recreation</option>
-                      <option value='000000004'>Technology</option>
-                      <option value='000000006'>Community</option>
-                      <option value='000000007'>STEM</option>
-                      <option value='000000008'>Cultural</option>
-                      <option value='000000009'>Career Development</option>
-                      <option value='000000012'>Coding</option>
-                      <option value='000000013'>Literacy</option>
-                      <option value='000000014'>Music and Performing Arts</option>
-                      <option value='000000015'>Health and Wellness</option>
-                      <option value='000000017'>Food and Cooking</option>
-                      <option value='000000018'>Advocacy and Social Issues</option>
-                      <option value='000000019'>Leadership</option>
-                      <option value='000000020'>Gaming</option>
-                    </select>
                     <input type='number' placeholder='Fee' id='fee' defaultValue={volunteer.Fee || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
                     <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={volunteer.WeekCommitmentHour || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>
                     <input type='text' placeholder='Perks' id='perks' defaultValue={volunteer.Perk || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm'/>

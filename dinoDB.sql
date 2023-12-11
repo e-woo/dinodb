@@ -34,7 +34,7 @@ CREATE TABLE EXTRACURRICULAR_ACTIVITY
 	ApplicationRequired		VARCHAR(15)		DEFAULT 'No',
 	WeekCommitmentHour	    INT				DEFAULT 0,
 	Faculty_Name			VARCHAR(15),
-	Img_file_path			VARCHAR(3000)	NOT NULL,
+	Img_file_path			VARCHAR(3000)	DEFAULT 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/University_of_Calgary_Logo.svg/220px-University_of_Calgary_Logo.svg.png',
 	PRIMARY KEY(Activity_ID),
 	FOREIGN KEY(Faculty_Name) REFERENCES FACULTY(Name) ON DELETE SET NULL ON UPDATE CASCADE);
 
@@ -57,7 +57,7 @@ CREATE TABLE MEMBER_OF
     (Club_ID				INT				NOT NULL,
 	Member_UCID			    CHAR(9)			NOT NULL,
 	PRIMARY KEY (Club_ID, Member_UCID),
-	FOREIGN KEY (Club_ID) REFERENCES CLUB(Activity_ID) ON UPDATE CASCADE,
+	FOREIGN KEY (Club_ID) REFERENCES CLUB(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (Member_UCID) REFERENCES STUDENT(UCID) ON UPDATE CASCADE);
 
 CREATE TABLE VOLUNTEERING_OPPORTUNITY
@@ -92,13 +92,6 @@ CREATE TABLE EXTRACURRICULAR_ACTIVITY_PERKS
 	PRIMARY KEY (Activity_ID, Perk),
 	FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE BELONGS
-    (FacultyName			VARCHAR(15)		NOT NULL,
-	Student_UCID			CHAR(9)			NOT NULL,
-	PRIMARY KEY (FacultyName, Student_UCID),
-	FOREIGN KEY (FacultyName) REFERENCES FACULTY(Name) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Student_UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE);
-
 CREATE TABLE EVENT
     (Activity_ID			INT				NOT NULL,
 	Name					VARCHAR(50)		NOT NULL,
@@ -132,15 +125,6 @@ CREATE TABLE ATTENDS
 	FOREIGN KEY (Student_UCID) REFERENCES STUDENT(UCID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Activity_ID, Event_Name) REFERENCES EVENT(Activity_ID, Name) ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE ANNOUNCED_BY
-    (Event_ID				INT				NOT NULL,
-    Announcement_ID			INT				NOT NULL,
-    Event_Name				VARCHAR(15)		NOT NULL,
-	Announcement_Title		VARCHAR(15)		NOT NULL,
-	PRIMARY KEY (Event_Name, Announcement_Title),
-    FOREIGN KEY (Event_ID, Event_Name) REFERENCES EVENT(Activity_ID, Name) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Announcement_ID, Announcement_Title) REFERENCES ANNOUNCEMENT(Activity_ID, Title) ON DELETE CASCADE ON UPDATE CASCADE);
-
 CREATE TABLE TAG
     (Tag_ID				    CHAR(9)			NOT NULL,
 	Tag_Name				VARCHAR(30)		NOT NULL,
@@ -168,9 +152,9 @@ CREATE TABLE CATEGORIZED_BY
 
 CREATE TABLE INVITES
 	(Activity_ID		INT				NOT NULL,
-    Org_ID			CHAR(9)			NOT NULL,
+    Org_ID				CHAR(9)			NOT NULL,
     PRIMARY KEY (Activity_ID, Org_ID),
-    FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON UPDATE CASCADE,
+    FOREIGN KEY (Activity_ID) REFERENCES EXTRACURRICULAR_ACTIVITY(Activity_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Org_ID) REFERENCES ORGANIZATION(Org_ID) ON UPDATE CASCADE);
 
 
@@ -183,7 +167,6 @@ CREATE TABLE SUPERVISED_BY
 
 INSERT INTO STUDENT (UCID, Date_of_Birth, Bio, FName, LName, Email, Password, AccountType)
 VALUES 
-('301789411', '2000-01-01', 'mmmm subway', 'lol', 'lol', 'lol', '222', 'STUDENT'),
 ('123456789', '2000-01-01', 'Enthusiastic about technology', 'John', 'Doe', 'john.doe@ucalgary.ca', 'password123', 'STUDENT'),
 ('987654321', '1999-05-15', 'Loves outdoor activities', 'Jane', 'Smith', 'jane.smith@ucalgary.ca', 'password123', 'STUDENT'),
 ('456123789', '2002-03-22', 'Aspiring artist', 'Emily', 'Johnson', 'emily.johnson@ucalgary.ca', 'password123', 'STUDENT'),
@@ -225,14 +208,16 @@ VALUES
 ('13', 'Science Mentorship Program', 'program', 'The Science Mentorship Program (SMP) facilitates peer-to-peer undergraduate mentoring opportunities by matching first- and second-year students with more experienced Science students in third year or above. Mentees shape their learning journey with support from a senior undergraduate student, and Mentors develop leadership skills while sharing their experiences and insights.', 0, 'Monthly', 'No', 'Yes', 0, 'Science', 'https://pbs.twimg.com/profile_images/1225544709294059520/e6MzSKR3_400x400.jpg'),
 ('14', 'Science Internship Program', 'program', 'The Science Internship Program offers Science students the opportunity to participate in 8 to 16 consecutive months of work experience.', 0, 'N/A', 'No', 'Yes', 0, 'Science', 'https://pbs.twimg.com/profile_images/1225544709294059520/e6MzSKR3_400x400.jpg'),
 ('15', 'SU Tutor Registry', 'program', 'Struggling with your course work? Need assistance preparing for an exam? Your SU has developed a searchable database of independent tutors that are here to help you in a wide range of subjects. The Tutors listed on the SU Tutor Registry are current or past students of the University of Calgary who provide independent services as Tutors.', 0, 'N/A', 'Yes', 'Yes', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
-('16', 'Safewalk', 'program', 'The Safewalk service is provided through Campus Security, 24-7. Safewalk volunteers walk people safely to their destinations on campus. This service is free and available to students, staff and campus visitors for destinations anywhere on campus including McMahon Stadium, Health Sciences, Student Family Housing, the Alberta Children’s Hospital and the University C-Train station. Safewalks are done in male/female pairs.', 0, 'N/A', 'No', 'No', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742');
+('16', 'Safewalk', 'program', 'The Safewalk service is provided through Campus Security, 24-7. Safewalk volunteers walk people safely to their destinations on campus. This service is free and available to students, staff and campus visitors for destinations anywhere on campus including McMahon Stadium, Health Sciences, Student Family Housing, the Alberta Children’s Hospital and the University C-Train station. Safewalks are done in male/female pairs.', 0, 'N/A', 'No', 'No', 0, 'Administration', 'https://assets.nationbuilder.com/casaacae/pages/1021/meta_images/original/UofC-StudentUnion.png?1535691742'),
+('17', 'Become a LinkedIn Pro', 'event', 'Join this supervised event that walks you through all the essentials to set up a successful and professional LinkedIn profile!', 10, '', '', '', 5, 'Business', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png');
 
 INSERT INTO EVENT (Activity_ID, Name, Description, Type, Location, OnlineInPerson, SignUpInfo, Perks, Fee, Eligibility, Date_and_Time)
 VALUES
 ('5', 'K-LIT Meet & Greet', 'Come and meet the whole crew at K-LIT! There will be pizza and drinks and many icebreaker games!', 'event', 'SB 122', 'In Person', 'Check our instagram for sign up!', 'Free pizza and drinks', 0, 'Anyone can join', '2023-09-20 18:00:00'),
 ('6', 'Card Game Pizza Night', 'Our annual card game and pizza night is happening at The Board Games Club! Come and join us!', 'event', 'MSC 125', 'In Person', 'Check discord for sign up', 'Fee pizza and drinks!', 5, 'Must have paid the club fee to join', '2023-12-05 16:00:00'),
 ('8', 'Food Bank Donation Run', 'Join us for our monthly food bank donation run!', 'event', 'MSC Event Centre', 'In Person', 'No sign-up needed', 'Free t-shirt', 0, 'Anyone can join', '2023-12-08 17:00:00'),
-('4', 'Debate Night!', 'Our weekly debate night is happening this Friday, join to participate or watch.', 'event', 'TFDL 550', 'In Person', 'Check discord for sign-up sheet', 'N/A', 0, 'Exclusive to club members', '2023-11-24 17:00:00');
+('4', 'Debate Night!', 'Our weekly debate night is happening this Friday, join to participate or watch.', 'event', 'TFDL 550', 'In Person', 'Check discord for sign-up sheet', 'N/A', 0, 'Exclusive to club members', '2023-11-24 17:00:00'),
+('17', 'Become a LinkedIn Pro', 'Join this supervised event that walks you through all the essentials to set up a successful and professional LinkedIn profile!', 'event', 'N/A', 'Online', 'Check email sent to students', 'Free professional photo', 15, 'Must be second year', '2023-12-06 16:00:00');
 
 INSERT INTO PROGRAM (Activity_ID, Website)
 VALUES
@@ -243,11 +228,11 @@ VALUES
 
 INSERT INTO CLUB (Activity_ID, Discord, Instagram)
 VALUES 
-('1', 'https://discord.gg/chessclub', '@chessclub'),
-('2', 'https://discord.gg/roboticsclub', '@roboticsclub'),
-('3', 'https://discord.gg/hikingclub', '@hikingclub'),
-('4', 'https://discord.gg/debateteam', '@debateteam'),
-('5', 'https://discord.gg/startupclub', '@startupclub'),
+('1', 'https://discord.gg/RE86R9f', 'https://www.instagram.com/chess.ucalgary/'),
+('2', 'https://discord.gg/wJrHVb5T', 'https://www.instagram.com/cpcucalgary/'),
+('3', 'http://discord.gg/wVwv5Pw', 'https://www.instagram.com/infosecucalgary/?hl=en'),
+('4', 'https://discord.gg/qHFBQtmw7N', 'https://www.instagram.com/ucds.debate/'),
+('5', 'https://discord.gg/VRdDtQe4Pa', 'https://www.instagram.com/uofc_k_lit/'),
 ('6', 'https://discord.gg/QNtecrqNzv', 'https://www.instagram.com/ucboardgames/');
 
 INSERT INTO ACTIVITY_EXEC (UCID, PositionName, Activity_ID)
@@ -311,14 +296,6 @@ VALUES
 ('14', 'Free LinkedIn training session!'),
 ('15', 'Free subscription to Kumon'),
 ('16', 'Invitation to our monthly pizza party!');
-
-INSERT INTO BELONGS (FacultyName, Student_UCID)
-VALUES 
-('Science', '123456789'),
-('Arts', '987654321'),
-('Engineering', '456123789'),
-('Business', '321654987'),
-('Education', '789456123');
 
 INSERT INTO TAG
 VALUES
@@ -391,3 +368,16 @@ INSERT INTO INVITES (Activity_ID, Org_ID)
 VALUES
 	('8', '000000004'),
 	('4', '000000002');
+
+INSERT INTO SUPERVISOR (Supervisor_ID, FName, LName, Email, Password)
+VALUES
+	('1', 'Ryan', 'Reynolds', 'rr@gmail.com', 'password123'),
+	('2', 'Arthur', 'Morgan', 'am@gmail.com', 'password123'),
+	('3', 'Bill', 'Nye', 'bn@gmail.com', 'password123');
+
+INSERT INTO SUPERVISED_BY (Activity_ID, Supervisor_ID)
+VALUES
+	('14', '1'),
+	('16', '1'),
+	('17', '1'),
+	('17', '2');

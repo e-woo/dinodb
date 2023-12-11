@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Announcement } from "../announcementpage/Announcement";
+import { handleImgErr } from "../../context/utils";
 
 const Announcements = () => {
   const [posts, setPosts] = useState<Array<Announcement>>([]);
-  useEffect(() => { 
+  useEffect(() => {
     async function getAnnouncements() {
-      setPosts((await axios.post('/announcement/getAnnouncements')).data);
+      setPosts((await axios.post("/announcement/getAnnouncements")).data);
     }
     getAnnouncements();
-  }, []) 
+  }, []);
   return (
     <div className='flex flex-col gap-8 items-center pt-16'>
       <h1 className='font-extrabold text-6xl text-[#333]'>Announcements</h1>
@@ -18,7 +19,7 @@ const Announcements = () => {
         {posts.map((post) => (
           <div className='flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out hover:-translate-y-[5px] shadow-lg' key={post.Activity_ID}>
             <div className='flex-[2] max-h-[200px] w-24 m-5 mr-0'>
-              <img src={post.Img_file_path} alt="" className='w-full max-h-full object-cover' />
+              <img src={post.Img_file_path} alt="" className='w-full max-h-full object-cover' onError={handleImgErr()}/>
             </div>
             <div className='flex-[3] flex flex-col justify-between m-5'>
               <div>
@@ -48,7 +49,5 @@ const Announcements = () => {
     </div>
   );
 };
-
-
 
 export default Announcements;

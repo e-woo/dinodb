@@ -11,11 +11,13 @@ import {
   joinedPrograms,
   execPrograms,
   getMembers,
+  getOrganization,
 } from "../controllers/program.js";
 
 const router = express.Router();
 
 router.post("/show", showProgram);
+router.post("/getOrganization", getOrganization);
 router.get("/get4Programs", get4Programs);
 router.post("/create", createProgram);
 router.post("/edit", editProgram);

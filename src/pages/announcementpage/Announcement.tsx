@@ -3,59 +3,81 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Menu from "../../components/menu/Menu";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Announcement = () => {
   const { title } = useParams();
   const { currentUser } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [editable, setEditable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const supervisorAccount = currentUser?.Supervisor_ID;
   const [announcement, setAnnouncement] = useState<Announcement>({
     Activity_ID: -1,
-    Title: '',
-    Announcement: '',
-    Author: '',
-    Date: '',
-    Img_file_path: ''
-  })
+    Title: "",
+    Announcement: "",
+    Author: "",
+    Date: "",
+    Img_file_path: "",
+  });
 
   const accountUCID = currentUser?.UCID;
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post("/announcement/getAnnouncementExecs", { title: title });
-        const execUCIDs = res.data.map((exec: { UCID: any }) => exec.UCID);
-        setEditable(execUCIDs.includes(accountUCID));
+        const res = await axios.post("/announcement/getAnnouncementExecs", {
+          title: title,
+          isSupervisor: supervisorAccount,
+        });
 
-        const res2 = await axios.post("/announcement/getAnnouncement", { title: title }).catch(() => {return null});
-        if (res2 !== null && (res2.data as any[]).length > 0) {
-          setAnnouncement(res2!.data[0])
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = res.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = res.data.map((exec: { UCID: any }) => exec.UCID);
         }
-        else {
+
+        setEditable(execUCIDs.includes(accountUCID || supervisorAccount));
+
+        const res2 = await axios
+          .post("/announcement/getAnnouncement", { title: title })
+          .catch(() => {
+            return null;
+          });
+        if (res2 !== null && (res2.data as any[]).length > 0) {
+          setAnnouncement(res2!.data[0]);
+        } else {
           setAnnouncement({
             Activity_ID: -1,
-            Title: 'Announcement not found!',
-            Announcement: '',
-            Author: '',
-            Date: '',
-            Img_file_path: ''
+            Title: "Announcement not found!",
+            Announcement: "",
+            Author: "",
+            Date: "",
+            Img_file_path: "",
           });
         }
-
       } catch (err) {
         console.log(err);
       }
-    }
+    };
     fetchData();
   }, []);
 
   const handleEdit = async () => {
-    const body = (document.getElementById('editBody') as HTMLTextAreaElement).value;
+    const body = (document.getElementById("editBody") as HTMLTextAreaElement)
+      .value;
     try {
-      await axios.post("/announcement/update", { title: title, announcement: body});
+      await axios.post("/announcement/update", {
+        title: title,
+        announcement: body,
+      });
+      window.location.reload();
       setIsEditing(false);
     } catch (err) {
       console.log(err);
@@ -65,12 +87,14 @@ const Announcement = () => {
 
   const handleDelete = async () => {
     try {
-      console.log(await axios.post("/announcement/deleteAnnouncement", { title: title }));
-      navigate(`../announcements`)
+      console.log(
+        await axios.post("/announcement/deleteAnnouncement", { title: title })
+      );
+      navigate(`../announcements`);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className='flex flex-col xl:grid xl:grid-cols-4 gap-12'>
@@ -124,12 +148,12 @@ const Announcement = () => {
 };
 
 export interface Announcement {
-  Activity_ID: number,
-  Title: string,
-  Announcement: string,
-  Author: string,
-  Date: string,
-  Img_file_path: string
+  Activity_ID: number;
+  Title: string;
+  Announcement: string;
+  Author: string;
+  Date: string;
+  Img_file_path: string;
 }
 
 export default Announcement;

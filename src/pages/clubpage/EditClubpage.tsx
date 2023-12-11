@@ -12,9 +12,7 @@ interface CreateElements extends HTMLFormControlsCollection   {
     fee: HTMLInputElement;
     interview: HTMLInputElement;
     application: HTMLInputElement;
-    facultyType: HTMLInputElement;
     weekHours: HTMLInputElement;
-    tags: HTMLInputElement;
 
     discord: HTMLInputElement;
     instagram: HTMLInputElement;
@@ -35,8 +33,6 @@ const EditClubPage = () => {
   
     const [editable, setEditable] = useState(false);
 
-    const [facultyType, setFacultyType] = useState<string>('');
-    const [tags, setTags] = useState<string>('');
     const [club, setClub] = useState({
         Activity_ID: id,
         Name: '',
@@ -46,7 +42,6 @@ const EditClubPage = () => {
         InterviewRequired: '',
         ApplicationRequired: '',
         WeekCommitmentHour: '',
-        Faculty: '',
         Img_file_path: '',
         Discord: '',
         Instagram: '',
@@ -66,7 +61,6 @@ const EditClubPage = () => {
               InterviewRequired: res.data.InterviewRequired,
               ApplicationRequired: res.data.ApplicationRequired,
               WeekCommitmentHour: res.data.WeekCommitmentHour,
-              Faculty: res.data.Faculty_Name,
               Img_file_path: res.data.Img_file_path,
               Discord: res.data.Discord,
               Instagram: res.data.Instagram,
@@ -102,9 +96,7 @@ const EditClubPage = () => {
             img: elements.img.value,
             interview: elements.interview.value,
             application: elements.application.value,
-            facultyType: elements.facultyType.value,
             weekHours: elements.weekHours.value,
-            tags: elements.tags.value,
             
             discord: elements.discord.value,
             instagram: elements.instagram.value,
@@ -124,45 +116,19 @@ const EditClubPage = () => {
         {editable ? <>
             <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Edit Club</h1>
             <form onSubmit={handleSubmit} method='post'>
-                <div className='flex flex-col items-center gap-6'>
-                    <input type='text' placeholder='Name' id='name' defaultValue={club.Name || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
-                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={club.Description || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'/>
-                    <select value={facultyType} onChange={e => {setFacultyType(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='facultyType'>
-                      <option value='Science'>Science</option>
-                      <option value='Arts'>Arts</option>
-                      <option value='Engineering'>Engineering</option>
-                      <option value='Business'>Business</option>
-                      <option value='Education'>Education</option>
-                      <option value='Administration'>Administration</option>
-                    </select>
-                    <select value={tags} onChange={e => {setTags(e.target.value)}} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' id='tags' >
-                      <option value='000000001'>Academic</option>
-                      <option value='000000002'>Arts</option>
-                      <option value='000000003'>Recreation</option>
-                      <option value='000000004'>Technology</option>
-                      <option value='000000006'>Community</option>
-                      <option value='000000007'>STEM</option>
-                      <option value='000000008'>Cultural</option>
-                      <option value='000000009'>Career Development</option>
-                      <option value='000000012'>Coding</option>
-                      <option value='000000013'>Literacy</option>
-                      <option value='000000014'>Music and Performing Arts</option>
-                      <option value='000000015'>Health and Wellness</option>
-                      <option value='000000017'>Food and Cooking</option>
-                      <option value='000000018'>Advocacy and Social Issues</option>
-                      <option value='000000019'>Leadership</option>
-                      <option value='000000020'>Gaming</option>
-                    </select>
-                    <input type='number' placeholder='Fee' id='fee' defaultValue={club.Fee || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={club.WeekCommitmentHour || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Perks' id='perks' defaultValue={club.Perk || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={club.Schedule || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={club.InterviewRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Application Required?' id='application' defaultValue={club.ApplicationRequired || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Discord' id='discord' defaultValue={club.Discord || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Instagram' id='instagram' defaultValue={club.Instagram || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' />
-                    <input type='text' placeholder='Image link' id='img' defaultValue={club.Img_file_path || ''} className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm' required/>
-                    <button type='submit' className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Confirm</button>
+                <div className='createBody'>
+                    <input type='text' placeholder='Name' id='name' defaultValue={club.Name || ''} required/>
+                    <textarea placeholder='Description...' id='description' rows={6} defaultValue={club.Description || ''} />
+                    <input type='number' placeholder='Fee' id='fee' defaultValue={club.Fee || ''} />
+                    <input type='number' placeholder='Weekly hour commitment' id='weekHours' defaultValue={club.WeekCommitmentHour || ''} />
+                    <input type='text' placeholder='Perks' id='perks' defaultValue={club.Perk || ''} />
+                    <input type='text' placeholder='Schedule' id='schedule' defaultValue={club.Schedule || ''} />
+                    <input type='text' placeholder='Interview Required?' id='interview' defaultValue={club.InterviewRequired || ''} />
+                    <input type='text' placeholder='Application Required?' id='application' defaultValue={club.ApplicationRequired || ''} />
+                    <input type='text' placeholder='Discord' id='discord' defaultValue={club.Discord || ''} />
+                    <input type='text' placeholder='Instagram' id='instagram' defaultValue={club.Instagram || ''} />
+                    <input type='text' placeholder='Image link' id='img' defaultValue={club.Img_file_path || ''} required/>
+                    <button type='submit'>Confirm</button>
                 </div>
             </form>
         </> : <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>You do not have permission to access this.</h1>

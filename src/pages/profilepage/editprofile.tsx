@@ -1,56 +1,69 @@
-import axios from 'axios';
-import React, { FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 const EditProfile = () => {
-	const [fields, setFields] = useState({
-		Bio: '',
-		FName: '',
-		LName: '',
-	})
-	const [ucid, setUCID] = useState();
-    const navigate = useNavigate()
+  const [fields, setFields] = useState({
+    Bio: "", // only students
+    FName: "",
+    LName: "",
+  });
+  const [id, setID] = useState();
+  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+  const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
 
-	const user = localStorage.getItem("user");
-	useEffect(() => {
-		async function getProfile() {
-			try {
-				if (!user) {
-					console.log("User data not found in localStorage");
-					return;
-				}
-				const id = JSON.parse(user).UCID;
-				const result = await axios.post("/profile/show", {UCID: id})
-				setFields({
-					Bio: result.data.Bio,
-					FName: result.data.FName,
-					LName: result.data.LName,
-				})
-				setUCID(id);
-			} catch (err) {
-				console.log(err)
-			}
-		}
-		getProfile();
-	}, []);
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
-	const handleSubmit = async (e: FormEvent<CreateForm>) => {
-		e.preventDefault();
-        const elements = e.currentTarget.elements;
-		const formData = {
-			ucid: ucid,
-			bio: elements.bio.value,
-			fName: elements.fName.value,
-			lName: elements.lName.value
-		}
-		
-		try {
-			await axios.post('/student/edit', formData);
-			navigate('../profile');
-		} catch (err) {
-			console.log(err);
-		}
-	}
+  const user = localStorage.getItem("user");
+  useEffect(() => {
+    async function getProfile() {
+      try {
+        if (!user) {
+          console.log("User data not found in localStorage");
+          return;
+        }
+        const userData = JSON.parse(user);
+        const endpoint = supervisorAccount
+          ? "/profile/showSup"
+          : "/profile/show";
+        const idField = supervisorAccount ? "Supervisor_ID" : "UCID";
+        const id = userData[idField];
+        const result = await axios.post(endpoint, { [idField]: id });
+        setFields({
+          FName: result.data.FName,
+          LName: result.data.LName,
+          Bio: supervisorAccount ? "" : result.data.Bio,
+        });
+
+        setID(id);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getProfile();
+  }, [supervisorAccount]);
+
+  const handleSubmit = async (e: FormEvent<CreateForm>) => {
+    e.preventDefault();
+    const elements = e.currentTarget.elements;
+    const formData = {
+      id: id,
+      fName: elements.fName.value,
+      lName: elements.lName.value,
+      bio: supervisorAccount ? null : elements.bio.value,
+    };
+
+    try {
+      const endpoint = supervisorAccount ? "/student/editSup" : "/student/edit";
+      await axios.post(endpoint, formData);
+      navigate("../profile");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 	return (<> {
 			user ?
@@ -83,14 +96,14 @@ const EditProfile = () => {
 }
 const inputCSS = 'w-full border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
 
-interface CreateElements extends HTMLFormControlsCollection   {
-	bio: HTMLInputElement;
-	fName: HTMLInputElement;
-	lName: HTMLInputElement;
+interface CreateElements extends HTMLFormControlsCollection {
+  bio: HTMLInputElement;
+  fName: HTMLInputElement;
+  lName: HTMLInputElement;
 }
-	 
+
 interface CreateForm extends HTMLFormElement {
-	readonly elements: CreateElements;
+  readonly elements: CreateElements;
 }
 
 export default EditProfile;

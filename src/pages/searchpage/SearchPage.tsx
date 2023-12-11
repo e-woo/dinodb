@@ -1,15 +1,31 @@
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { useContext, useState, FormEvent, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(new Set());
-  const [postsData, setPostsData] = useState([]);
+  const [postsData, setPostsData] = useState<Array<Post>>([]);
+
+  const { currentUser } = useContext(AuthContext);
+  const Member_UCID = currentUser?.UCID;
+  const accountType = currentUser?.AccountType;
+
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   useEffect(() => {
     performSearch();
-  }, [])
+  }, [selectedFilters]);
+
+  const isSupervisor = () => {
+    return accountType === null || supervisorAccount != null;
+  };
+
+  const filters = isSupervisor()
+    ? ["Program", "Event"]
+    : ["Club", "Volunteer", "Program", "Event"];
 
   const handleSearchChange = (e: any) => {
     setSearchTerm(e.target.value);
@@ -29,22 +45,41 @@ const SearchPage = () => {
     e.preventDefault();
     setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
+    console.log("searchTerm " + searchTerm);
     try {
-      const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
+      const res = await axios.post("/explore/search", {
+        searchTerm,
+        searchFilters: filtersArray,
+      });
       setPostsData(res.data);
+
+      console.log("resdata " + res.data);
     } catch (error) {
-      console.error('Error sending data to backend:', error);
+      console.error("Error sending data to backend:", error);
     }
   };
 
   const performSearch = async () => {
+    setPostsData([]);
     const filtersArray = Array.from(selectedFilters);
     try {
-      const res = await axios.post("/explore/search", { searchTerm, searchFilters: filtersArray });
+      const res = await axios.post("/explore/search", {
+        searchTerm,
+        searchFilters: filtersArray,
+      });
       setPostsData(res.data);
     } catch (error) {
-      console.error('Error sending data to backend:', error);
+      console.error("Error sending data to backend:", error);
     }
+  };
+
+  const getFilteredPosts = () => {
+    if (isSupervisor()) {
+      return postsData.filter(
+        (post) => post.Type === "program" || post.Type === "event"
+      );
+    }
+    return postsData;
   };
 
   return (
@@ -56,7 +91,7 @@ const SearchPage = () => {
           placeholder="Search..." 
           className='self-center w-[75vw] max-w-[700px] border-2 border-[#535353] border-opacity-20 py-4 px-11 m-10 text-xl rounded-[40px]'
           value={searchTerm}
-          onChange={handleSearchChange}  
+          onChange={handleSearchChange}
         />
         <div className='flex flex-col md:flex-row justify-center'>
           <div className='h-fit bg-white mt-12 mx-10 border-[3px] border-[#3f3f3f] border-opacity-20 rounded-xl overflow-hidden'>
@@ -74,7 +109,7 @@ const SearchPage = () => {
                     id={filter} 
                     name={filter}
                     onChange={handleFilterChange}
-                    />
+                  />
                   <label htmlFor={filter}>{filter}</label>
                 </li>
               ))}
@@ -89,8 +124,6 @@ const SearchPage = () => {
   );
 };
 
-const filters = ["Club", "Volunteer", "Program", "Event"];
-
 interface Post {
   Activity_ID: string;
   Name: string;
@@ -99,11 +132,7 @@ interface Post {
   Type: string;
 }
 
-const PostsRow = ({
-  posts,
-}: {
-  posts: Array<Post>;
-}) => {
+const PostsRow = ({ posts }: { posts: Array<Post> }) => {
   return (
     <div className='xl:m-8 justify-self-end h-auto flex flex-wrap w-full'>
       <div className='overflow-hidden flex flex-col justify-center items-center md:grid md:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>

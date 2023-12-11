@@ -3,80 +3,90 @@ import { AuthContext } from '../../context/authContext';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-interface CreateElements extends HTMLFormControlsCollection   {
-    activityType: HTMLInputElement;
-    name: HTMLInputElement;
-    description: HTMLInputElement;
-    fee: HTMLInputElement;
-    perks: HTMLInputElement;
+interface CreateElements extends HTMLFormControlsCollection {
+  activityType: HTMLInputElement;
+  name: HTMLInputElement;
+  description: HTMLInputElement;
+  fee: HTMLInputElement;
+  perks: HTMLInputElement;
 
-    onlineInPerson: HTMLInputElement;
-    signUpInfo: HTMLInputElement;
-    eligibility: HTMLInputElement;
-    location: HTMLInputElement;
-    dateTime: HTMLInputElement;
+  onlineInPerson: HTMLInputElement;
+  signUpInfo: HTMLInputElement;
+  eligibility: HTMLInputElement;
+  location: HTMLInputElement;
+  dateTime: HTMLInputElement;
 }
-   
+
 interface CreateForm extends HTMLFormElement {
-    readonly elements: CreateElements;
+  readonly elements: CreateElements;
 }
 
 const CreateEventPage = () => {
-    const { id } = useParams();
+  const { id } = useParams();
 
-    const { currentUser } = useContext(AuthContext)
-    const accountType = currentUser?.AccountType;
-    const accountUCID = currentUser?.UCID;
+  const { currentUser } = useContext(AuthContext);
+  const accountType = currentUser?.AccountType;
+  const accountUCID = currentUser?.UCID;
 
-    const navigate = useNavigate();
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
-    const [editable, setEditable] = useState(false);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
+  const [editable, setEditable] = useState(false);
 
-            const execRes = await axios.post("/club/getExecs", {Activity_ID: id});
-            const execUCIDs = execRes.data.map((exec: { UCID: any; }) => exec.UCID);
-    
-            if (execUCIDs.includes(accountUCID)) {
-              setEditable(true);
-            }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const execRes = await axios.post("/program/getExecs", {
+          Activity_ID: id,
+          isSupervisor: supervisorAccount,
+        });
 
-          } catch (error) {
-            console.log(error);
-          }
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
         }
-        fetchData();
-    }, [id]);
-    
-    const handleSubmit = async (e : FormEvent<CreateForm>) => {
-        e.preventDefault();
-        const elements = e.currentTarget.elements;
-        let formData;
 
-        formData = {
-            id: id,
-            name: elements.name.value,
-            description: elements.description.value,
-            perks: elements.perks.value,
-        
-            location: elements.location.value,
-            onlineInPerson: elements.onlineInPerson.value,
-            signUpInfo: elements.signUpInfo.value,
-            fee: elements.fee.value,
-            eligibility: elements.eligibility.value,
-            dateTime: elements.dateTime.value,
-        };
-
-        try {
-            await axios.post(`/event/create2`, formData);
-            navigate(`/event/${formData.name}`)
-        } catch (error) {
-            console.error('Error submitting form:', error);
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
+          setEditable(true);
         }
+      } catch (error) {
+        console.log(error);
+      }
     };
+    fetchData();
+  }, [id]);
 
+  const handleSubmit = async (e: FormEvent<CreateForm>) => {
+    e.preventDefault();
+    const elements = e.currentTarget.elements;
+    let formData;
+
+    formData = {
+      id: id,
+      name: elements.name.value,
+      description: elements.description.value,
+      perks: elements.perks.value,
+
+      location: elements.location.value,
+      onlineInPerson: elements.onlineInPerson.value,
+      signUpInfo: elements.signUpInfo.value,
+      fee: elements.fee.value,
+      eligibility: elements.eligibility.value,
+      dateTime: elements.dateTime.value,
+    };
+    try {
+      await axios.post(`/event/create2`, formData);
+      navigate(`/event/${formData.name}`);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
     if (!editable) {
         return (
         <div className='min-h-[60vh]'>
@@ -104,6 +114,6 @@ const CreateEventPage = () => {
             </div>
           )
     }
-}
+  };
 
 export default CreateEventPage;

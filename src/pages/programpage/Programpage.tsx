@@ -3,6 +3,7 @@ import websiteLogo from "./website-logo.png";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Programpage = () => {
   const { id } = useParams();
@@ -12,9 +13,11 @@ const Programpage = () => {
   const { currentUser } = useContext(AuthContext);
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState("");
   const [program, setProgram] = useState({
     Activity_ID: id,
     Name: "",
@@ -32,8 +35,11 @@ const Programpage = () => {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this program?")) {
+      console.log(id + "supervisor " + supervisorAccount);
       try {
-        await axios.delete(`/program/delete`, { data: { Activity_ID: id } });
+        await axios.delete(`/program/delete`, {
+          data: { Activity_ID: id },
+        });
         navigate(`../search`);
         alert("Program deleted successfully");
       } catch (error) {
@@ -90,14 +96,27 @@ const Programpage = () => {
           Perk: res.data.Perk,
         });
 
-        const execRes = await axios.post("/program/getExecs", {
+        const orgRes = await axios.post(`/program/getOrganization`, {
           Activity_ID: id,
         });
-        console.log(execRes);
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
-        console.log(execUCIDs);
+        setOrganization(orgRes.data.Org_Name);
 
-        if (execUCIDs.includes(accountUCID)) {
+        const execRes = await axios.post("/program/getExecs", {
+          Activity_ID: res.data.Activity_ID,
+          isSupervisor: supervisorAccount,
+        });
+
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
 
@@ -200,11 +219,18 @@ const Programpage = () => {
           </div>
         </div>
         <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl w-full border-b-2 border-[#a6a9aa] h-36 p-4 gap-8'>
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
+          </div>
+        { program.Website !== '' ?
+        <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl w-full border-b-2 border-[#a6a9aa] h-36 p-4 gap-8'>
           <a href={program.Website} target="_blank" rel="noreferrer" className='flex-1 flex flex-row flex-nowrap justify-center items-center m-[1em] rounded-xl h-[90%] w-[90%] bg-[#9393a5]'>
             <img src={websiteLogo} alt="WWW Website Logo" className='h-1/2 w-auto rounded-xl'/>
             Website
           </a>
-        </div>
+
+        </div> : null
+        }
       </div>
     </div>
   );

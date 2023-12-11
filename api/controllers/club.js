@@ -12,6 +12,18 @@ export const showClub = (req, res) => {
   });
 };
 
+export const getOrganization = (req, res) => {
+  const q = `SELECT O.Org_Name
+              FROM CLUB AS C LEFT JOIN INVITES AS I ON C.Activity_ID = I.Activity_ID
+              LEFT JOIN ORGANIZATION AS O ON I.Org_ID = O.Org_ID
+              WHERE C.Activity_ID = ?`;
+  db.query(q, [req.body.Activity_ID], (err, data) => {
+    if (err) return res.json(err);
+
+    return res.status(200).json(data[0]);
+  });
+};
+
 export const get4Clubs = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
                 FROM EXTRACURRICULAR_ACTIVITY AS EA NATURAL JOIN CLUB
@@ -41,6 +53,7 @@ export const createClub = async (req, res) => {
     discord,
     instagram,
     perks,
+    organization,
   } = req.body;
 
   try {
@@ -63,16 +76,23 @@ export const createClub = async (req, res) => {
       ]);
     const activityId = result[0].insertId;
 
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // NOT NEEDED
+    // if (tags !== "") {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
                         VALUES (?, ?)`;
       await db.promise().query(q3, [activityId, perks]);
+    }
+
+    if (organization !== "") {
+      const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
+                  VALUES (?, ?)`;
+      await db.promise().query(q6, [activityId, organization]);
     }
 
     const q4 = `INSERT INTO CLUB (Activity_ID, Discord, Instagram) 
@@ -99,7 +119,6 @@ export const editClub = async (req, res) => {
     interview,
     application,
     weekHours,
-    tags,
     facultyType,
     fee,
     discord,
@@ -127,13 +146,6 @@ export const editClub = async (req, res) => {
         id,
       ]);
 
-    if (tags !== "") {
-      const q2 = `UPDATE CATEGORIZED_BY
-                        SET Tag_ID = ?
-                        WHERE Activity_ID = ?`;
-      await db.promise().query(q2, [tags, id]);
-    }
-
     if (perks !== "") {
       const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS
                         SET Perk = ?
@@ -157,8 +169,8 @@ export const getExecs = async (req, res) => {
 
   try {
     const q = `SELECT UCID
-                    FROM ACTIVITY_EXEC
-                    WHERE Activity_ID = ?`;
+              FROM ACTIVITY_EXEC
+              WHERE Activity_ID = ?`;
 
     db.query(q, [Activity_ID], (err, data) => {
       if (err) return res.json(err);
@@ -192,14 +204,6 @@ export const deleteClub = async (req, res) => {
   const { Activity_ID } = req.body;
 
   try {
-    await db
-      .promise()
-      .query(`DELETE FROM ACTIVITY_EXEC WHERE Activity_ID = ?`, [Activity_ID]);
-
-    await db
-      .promise()
-      .query(`DELETE FROM CLUB WHERE Activity_ID = ?`, [Activity_ID]);
-
     await db
       .promise()
       .query(`DELETE FROM EXTRACURRICULAR_ACTIVITY WHERE Activity_ID = ?`, [

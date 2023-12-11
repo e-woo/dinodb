@@ -7,7 +7,7 @@ const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext)
   const [menuOverlayOpen, setMenuOverlayOpen] = useState(false);
   const accountType = currentUser?.AccountType;
-
+  const supervisorAccount = currentUser?.Supervisor_ID;
 
   return (
     <div className='sticky top-0 z-50'>

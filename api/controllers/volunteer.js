@@ -12,6 +12,19 @@ export const showVolunteering = (req, res) => {
   });
 };
 
+export const getOrganization = (req, res) => {
+  const q = `SELECT O.Org_Name
+              FROM VOLUNTEERING_OPPORTUNITY AS V 
+              LEFT JOIN INVITES AS I ON V.Activity_ID = I.Activity_ID
+              LEFT JOIN ORGANIZATION AS O ON I.Org_ID = O.Org_ID
+              WHERE V.Activity_ID = ?`;
+  db.query(q, [req.body.Activity_ID], (err, data) => {
+    if (err) return res.json(err);
+
+    return res.status(200).json(data[0]);
+  });
+};
+
 export const get4Volunteer = (req, res) => {
   const q = `SELECT EA.Activity_ID, EA.Name, EA.Description, EA.Img_file_path
                 FROM EXTRACURRICULAR_ACTIVITY AS EA NATURAL JOIN VOLUNTEERING_OPPORTUNITY
@@ -40,6 +53,7 @@ export const createVolunteering = async (req, res) => {
     fee,
     location,
     perks,
+    organization,
   } = req.body;
 
   try {
@@ -63,16 +77,23 @@ export const createVolunteering = async (req, res) => {
     const activityId = result[0].insertId;
     console.log(activityId);
 
-    if (tags !== "") {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // not needed
+    // if (tags !== "") {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `INSERT INTO EXTRACURRICULAR_ACTIVITY_PERKS (Activity_ID, Perk) 
                         VALUES (?, ?)`;
       await db.promise().query(q3, [activityId, perks]);
+    }
+
+    if (organization !== "") {
+      const q6 = `INSERT INTO INVITES (Activity_ID, Org_ID)
+                  VALUES (?, ?)`;
+      await db.promise().query(q6, [activityId, organization]);
     }
 
     const q4 = `INSERT INTO VOLUNTEERING_OPPORTUNITY (Activity_ID, Location) 
@@ -126,16 +147,17 @@ export const editVolunteer = async (req, res) => {
         id,
       ]);
 
-    if (tags !== "") {
-      const q2 = `UPDATE CATEGORIZED_BY
-                        SET Tag_ID = ?
-                        WHERE Activity_ID = ?`;
-      await db.promise().query(q2, [tags, id]);
-    } else {
-      const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID) 
-                        VALUES (?, ?)`;
-      await db.promise().query(q2, [activityId, tags]);
-    }
+    // not needed
+    // if (tags !== "") {
+    //   const q2 = `UPDATE CATEGORIZED_BY
+    //                     SET Tag_ID = ?
+    //                     WHERE Activity_ID = ?`;
+    //   await db.promise().query(q2, [tags, id]);
+    // } else {
+    //   const q2 = `INSERT INTO CATEGORIZED_BY (Activity_ID, Tag_ID)
+    //                     VALUES (?, ?)`;
+    //   await db.promise().query(q2, [activityId, tags]);
+    // }
 
     if (perks !== "") {
       const q3 = `UPDATE EXTRACURRICULAR_ACTIVITY_PERKS

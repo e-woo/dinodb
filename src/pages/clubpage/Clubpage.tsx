@@ -16,6 +16,7 @@ const Clubpage = () => {
 
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
+  const [organization, setOrganization] = useState('');
   const [club, setClub] = useState({
     Activity_ID: id,
     Name: "",
@@ -91,6 +92,9 @@ const Clubpage = () => {
           Instagram: res.data.Instagram ?? "",
           Perk: res.data.Perk ?? "",
         });
+
+        const orgRes = await axios.post(`/club/getOrganization`, { Activity_ID: id });
+        setOrganization(orgRes.data.Org_Name);
 
         const execRes = await axios.post("/club/getExecs", { Activity_ID: id });
         const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
@@ -198,6 +202,10 @@ const Clubpage = () => {
           <div className='flex-1'>
             <h2 className='font-bold'>Perks:</h2>
             <p>{club.Perk}</p>
+          </div>
+          <div className="info">
+            <h2>Invites Organization:</h2>
+            <p>{organization}</p>
           </div>
         </div>
 

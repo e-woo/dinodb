@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+import { handleImgErr } from "../../context/utils";
 
 const Eventpage = () => {
   const { id } = useParams();
@@ -12,11 +13,13 @@ const Eventpage = () => {
   const accountType = currentUser?.AccountType;
   const accountUCID = currentUser?.UCID;
 
+  const supervisorAccount = currentUser?.Supervisor_ID;
+
   const [joined, setJoined] = useState(false);
   const [editable, setEditable] = useState(false);
   const [event, setEvent] = useState({
-    Activity_ID: id,
-    Name: "",
+    Activity_ID: "",
+    Name: id,
     Description: "",
     Type: "",
     Img_file_path: "",
@@ -52,17 +55,27 @@ const Eventpage = () => {
         const idRes = await axios.post("/event/getID", { Name: id });
 
         const execRes = await axios.post("/event/getExecs", {
-          Activity_ID: idRes.data.Activity_ID,
+          Activity_ID: res.data.Activity_ID,
+          isSupervisor: supervisorAccount,
         });
-        const execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
 
-        if (execUCIDs.includes(accountUCID)) {
+        let execUCIDs;
+
+        if (supervisorAccount) {
+          execUCIDs = execRes.data.map(
+            (exec: { Supervisor_ID: any }) => exec.Supervisor_ID
+          );
+        } else {
+          execUCIDs = execRes.data.map((exec: { UCID: any }) => exec.UCID);
+        }
+
+        if (execUCIDs.includes(accountUCID || supervisorAccount)) {
           setEditable(true);
         }
 
         const memRes = await axios.post("/event/getMembers", {
           Event_Name: res.data.Name,
-          Activity_ID: id,
+          Activity_ID: res.data.Activity_ID,
         });
         console.log("memres = " + memRes);
         const memUCIDs = memRes.data.map(
@@ -94,7 +107,10 @@ const Eventpage = () => {
           console.log("lol2");
           const idRes = await axios.post("/event/getID", { Name: id });
           await axios.delete(`/event/delete`, {
-            data: { Activity_ID: idRes.data.Activity_ID },
+            data: {
+              Activity_ID: idRes.data.Activity_ID,
+              isSupervisor: supervisorAccount,
+            },
           });
           navigate(`../search`);
           alert("Event deleted successfully");
@@ -112,8 +128,8 @@ const Eventpage = () => {
 
       await axios.post(`/event/join`, {
         UCID: accountUCID,
-        Activity_ID: id,
-        Name: res.data.Name,
+        Activity_ID: res.data.Activity_ID,
+        Name: id,
         signUpInfo: res.data.signUpInfo,
       });
 
@@ -131,7 +147,7 @@ const Eventpage = () => {
         await axios.delete(`/event/leave`, {
           data: {
             UCID: accountUCID,
-            Activity_ID: id,
+            Activity_ID: res.data.Activity_ID,
             Name: res.data.Name,
           },
         });
@@ -149,7 +165,10 @@ const Eventpage = () => {
     <div className='mx-12 md:mx-24 lg:mx-48 flex flex-col justify-center items-center'>
       <div className='flex flex-nowrap flex-col md:flex-row py-12 gap-12'>
         <div className='flex justify-center align-center h-32'>
-          <img src={event.Img_file_path} className='h-full rounded-xl object-cover'/>
+          <img 
+            src={event.Img_file_path}
+            className='h-full rounded-xl object-cover'
+            onError={handleImgErr()}/>
         </div>
         <div className='flex justify-center items-center'>
           <h1 className='text-4xl lg:text-5xl xl:text-6xl font-bold text-center md:text-left'>{event.Name}</h1>
