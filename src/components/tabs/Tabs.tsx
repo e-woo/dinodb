@@ -31,7 +31,7 @@ const ReactTabs = () => {
   const [infoValue, setInfoValue] = React.useState(supervisorAccount ? 2 : 0);
 
   const type = ["club", "volunteer", "program", "event"];
-  const membertypes = ["Member", "Executive"];
+  const membertypes = ["Member", "Managing"];
   const allPosts = [clubs, volunteers, programs, events];
   const allExecPosts = [execClubs, execVolunteer, execPrograms, execEvents];
 
@@ -155,13 +155,13 @@ const ReactTabs = () => {
   };
 
   return (
-    <div className='flex flex-row flex-[3] mx-12'>
-      <Paper className='rounded-md border border-red-500 max-w-[90vw]' square>
+    <div className="flex flex-row flex-[3] mx-12">
+      <Paper className="rounded-md border border-red-500 max-w-[90vw]" square>
         <Tabs
-          className='flex justify-around'
-          value={value} 
-          variant='scrollable'
-          scrollButtons='auto'
+          className="flex justify-around"
+          value={value}
+          variant="scrollable"
+          scrollButtons="auto"
           allowScrollButtonsMobile
           onChange={(event, newValue) => {
             setValue(newValue);
@@ -220,38 +220,52 @@ const ActivityList = ({
       ? `Join ${type} to populate this list!`
       : `Become an executive for ${type} to populate this list!`;
   return (
-    <div className='text-red-500 no-underline p-6 md:p-12'>
-      <h1 className='text-lg md:text-xl font-bold'>
+    <div className="text-red-500 no-underline p-6 md:p-12">
+      <h1 className="text-lg md:text-xl font-bold">
         {membertypes} {type.charAt(0).toUpperCase() + type.slice(1)}s
       </h1>
       {hasNoPosts ? (
-        <div className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{noPostsMessage}</div>
+        <div className="text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]">
+          {noPostsMessage}
+        </div>
       ) : (
-        <div className='grid grid-flow-row grid-cols-1 grid-rows-1 gap-8 my-8'>
+        <div className="grid grid-flow-row grid-cols-1 grid-rows-1 gap-8 my-8">
           {posts.map((post) => {
             const key = type === "event" ? post.Name : post.Activity_ID;
 
             return (
-              <div key={key} className='flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out'>
-                <div className='flex-1 max-h-[200px] w-24 m-5 mr-0'>
+              <div
+                key={key}
+                className="flex rounded-md border-4 border-red-500 overflow-hidden transition-[.3s] ease-in-out"
+              >
+                <div className="flex-1 max-h-[200px] w-24 m-5 mr-0">
                   <img
                     src={post.Img_file_path}
                     alt={post.Name}
                     onError={handleImgErr()}
-                    className='w-full max-h-full object-cover'
+                    className="w-full max-h-full object-cover"
                   />
                 </div>
-                <div className='flex-[3] flex flex-col justify-between m-2 md:m-5'>
-                  <Link className='no-underline text-red-500 mt-2 w-fit h-fit' to={`/${type}/${key}`}>
-                    <h1 className='text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1'>{post.Name}</h1>
+                <div className="flex-[3] flex flex-col justify-between m-2 md:m-5">
+                  <Link
+                    className="no-underline text-red-500 mt-2 w-fit h-fit"
+                    to={`/${type}/${key}`}
+                  >
+                    <h1 className="text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1">
+                      {post.Name}
+                    </h1>
                   </Link>
-                  <p className='text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
-                  <div className='flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap'>
+                  <p className="text-lg whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]">
+                    {post.Description}
+                  </p>
+                  <div className="flex flex-row gap-2 sm:gap-5 w-fit justify-center items-center text-xs sm:text-base flex-wrap">
                     <Link to={`/${type}/${key}`}>
-                      <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">View</button>
+                      <button className="py-2 px-5 rounded-xl w-20 bg-[#5dbea3] border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-[#5dbea3] hover:bg-[#f5f7f8] hover:text-[#5dbea3]">
+                        View
+                      </button>
                     </Link>
 
-                    {membertypes === "Executive" ? (
+                    {membertypes === "Managing" ? (
                       <>
                         <button
                           className="py-2 px-5 rounded-xl w-fit bg-red-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-red-500 hover:bg-[#f5f7f8] hover:text-red-500"
@@ -270,7 +284,9 @@ const ActivityList = ({
                             type === "event" ? post.Name : post.Activity_ID
                           }/edit`}
                         >
-                          <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">Edit</button>
+                          <button className="py-2 px-5 rounded-xl w-fit bg-blue-500 border-2 border-[#f5f7f8] text-[#f5f7f8] transition-[.3s] ease-linear hover:border-blue-500 hover:bg-[#f5f7f8] hover:text-blue-500">
+                            Edit
+                          </button>
                         </a>
                       </>
                     ) : membertypes === "Member" ? (

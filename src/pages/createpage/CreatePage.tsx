@@ -1,7 +1,7 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../context/authContext';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/authContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface CreateElements extends HTMLFormControlsCollection {
   activityType: HTMLInputElement;
@@ -269,16 +269,19 @@ const CreatePage = () => {
 
   if (accountType !== "EXECUTIVE" && !supervisorAccount) {
     return (
-      <div className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>
+      <div className="pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center">
         <h1>You do not have permission to access this.</h1>
       </div>
     );
   } else {
     return (
-      <div className='min-h-[60vh]'>
-        <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Create new Extracurricular!</h1>
+      <div className="min-h-[60vh]">
+        <h1 className="pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center">
+          Create new Extracurricular!
+        </h1>
         <form onSubmit={handleSubmit} method="post">
-          <div className='flex flex-col items-center gap-6'>
+          <div className="flex flex-col items-center gap-6">
+            <span>Extracurricular Type</span>
             <select
               value={activityType}
               onChange={(e) => {
@@ -295,9 +298,30 @@ const CreatePage = () => {
               <option value="program">Program</option>
               <option value="event">Event</option>
             </select>
-            <input type="text" placeholder="Name" id="name" className={inputCSS} required />
-            <textarea placeholder="Description..." id="description" className={inputCSS} rows={6} />
-            <input type="text" placeholder="Perks" id="perks" className={inputCSS} required />
+            <span>Name</span>
+            <input
+              type="text"
+              placeholder="Name"
+              id="name"
+              className={inputCSS}
+              required
+            />
+            <span>Description</span>
+            <textarea
+              placeholder="Description..."
+              id="description"
+              className={inputCSS}
+              rows={6}
+            />
+            <span>Perks</span>
+            <input
+              type="text"
+              placeholder="Perks"
+              id="perks"
+              className={inputCSS}
+              required
+            />
+            <span>Image Link</span>
             <input
               type="text"
               placeholder="Icon image link"
@@ -313,28 +337,56 @@ const CreatePage = () => {
             )}
             {activityType === "club" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
-                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
+                <span>Fee</span>
+                <input
+                  type="number"
+                  placeholder="Fee"
+                  id="fee"
+                  className={inputCSS}
+                />
+                <span>Schedule</span>
+                <input
+                  type="text"
+                  placeholder="Schedule"
+                  id="schedule"
+                  className={inputCSS}
+                />
+                <span>Interview Required?</span>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
                   className={inputCSS}
                 />
+                <span>Application Required?</span>
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
                   className={inputCSS}
                 />
+                <span>Weekly hour commitment</span>
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                   className={inputCSS}
                 />
-                <input type="text" placeholder="Discord" id="discord" className={inputCSS}/>
-                <input type="text" placeholder="Instagram" id="instagram" className={inputCSS}/>
+                <span>Discord link</span>
+                <input
+                  type="text"
+                  placeholder="Discord"
+                  id="discord"
+                  className={inputCSS}
+                />
+                <span>Instagram link</span>
+                <input
+                  type="text"
+                  placeholder="Instagram"
+                  id="instagram"
+                  className={inputCSS}
+                />
+                <span>Organization</span>
                 <select
                   value={organization}
                   onChange={(e) => {
@@ -355,27 +407,49 @@ const CreatePage = () => {
               </>
             ) : activityType === "program" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
-                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
+                <span>Fee</span>
+                <input
+                  type="number"
+                  placeholder="Fee"
+                  id="fee"
+                  className={inputCSS}
+                />
+                <span>Schedule</span>
+                <input
+                  type="text"
+                  placeholder="Schedule"
+                  id="schedule"
+                  className={inputCSS}
+                />
+                <span>Interview Required?</span>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
                   className={inputCSS}
                 />
+                <span>Application Required?</span>
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
                   className={inputCSS}
                 />
+                <span>Weekly Hour Commitment</span>
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                   className={inputCSS}
                 />
-                <input type="text" placeholder="Website" id="website" className={inputCSS}/>
+                <span>Website link</span>
+                <input
+                  type="text"
+                  placeholder="Website"
+                  id="website"
+                  className={inputCSS}
+                />
+                <span>Organization</span>
                 <select
                   value={organization}
                   onChange={(e) => {
@@ -396,7 +470,14 @@ const CreatePage = () => {
               </>
             ) : activityType === "event" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
+                <span>Fee</span>
+                <input
+                  type="number"
+                  placeholder="Fee"
+                  id="fee"
+                  className={inputCSS}
+                />
+                <span>Location</span>
                 <input
                   type="text"
                   placeholder="Location"
@@ -404,14 +485,28 @@ const CreatePage = () => {
                   required
                   className={inputCSS}
                 />
+                <span>Online or In person?</span>
                 <input
                   type="text"
                   placeholder="Online or In Person?"
                   id="onlineInPerson"
                   className={inputCSS}
                 />
-                <input type="text" placeholder="Sign up info" id="signUpInfo" className={inputCSS}/>
-                <input type="text" placeholder="Eligibility" id="eligibility" className={inputCSS}/>
+                <span>Sign up info</span>
+                <input
+                  type="text"
+                  placeholder="Sign up info"
+                  id="signUpInfo"
+                  className={inputCSS}
+                />
+                <span>Eligibility</span>
+                <input
+                  type="text"
+                  placeholder="Eligibility"
+                  id="eligibility"
+                  className={inputCSS}
+                />
+                <span>Date and Time</span>
                 <input
                   type="datetime-local"
                   placeholder="Date and time"
@@ -422,27 +517,49 @@ const CreatePage = () => {
               </>
             ) : activityType === "volunteer" ? (
               <>
-                <input type="number" placeholder="Fee" id="fee" className={inputCSS}/>
-                <input type="text" placeholder="Schedule" id="schedule" className={inputCSS}/>
+                <span>Fee</span>
+                <input
+                  type="number"
+                  placeholder="Fee"
+                  id="fee"
+                  className={inputCSS}
+                />
+                <span>Schedule</span>
+                <input
+                  type="text"
+                  placeholder="Schedule"
+                  id="schedule"
+                  className={inputCSS}
+                />
+                <span>Interview required?</span>
                 <input
                   type="text"
                   placeholder="Interview Required?"
                   id="interview"
                   className={inputCSS}
                 />
+                <span>Appplication required?</span>
                 <input
                   type="text"
                   placeholder="Application Required?"
                   id="application"
                   className={inputCSS}
                 />
+                <span>Weekly hour commitment</span>
                 <input
                   type="number"
                   placeholder="Weekly hour commitment"
                   id="weekHours"
                   className={inputCSS}
                 />
-                <input type="text" placeholder="Location" id="location" className={inputCSS}/>
+                <span>Location</span>
+                <input
+                  type="text"
+                  placeholder="Location"
+                  id="location"
+                  className={inputCSS}
+                />
+                <span>Organization</span>
                 <select
                   value={organization}
                   onChange={(e) => {
@@ -464,6 +581,7 @@ const CreatePage = () => {
             ) : (
               <></>
             )}
+            <span>Faculty</span>
             <select
               value={facultyType}
               onChange={(e) => {
@@ -482,6 +600,7 @@ const CreatePage = () => {
                 </option>
               ))}
             </select>
+            <span>Tags</span>
             <select
               multiple
               value={tags}
@@ -505,9 +624,11 @@ const CreatePage = () => {
                 </option>
               ))}
             </select>
-            <button className='w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white'>Create</button>
+            <button className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white">
+              Create
+            </button>
             {warning ? (
-              <p className='text-red-500 font-semibold'>
+              <p className="text-red-500 font-semibold">
                 Please choose an extracurricular type!
               </p>
             ) : (
@@ -519,6 +640,7 @@ const CreatePage = () => {
     );
   }
 };
-const inputCSS = 'w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm';
+const inputCSS =
+  "w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-[40px] px-4 py-2 text-sm";
 
 export default CreatePage;
