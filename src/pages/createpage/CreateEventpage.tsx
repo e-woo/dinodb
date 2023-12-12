@@ -102,7 +102,7 @@ const CreateEventPage = () => {
           Create new Event!
         </h1>
         <form onSubmit={handleSubmit} method="post">
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-2 [&>span]:pt-4">
             <span>Name</span>
             <input
               type="text"
@@ -116,7 +116,7 @@ const CreateEventPage = () => {
               placeholder="Description..."
               id="description"
               rows={6}
-              className="w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none"
+              className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'
             />
             <span>Perks</span>
             <input
@@ -172,7 +172,7 @@ const CreateEventPage = () => {
             />
             <button
               type="submit"
-              className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white"
+              className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white mt-4"
             >
               Create
             </button>

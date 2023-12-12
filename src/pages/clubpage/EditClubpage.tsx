@@ -117,7 +117,7 @@ const EditClubPage = () => {
             Edit Club
           </h1>
           <form onSubmit={handleSubmit} method="post">
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center gap-2 [&>span]:pt-4">
               <span>Name</span>
               <input
                 type="text"
@@ -210,7 +210,7 @@ const EditClubPage = () => {
               />
               <button
                 type="submit"
-                className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white"
+                className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white mt-4"
               >
                 Confirm
               </button>

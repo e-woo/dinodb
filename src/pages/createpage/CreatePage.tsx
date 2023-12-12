@@ -280,8 +280,7 @@ const CreatePage = () => {
           Create new Extracurricular!
         </h1>
         <form onSubmit={handleSubmit} method="post">
-          <div className="flex flex-col items-center gap-6">
-            <span>Extracurricular Type</span>
+          <div className="flex flex-col items-center gap-2 [&>span]:pt-4">
             <select
               value={activityType}
               onChange={(e) => {
@@ -310,7 +309,7 @@ const CreatePage = () => {
             <textarea
               placeholder="Description..."
               id="description"
-              className={inputCSS}
+              className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'
               rows={6}
             />
             <span>Perks</span>
@@ -613,7 +612,7 @@ const CreatePage = () => {
               }}
               id="tags"
               required
-              className={inputCSS}
+              className='w-56 md:w-72 lg:w-96 border-2 border-[#c6c6c6] rounded-2xl px-4 py-2 text-sm resize-none'
             >
               <option value="" disabled>
                 Choose a tag... (Hold CTRL to select multiple)
@@ -624,7 +623,7 @@ const CreatePage = () => {
                 </option>
               ))}
             </select>
-            <button className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white">
+            <button className="w-56 md:w-72 lg:w-96 border-2 border-red-500 bg-white rounded-xl py-2 justify-center text-lg font-semibold text-red-500 transition-[.3s] ease-in-out hover:bg-red-500 hover:text-white mt-4">
               Create
             </button>
             {warning ? (
