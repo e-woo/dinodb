@@ -81,29 +81,34 @@ const SearchPage = () => {
 
   return (
     <div>
-      <h1 className='pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center'>Find An Extracurricular!</h1>
+      <h1 className="pt-16 pb-8 text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#333] text-center">
+        Find An Extracurricular!
+      </h1>
       <form className="flex flex-col" onSubmit={handleSubmit}>
-      <input 
-          type="text" 
-          placeholder="Search..." 
-          className='self-center w-[75vw] max-w-[700px] border-2 border-[#535353] border-opacity-20 py-4 px-11 m-10 text-xl rounded-[40px]'
+        <input
+          type="text"
+          placeholder="Search..."
+          className="self-center w-[75vw] max-w-[700px] border-2 border-[#535353] border-opacity-20 py-4 px-11 m-10 text-xl rounded-[40px]"
           value={searchTerm}
           onChange={handleSearchChange}
         />{" "}
       </form>
-      <div className='flex flex-col md:flex-row justify-center'>
-          <div className='h-fit bg-white mt-12 mx-10 border-[3px] border-[#3f3f3f] border-opacity-20 rounded-xl overflow-hidden'>
+      <div className="flex flex-col md:flex-row justify-center">
+        <div className="h-fit bg-white mt-12 mx-10 border-[3px] border-[#3f3f3f] border-opacity-20 rounded-xl overflow-hidden">
           <ul>
             <li>
-              <div className='bg-red-500 p-2'>
-                <h3 className='text-center text-white text-xl'>Filters</h3>
+              <div className="bg-red-500 p-2">
+                <h3 className="text-center text-white text-xl">Filters</h3>
               </div>
             </li>
             {filters.map((filter, index) => (
-              <li key={index} className='py-2 px-8 bg-[#f1f1f1] text-lg border border-b-[#3f3f3f] border-opacity-20 last:border-0'>
+              <li
+                key={index}
+                className="py-2 px-8 bg-[#f1f1f1] text-lg border border-b-[#3f3f3f] border-opacity-20 last:border-0"
+              >
                 <input
                   type="checkbox"
-                  className='w-5 h-5 my-[6px] mx-3' 
+                  className="w-5 h-5 my-[6px] mx-3"
                   id={filter}
                   name={filter}
                   onChange={handleFilterChange}
@@ -113,7 +118,7 @@ const SearchPage = () => {
             ))}
           </ul>
         </div>
-        <div className='p-8 md:p-0 md:w-[70%]'>
+        <div className="p-8 md:p-0 md:w-[70%]">
           <div className="searchContent">
             <PostsRow posts={getFilteredPosts()} />
           </div>
@@ -133,26 +138,41 @@ interface Post {
 
 const PostsRow = ({ posts }: { posts: Array<Post> }) => {
   return (
-    <div className='xl:m-8 justify-self-end h-auto flex flex-wrap w-full'>
-      <div className='overflow-hidden flex flex-col justify-center items-center md:grid md:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
+    <div className="xl:m-8 justify-self-end h-auto flex flex-wrap w-full">
+      <div className="overflow-hidden flex flex-col justify-center items-center md:grid md:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
         {posts.map((post) => {
           const key = post.Type === "event" ? post.Name : post.Activity_ID;
           return (
-            <div className='bg-white border-2 border-[#535353] border-opacity-20 rounded-xl w-auto flex flex-col justify-center items-center p-2' key={post.Activity_ID}>
-              <div className='flex-none h-52 w-full overflow-hidden'>
-                <img src={post.Img_file_path|| 'default-image-url.jpg'} alt={post.Name} className='w-full max-h-full object-cover' />
-                </div>
-              <div className='flex-2 flex flex-col justify-center items-center gap-2'>
-                <Link className="link" to={`/${post.Type}/${post.Type === 'event' ? post.Name : post.Activity_ID}`}>
-                  <h1 className='text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1'>{post.Name}</h1>
+            <div
+              className="bg-white border-2 border-[#535353] border-opacity-20 rounded-xl w-auto flex flex-col justify-center items-center p-2"
+              key={key}
+            >
+              <div className="flex-none h-52 w-full overflow-hidden">
+                <img
+                  src={post.Img_file_path || "default-image-url.jpg"}
+                  alt={post.Name}
+                  className="w-full max-h-full object-cover"
+                  onError={handleImgErr()}
+                />
+              </div>
+              <div className="flex-2 flex flex-col justify-center items-center gap-2">
+                <Link className="link" to={`/${post.Type}/${key}`}>
+                  <h1 className="text-2xl whitespace-normal overflow-hidden text-ellipsis line-clamp-1">
+                    {post.Name}
+                  </h1>
                 </Link>
-                <p className='text-base whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]'>{post.Description}</p>
-                <form action={`./${post.Type}/${post.Type === 'event' ? post.Name : post.Activity_ID}`}>
-                  <button className='w-max py-2 px-5 rounded-xl bg-white border-2 border-red-500 text-red-500 transition-[.3s] ease-linear hover:border-[#f5f7f8] hover:bg-red-500 hover:text-[#f5f7f8]'>Learn More</button>
+                <p className="text-base whitespace-normal overflow-hidden text-ellipsis line-clamp-3 text-[#333]">
+                  {post.Description}
+                </p>
+                <form action={`./${post.Type}/${key}`}>
+                  <button className="w-max py-2 px-5 rounded-xl bg-white border-2 border-red-500 text-red-500 transition-[.3s] ease-linear hover:border-[#f5f7f8] hover:bg-red-500 hover:text-[#f5f7f8]">
+                    Learn More
+                  </button>
                 </form>
               </div>
             </div>
-        )})}
+          );
+        })}
       </div>
     </div>
   );

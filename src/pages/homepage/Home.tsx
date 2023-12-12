@@ -88,7 +88,10 @@ const Home = () => {
       </div>
       <div className="mx-8 flex flex-col lg:flex-row lg:gap-24 items-center justify-center">
         {benefits.map((benefit) => (
-          <div className="bg-red-500 max-w-[500px] text-[#f5f7f8] mt-10 p-7 min-h-[200px] flex flex-col align-center justify-center rounded-xl">
+          <div
+            key={benefit.bKey}
+            className="bg-red-500 max-w-[500px] text-[#f5f7f8] mt-10 p-7 min-h-[200px] flex flex-col align-center justify-center rounded-xl"
+          >
             <h1 className="text-[2.5rem] font-black mb-5 text-center">
               {benefit.header}
             </h1>
@@ -241,14 +244,17 @@ const ClubsSlider = ({
 
 const benefits = [
   {
+    bKey: 1,
     header: "Community",
     body: "Participation in activities often leads to the formation of lasting friendships, creating a support system that extends beyond the college years.",
   },
   {
+    bKey: 2,
     header: "Network",
     body: "Being active provides opportunities to network with professors, professionals, and fellow students, potentially leading to internships or job opportunities.",
   },
   {
+    bKey: 3,
     header: "Resume",
     body: "Active involvement on campus showcases leadership abilities on a resume, making students more attractive to potential employers.",
   },
