@@ -11,6 +11,7 @@ const Register = () => {
     LName: "",
     Email: "",
     Password: "",
+    ConfirmPassword: "",
     AccountType: "STUDENT",
   });
 
@@ -45,6 +46,10 @@ const Register = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (inputs.Password !== inputs.ConfirmPassword) {
+      setError("Passwords do not match!" as any);
+      return;
+    }
     if (!isSupervisor) {
       try {
         const res = await axios.post("/auth/register", inputs);
@@ -155,7 +160,7 @@ const Register = () => {
                 onChange={handleChange}
                 className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
               />
-              <i className='bx bxs-calendar absolute right-5 top-1/2 -translate-y-1/2 text-xl'></i>
+              <i className='bx bxs-calendar absolute right-5 top-1/2 -translate-y-1/2 text-xl'/>
             </div>
           </> : null
           }
@@ -170,10 +175,16 @@ const Register = () => {
             />
             <i className='bx bxs-lock-alt absolute right-5 top-1/2 -translate-y-1/2 text-xl'/>
           </div>
-          {/* <div className='text-field'>
-                        <input type='password' placeholder='Confirm Password' required />
-                        <i className='bx bxs-lock-alt' ></i>
-                    </div> */}
+          <div className='relative w-full h-12 my-8'>
+              <input
+              name='ConfirmPassword'
+              type='password'
+              placeholder='Confirm Password'
+              className='w-full h-full bg-transparent outline-none border-2 border-white border-opacity-20 rounded-[40px] text-lg text-white py-5 pl-5 pr-11 placeholder:text-white'
+              onChange={handleChange}
+              required />
+            <i className='bx bxs-lock-alt absolute right-5 top-1/2 -translate-y-1/2 text-xl'/>
+          </div>
           <button onClick={handleSubmit} className='w-full h-11 border-none bg-white outline-none rounded-[40px] shadow-[0_0_10px_rgba(0,_0,_0,_0.2)] text-lg text-black font-semibold'>
             Register
           </button>
