@@ -1,5 +1,6 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 export const register = (req, res) => {
   // Check if user already exists
@@ -8,6 +9,9 @@ export const register = (req, res) => {
   db.query(q, [req.body.UCID, req.body.email], (err, data) => {
     if (err) return res.json(err);
     if (data.length) return res.status(409).json("Student already exists!");
+
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(req.body.Password, salt);
 
     const q =
       "INSERT INTO student(`UCID`, `Date_of_Birth`, `Bio`, `FName`, `LName`, `Email`, `Password`, `AccountType`) VALUES (?)";
@@ -18,7 +22,7 @@ export const register = (req, res) => {
       req.body.FName,
       req.body.LName,
       req.body.Email,
-      req.body.Password,
+      hashedPassword,
       req.body.AccountType,
     ];
 
@@ -37,13 +41,16 @@ export const registerSupervisor = (req, res) => {
     if (err) return res.json(err);
     if (data.length) return res.status(409).json("Supervisor already exists!");
 
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(req.body.Password, salt);
+
     const q = `INSERT INTO SUPERVISOR(FName, LName, Email, Password) 
                 VALUES (?)`;
     const values = [
       req.body.FName,
       req.body.LName,
       req.body.Email,
-      req.body.Password,
+      hashedPassword,
     ];
 
     db.query(q, [values], (err, data) => {
@@ -64,7 +71,7 @@ export const login = (req, res) => {
 
     if (studentData.length) {
       // Student user exists, check password
-      if (req.body.Password !== studentData[0].Password) {
+      if (!bcrypt.compareSync(req.body.Password, studentData[0].Password)) {
         return res.status(400).json("Incorrect email or password.");
       }
 
@@ -88,7 +95,7 @@ export const login = (req, res) => {
 
         if (supervisorData.length) {
           // Supervisor user exists, check password
-          if (req.body.Password !== supervisorData[0].Password) {
+          if (!bcrypt.compareSync(req.body.Password, supervisorData[0].Password)) {
             return res.status(400).json("Incorrect email or password.");
           }
 

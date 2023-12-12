@@ -1,4 +1,5 @@
 import { db } from "../db.js";
+import bcrypt from "bcryptjs";
 
 export const editProfile = async (req, res) => {
   const { id, bio, fName, lName } = req.body;
@@ -30,9 +31,13 @@ export const editSupProfile = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   const { id, password } = req.body;
+
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+
   const q = "UPDATE student SET Password = ? WHERE UCID = ?";
   try {
-    await db.promise().query(q, [password, id]);
+    await db.promise().query(q, [hashedPassword, id]);
     return res.status(200).json({ message: "Password updated!", status: 200 });
   } catch (err) {
     return res.status(500).json(err);
@@ -41,9 +46,13 @@ export const changePassword = async (req, res) => {
 
 export const changeSupPassword = async (req, res) => {
   const { id, password } = req.body;
+
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+
   const q = "UPDATE supervisor SET Password = ? WHERE Supervisor_ID = ?";
   try {
-    await db.promise().query(q, [password, id]);
+    await db.promise().query(q, [hashedPassword, id]);
     return res.status(200).json({ message: "Password updated!", status: 200 });
   } catch (err) {
     return res.status(500).json(err);
