@@ -208,7 +208,11 @@ const Eventpage = () => {
           </div>
           <div className='flex-1'>
             <h2 className='font-bold'>Date and Time:</h2>
-            <p>{event.DateTime}</p>
+            <p>{event.DateTime ? new Intl.DateTimeFormat('en-CA', {
+                      dateStyle: 'long',
+                      timeStyle: 'short',
+                      hour12: true
+                    }).format(new Date(event.DateTime)) : ''}</p>
           </div>
         </div>
         <div className='flex flex-nowrap flex-row justify-center items-center bg-[#E1E5E6] rounded-xl p-8 xl:p-12 w-full border-b-2 border-[#a6a9aa] gap-2'>
