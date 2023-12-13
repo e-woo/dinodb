@@ -205,9 +205,9 @@ VALUES
 
 INSERT INTO SUPERVISOR (Supervisor_ID, FName, LName, Email, Password)
 VALUES
-	('1', 'Ryan', 'Reynolds', 'rr@gmail.com', 'password123'),
-	('2', 'Arthur', 'Morgan', 'am@gmail.com', 'password123'),
-	('3', 'Bill', 'Nye', 'bn@gmail.com', 'password123');
+	('1', 'Ryan', 'Reynolds', 'rr@gmail.com', '$2a$10$wcx76j7BeZX/Q.vENuO4pe/Jm8N0HI87OaLRDHNUTm6CuciQDRzr6'),
+	('2', 'Arthur', 'Morgan', 'am@gmail.com', '$2a$10$wcx76j7BeZX/Q.vENuO4pe/Jm8N0HI87OaLRDHNUTm6CuciQDRzr6'),
+	('3', 'Bill', 'Nye', 'bn@gmail.com', '$2a$10$wcx76j7BeZX/Q.vENuO4pe/Jm8N0HI87OaLRDHNUTm6CuciQDRzr6');
 
 INSERT INTO SUPERVISED_BY (Activity_ID, Supervisor_ID)
 VALUES
